@@ -1,0 +1,334 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  /* Compatibility aliases for country pages using --color-brand-* naming */
+  --color-brand-navy: var(--navy);
+  --color-brand-blue: var(--blue);
+  --color-brand-lightblue: var(--blue-soft);
+  --color-brand-gold: var(--gold);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand-navy: var(--navy);
+  --color-brand-blue: var(--blue);
+  --color-brand-gold: var(--gold);
+  --color-light-blue: var(--blue-soft);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-navy: var(--navy);
+  --color-navy-foreground: var(--navy-foreground);
+  --color-blue: var(--blue);
+  --color-blue-foreground: var(--blue-foreground);
+  --color-blue-soft: var(--blue-soft);
+  --color-blue-wash: var(--blue-wash);
+  --color-sky: var(--sky);
+  --color-sky-foreground: var(--sky-foreground);
+  --color-gold: var(--gold);
+  --color-gold-foreground: var(--gold-foreground);
+  --color-ink: var(--ink);
+  --color-mist: var(--mist);
+
+  --font-display: "Poppins", system-ui, sans-serif;
+  --font-body: "Poppins", system-ui, sans-serif;
+  --font-sans: "Poppins", system-ui, sans-serif;
+}
+
+:root {
+  /* Qatar-page compatibility aliases */
+  --brand: var(--blue);
+  --brand-light: var(--blue-soft);
+  --brand-navy: var(--navy);
+  --brand-gold: var(--gold);
+  --shadow-card: 0 12px 32px -16px color-mix(in oklab, var(--navy) 35%, transparent);
+  --shadow-soft:
+    0 20px 50px -30px color-mix(in oklab, var(--navy) 45%, transparent),
+    0 4px 12px -6px color-mix(in oklab, var(--navy) 15%, transparent);
+  --radius: 1rem;
+  --brand-blue: var(--blue);
+  --brand-navy: var(--navy);
+  --brand-gold: var(--gold);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.18 0.04 260);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.04 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.04 260);
+
+  --navy: oklch(0.22 0.06 260); /* #0B1F3A */
+  --navy-foreground: oklch(1 0 0);
+  --blue: oklch(0.43 0.13 258); /* #1E4D8C */
+  --blue-foreground: oklch(1 0 0);
+  --blue-soft: oklch(0.92 0.03 250); /* #DCE9FB */
+  --blue-wash: oklch(0.96 0.018 250); /* #EAF2FC */
+
+  /* Aliases so components expecting --sky / --mist keep working */
+  --sky: var(--blue-wash);
+  --sky-foreground: var(--navy);
+  --mist: oklch(0.97 0.008 250); /* soft neutral background, close to --blue-wash but distinct */
+
+  --gold: oklch(0.74 0.11 85); /* #C9A646 */
+  --gold-foreground: var(--navy);
+  --ink: oklch(0.45 0.02 260);
+
+  --primary: var(--navy);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: var(--blue-wash);
+  --secondary-foreground: var(--navy);
+  --muted: var(--blue-wash);
+  --muted-foreground: oklch(0.5 0.02 260);
+  --accent: var(--blue-soft);
+  --accent-foreground: var(--navy);
+  --destructive: oklch(0.6 0.22 25);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.92 0.012 250);
+  --input: oklch(0.92 0.012 250);
+  --ring: var(--blue);
+
+  --chart-1: var(--blue);
+  --chart-2: var(--navy);
+  --chart-3: var(--blue-soft);
+  --chart-4: var(--gold);
+  --chart-5: oklch(0.55 0.1 258);
+
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: var(--navy);
+  --sidebar-primary: var(--navy);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: var(--blue-wash);
+  --sidebar-accent-foreground: var(--navy);
+  --sidebar-border: oklch(0.92 0.012 250);
+  --sidebar-ring: var(--blue);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+}
+
+@utility container-ozone {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+@utility container-page {
+  width: 100%;
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@utility shadow-lift {
+  box-shadow:
+    0 30px 80px -30px color-mix(in oklab, var(--navy) 45%, transparent),
+    0 8px 20px -10px color-mix(in oklab, var(--navy) 20%, transparent);
+}
+@utility btn-navy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.4rem;
+  border-radius: 999px;
+  background: var(--navy);
+  color: var(--navy-foreground);
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+  box-shadow: 0 8px 22px -12px color-mix(in oklab, var(--navy) 60%, transparent);
+}
+@utility btn-navy-hover {
+  &:hover {
+    transform: translateY(-1px);
+    background: color-mix(in oklab, var(--navy) 88%, white);
+  }
+}
+
+@utility btn-outline-blue {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.4rem;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--blue);
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: 1.5px solid var(--blue);
+  transition: all 0.2s ease;
+}
+@utility btn-outline-blue-hover {
+  &:hover {
+    background: var(--sky);
+  }
+}
+
+@utility btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.4rem;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--gold-foreground);
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 8px 22px -12px color-mix(in oklab, var(--gold) 70%, transparent);
+}
+
+@utility shadow-soft {
+  box-shadow:
+    0 20px 50px -30px color-mix(in oklab, var(--navy) 45%, transparent),
+    0 4px 12px -6px color-mix(in oklab, var(--navy) 15%, transparent);
+}
+
+@utility dot-grid {
+  background-image: radial-gradient(var(--color-blue-soft) 1.6px, transparent 1.6px);
+  background-size: 14px 14px;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+/* ============================================
+   GLOBAL RESPONSIVE SAFETY NET
+   Applies to every page automatically — no per-page edits needed.
+   ============================================ */
+
+@layer base {
+  /* Never allow horizontal page scroll from an overflowing element */
+  html,
+  body {
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* Any image, svg, or video respects its container on any screen */
+  img,
+  svg,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Every table becomes horizontally scrollable on small screens
+     instead of squishing or breaking layout */
+  table {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Long words/links/emails never force horizontal overflow */
+  p,
+  span,
+  a,
+  li,
+  td,
+  th,
+  h1,
+  h2,
+  h3 {
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  /* Inputs and selects never exceed their container on small screens */
+  input,
+  select,
+  textarea,
+  button {
+    max-width: 100%;
+  }
+}
+
+/* Fixed-position modals/dialogs (your AlertDialog / confirm modals)
+   always fit within the viewport with breathing room on small screens */
+.fixed.inset-0 > div[class*="max-w-"] {
+  max-width: min(100%, var(--modal-max-width, 32rem));
+  margin-inline: 1rem;
+}
+
+/* Sticky navs (CandidateNav / AdminNav) never overflow horizontally
+   and their inner content wraps or scrolls instead of clipping */
+nav.sticky {
+  max-width: 100vw;
+}
+nav.sticky > div {
+  max-width: 100%;
+}
+
+/* Any grid using inline/fixed pixel widths becomes fluid below 480px —
+   catches any page that hardcoded a width instead of using Tailwind's
+   responsive grid classes */
+@media (max-width: 480px) {
+  [class*="max-w-"] {
+    max-width: 100% !important;
+  }
+}
+
+/* Prevent any element with a fixed large min-width from forcing
+   the page wider than the viewport (common cause of mobile horizontal scroll) */
+@media (max-width: 640px) {
+  * {
+    min-width: 0;
+  }
+}
