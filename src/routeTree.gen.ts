@@ -17,7 +17,6 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as HomeRouteImport } from './routes/Home'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ServicesIndexRouteImport } from './routes/Services/index'
-import { Route as JobsIndexRouteImport } from './routes/Jobs/index'
 import { Route as ServicesVisaRouteImport } from './routes/Services/Visa'
 import { Route as ServicesTrainingRouteImport } from './routes/Services/Training'
 import { Route as ServicesTechnicalRecRouteImport } from './routes/Services/Technical-rec'
@@ -30,7 +29,6 @@ import { Route as ServicesHealthcareRecRouteImport } from './routes/Services/Hea
 import { Route as ServicesGroomingRouteImport } from './routes/Services/Grooming'
 import { Route as ServicesDocumentationRouteImport } from './routes/Services/Documentation'
 import { Route as ServicesDoctorsRouteImport } from './routes/Services/Doctors'
-import { Route as JobsJobIdRouteImport } from './routes/Jobs/$jobId'
 import { Route as EmployerSettingsRouteImport } from './routes/Employer/settings'
 import { Route as EmployerRequirementsRouteImport } from './routes/Employer/requirements'
 import { Route as EmployerMyCompanyRouteImport } from './routes/Employer/my-company'
@@ -118,11 +116,6 @@ const ServicesIndexRoute = ServicesIndexRouteImport.update({
   path: '/Services/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const JobsIndexRoute = JobsIndexRouteImport.update({
-  id: '/Jobs/',
-  path: '/Jobs/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ServicesVisaRoute = ServicesVisaRouteImport.update({
   id: '/Services/Visa',
   path: '/Services/Visa',
@@ -182,11 +175,6 @@ const ServicesDocumentationRoute = ServicesDocumentationRouteImport.update({
 const ServicesDoctorsRoute = ServicesDoctorsRouteImport.update({
   id: '/Services/Doctors',
   path: '/Services/Doctors',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JobsJobIdRoute = JobsJobIdRouteImport.update({
-  id: '/Jobs/$jobId',
-  path: '/Jobs/$jobId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EmployerSettingsRoute = EmployerSettingsRouteImport.update({
@@ -469,7 +457,6 @@ export interface FileRoutesByFullPath {
   '/Employer/my-company': typeof EmployerMyCompanyRoute
   '/Employer/requirements': typeof EmployerRequirementsRoute
   '/Employer/settings': typeof EmployerSettingsRoute
-  '/Jobs/$jobId': typeof JobsJobIdRoute
   '/Services/Doctors': typeof ServicesDoctorsRoute
   '/Services/Documentation': typeof ServicesDocumentationRoute
   '/Services/Grooming': typeof ServicesGroomingRoute
@@ -482,7 +469,6 @@ export interface FileRoutesByFullPath {
   '/Services/Technical-rec': typeof ServicesTechnicalRecRoute
   '/Services/Training': typeof ServicesTrainingRoute
   '/Services/Visa': typeof ServicesVisaRoute
-  '/Jobs/': typeof JobsIndexRoute
   '/Services/': typeof ServicesIndexRoute
   '/Admin/application/$id': typeof AdminApplicationIdRoute
   '/Admin/candidate/$id': typeof AdminCandidateIdRoute
@@ -539,7 +525,6 @@ export interface FileRoutesByTo {
   '/Employer/my-company': typeof EmployerMyCompanyRoute
   '/Employer/requirements': typeof EmployerRequirementsRoute
   '/Employer/settings': typeof EmployerSettingsRoute
-  '/Jobs/$jobId': typeof JobsJobIdRoute
   '/Services/Doctors': typeof ServicesDoctorsRoute
   '/Services/Documentation': typeof ServicesDocumentationRoute
   '/Services/Grooming': typeof ServicesGroomingRoute
@@ -552,7 +537,6 @@ export interface FileRoutesByTo {
   '/Services/Technical-rec': typeof ServicesTechnicalRecRoute
   '/Services/Training': typeof ServicesTrainingRoute
   '/Services/Visa': typeof ServicesVisaRoute
-  '/Jobs': typeof JobsIndexRoute
   '/Services': typeof ServicesIndexRoute
   '/Admin/application/$id': typeof AdminApplicationIdRoute
   '/Admin/candidate/$id': typeof AdminCandidateIdRoute
@@ -610,7 +594,6 @@ export interface FileRoutesById {
   '/Employer/my-company': typeof EmployerMyCompanyRoute
   '/Employer/requirements': typeof EmployerRequirementsRoute
   '/Employer/settings': typeof EmployerSettingsRoute
-  '/Jobs/$jobId': typeof JobsJobIdRoute
   '/Services/Doctors': typeof ServicesDoctorsRoute
   '/Services/Documentation': typeof ServicesDocumentationRoute
   '/Services/Grooming': typeof ServicesGroomingRoute
@@ -623,7 +606,6 @@ export interface FileRoutesById {
   '/Services/Technical-rec': typeof ServicesTechnicalRecRoute
   '/Services/Training': typeof ServicesTrainingRoute
   '/Services/Visa': typeof ServicesVisaRoute
-  '/Jobs/': typeof JobsIndexRoute
   '/Services/': typeof ServicesIndexRoute
   '/Admin/application/$id': typeof AdminApplicationIdRoute
   '/Admin/candidate/$id': typeof AdminCandidateIdRoute
@@ -682,7 +664,6 @@ export interface FileRouteTypes {
     | '/Employer/my-company'
     | '/Employer/requirements'
     | '/Employer/settings'
-    | '/Jobs/$jobId'
     | '/Services/Doctors'
     | '/Services/Documentation'
     | '/Services/Grooming'
@@ -695,7 +676,6 @@ export interface FileRouteTypes {
     | '/Services/Technical-rec'
     | '/Services/Training'
     | '/Services/Visa'
-    | '/Jobs/'
     | '/Services/'
     | '/Admin/application/$id'
     | '/Admin/candidate/$id'
@@ -752,7 +732,6 @@ export interface FileRouteTypes {
     | '/Employer/my-company'
     | '/Employer/requirements'
     | '/Employer/settings'
-    | '/Jobs/$jobId'
     | '/Services/Doctors'
     | '/Services/Documentation'
     | '/Services/Grooming'
@@ -765,7 +744,6 @@ export interface FileRouteTypes {
     | '/Services/Technical-rec'
     | '/Services/Training'
     | '/Services/Visa'
-    | '/Jobs'
     | '/Services'
     | '/Admin/application/$id'
     | '/Admin/candidate/$id'
@@ -822,7 +800,6 @@ export interface FileRouteTypes {
     | '/Employer/my-company'
     | '/Employer/requirements'
     | '/Employer/settings'
-    | '/Jobs/$jobId'
     | '/Services/Doctors'
     | '/Services/Documentation'
     | '/Services/Grooming'
@@ -835,7 +812,6 @@ export interface FileRouteTypes {
     | '/Services/Technical-rec'
     | '/Services/Training'
     | '/Services/Visa'
-    | '/Jobs/'
     | '/Services/'
     | '/Admin/application/$id'
     | '/Admin/candidate/$id'
@@ -893,7 +869,6 @@ export interface RootRouteChildren {
   EmployerMyCompanyRoute: typeof EmployerMyCompanyRoute
   EmployerRequirementsRoute: typeof EmployerRequirementsRoute
   EmployerSettingsRoute: typeof EmployerSettingsRoute
-  JobsJobIdRoute: typeof JobsJobIdRoute
   ServicesDoctorsRoute: typeof ServicesDoctorsRoute
   ServicesDocumentationRoute: typeof ServicesDocumentationRoute
   ServicesGroomingRoute: typeof ServicesGroomingRoute
@@ -906,7 +881,6 @@ export interface RootRouteChildren {
   ServicesTechnicalRecRoute: typeof ServicesTechnicalRecRoute
   ServicesTrainingRoute: typeof ServicesTrainingRoute
   ServicesVisaRoute: typeof ServicesVisaRoute
-  JobsIndexRoute: typeof JobsIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
   AdminApplicationIdRoute: typeof AdminApplicationIdRoute
   AdminCandidateIdRoute: typeof AdminCandidateIdRoute
@@ -969,13 +943,6 @@ declare module '@tanstack/react-router' {
       path: '/Services'
       fullPath: '/Services/'
       preLoaderRoute: typeof ServicesIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Jobs/': {
-      id: '/Jobs/'
-      path: '/Jobs'
-      fullPath: '/Jobs/'
-      preLoaderRoute: typeof JobsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Services/Visa': {
@@ -1060,13 +1027,6 @@ declare module '@tanstack/react-router' {
       path: '/Services/Doctors'
       fullPath: '/Services/Doctors'
       preLoaderRoute: typeof ServicesDoctorsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Jobs/$jobId': {
-      id: '/Jobs/$jobId'
-      path: '/Jobs/$jobId'
-      fullPath: '/Jobs/$jobId'
-      preLoaderRoute: typeof JobsJobIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Employer/settings': {
@@ -1480,7 +1440,6 @@ const rootRouteChildren: RootRouteChildren = {
   EmployerMyCompanyRoute: EmployerMyCompanyRoute,
   EmployerRequirementsRoute: EmployerRequirementsRoute,
   EmployerSettingsRoute: EmployerSettingsRoute,
-  JobsJobIdRoute: JobsJobIdRoute,
   ServicesDoctorsRoute: ServicesDoctorsRoute,
   ServicesDocumentationRoute: ServicesDocumentationRoute,
   ServicesGroomingRoute: ServicesGroomingRoute,
@@ -1493,7 +1452,6 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesTechnicalRecRoute: ServicesTechnicalRecRoute,
   ServicesTrainingRoute: ServicesTrainingRoute,
   ServicesVisaRoute: ServicesVisaRoute,
-  JobsIndexRoute: JobsIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
   AdminApplicationIdRoute: AdminApplicationIdRoute,
   AdminCandidateIdRoute: AdminCandidateIdRoute,

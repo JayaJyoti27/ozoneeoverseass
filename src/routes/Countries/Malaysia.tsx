@@ -648,10 +648,7 @@ function TrackRecord() {
   return (
     <section className="mx-auto max-w-7xl px-6">
       <div className="relative overflow-hidden curved-band bg-[var(--sky)] px-6 py-14 md:px-16 md:py-20">
-        <Blob
-          className="bottom-[-120px] right-[-120px] h-[380px] w-[380px] opacity-70"
-          color="white"
-        />
+        <Blob className="bottom-[-120px] right-[-120px] h-[380px] w-[380px] opacity-70" />
         <div className="grid gap-10 md:grid-cols-2 md:items-center">
           <div>
             <div className="font-display text-[7rem] font-extrabold leading-none text-[var(--navy)] md:text-[9rem]">
@@ -740,7 +737,7 @@ function FinalCTA() {
       id="contact"
       className="relative overflow-hidden bg-[var(--sky)] curved-band-top pt-16 pb-24 md:pt-24"
     >
-      <Blob className="right-[-160px] top-[-120px] h-[420px] w-[420px] opacity-60" color="white" />
+      <Blob className="right-[-160px] top-[-120px] h-[420px] w-[420px] opacity-60" />
       <div className="mx-auto grid max-w-7xl gap-14 px-6 md:grid-cols-2 md:items-center">
         <div>
           <h2 className="font-display text-4xl font-bold text-[var(--navy)] md:text-5xl">

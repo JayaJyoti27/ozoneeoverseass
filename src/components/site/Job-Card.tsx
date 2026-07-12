@@ -53,8 +53,8 @@ export function JobCard({ job, compact = false }: JobCardProps) {
 
   return (
     <Link
-      to="/jobs/$jobId"
-      params={{ jobId: job.id }}
+      to="/Candidates/jobs/$id"
+      params={{ id: job.id }}
       className="group flex flex-col rounded-3xl border border-blue/20 bg-card p-6 shadow-soft transition-all hover:-translate-y-1 hover:shadow-elevated"
     >
       <div className="flex items-start justify-between gap-3">
