@@ -7,7 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import GermanyHero from "@/assets/Germany-hero.jpg";
+import GermanyHero from "@/assets/germany-hero.jpg";
 import { Header } from "@/components/site/Header";
 export const Route = createFileRoute("/Countries/Germany")({
   head: () => ({

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { Header } from "@/";
+import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/footer";
 import { services } from "@/lib/services-data";
 import { Blob, DotGrid } from "@/components/site/decor";

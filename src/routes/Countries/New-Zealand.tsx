@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import aucklandHero from "@/assets/auckland-hero.jpg";
+
 import nzAbout from "@/assets/nz-about.jpg";
 import nzCities from "@/assets/nz-cities.jpg";
 import { Header } from "@/components/site/Header";
@@ -66,7 +66,6 @@ function DotGrid({ className = "" }: { className?: string }) {
 
 /* ---------- Nav ---------- */
 
-
 /* ---------- Hero (split: image left, content panel right) ---------- */
 function Hero() {
   return (
@@ -116,7 +115,7 @@ function Hero() {
         <div className="lg:col-span-7 order-1 lg:order-2 relative">
           <div className="relative rounded-[32px] overflow-hidden shadow-2xl">
             <img
-              src={aucklandHero}
+              src={nzCities}
               alt="Auckland harbour and Sky Tower at sunset"
               width={1400}
               height={1600}
