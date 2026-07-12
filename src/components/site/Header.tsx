@@ -79,7 +79,7 @@ const ADMIN_SERVICES = [
 ];
 
 const COMPANY_LINKS = [
-  { label: "About Us", to: "/src/routes/about.tsx", desc: "15 years, MEA licensed since 2009" },
+  { label: "About Us", to: "/about", desc: "15 years, MEA licensed since 2009" },
   { label: "Contact", to: "/contact", desc: "We respond within one business day" },
   { label: "Privacy Policy", to: "/privacypolicy", desc: "" },
   // Terms removed — no /terms route exists yet. Add back once that page is built.
