@@ -1,6 +1,14 @@
 import type { CSSProperties } from "react";
 
-export function Blob({ className = "", style }: { className?: string; style?: CSSProperties }) {
+export function Blob({
+  className = "",
+  style,
+  color = "#EAF2FC",
+}: {
+  className?: string;
+  style?: CSSProperties;
+  color?: string;
+}) {
   return (
     <svg
       aria-hidden
@@ -9,7 +17,7 @@ export function Blob({ className = "", style }: { className?: string; style?: CS
       style={style}
     >
       <path
-        fill="#EAF2FC"
+        fill={color}
         d="M421,340Q394,430,304,461Q214,492,146,428Q78,364,89,275Q100,186,177,133Q254,80,342,101Q430,122,455,211Q480,300,421,340Z"
       />
     </svg>
