@@ -104,7 +104,7 @@ function Home() {
       <TrustedStrip />
       <WhyTrustUs />
       <WhyChoose />
-      <LiveJobs />
+
       <Industries />
       <MatchEngine />
       <Process />
