@@ -18,6 +18,7 @@ import {
   Sparkles,
   Stamp,
 } from "lucide-react";
+import { Header } from "@/components/site/Header";
 import heroTeam from "@/assets/about-hero-team.jpg";
 import heroDeparture from "@/assets/about-hero-departure.jpg";
 import coordinatorImg from "@/assets/about-coordinator.jpg";
@@ -83,61 +84,6 @@ function Pill({ children, icon: Icon }: { children: React.ReactNode; icon?: Reac
 }
 
 /* ---------- Header ---------- */
-
-function Header() {
-  const links = [
-    { label: "Candidates", to: "/" },
-    { label: "Employers", to: "/" },
-    { label: "Countries", to: "/" },
-    { label: "About", to: "/about" },
-    { label: "Contact", to: "/" },
-  ];
-  return (
-    <header className="sticky top-0 z-50 border-b border-[color:var(--border)]/70 bg-white/85 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 md:px-8">
-        <Link to="/" className="flex items-center gap-2.5">
-          <div className="grid h-9 w-9 place-items-center rounded-xl bg-[color:var(--navy)] font-display text-sm font-bold text-white">
-            OO
-          </div>
-          <div className="leading-tight">
-            <div className="font-display text-[15px] font-bold text-[color:var(--navy)]">
-              Ozone Overseas
-            </div>
-            <div className="text-[10px] uppercase tracking-[0.14em] text-[color:var(--muted-foreground)]">
-              MEA Licensed · Est. 2009
-            </div>
-          </div>
-        </Link>
-        <nav className="hidden items-center gap-8 md:flex">
-          {links.map((l) => (
-            <Link
-              key={l.label}
-              to={l.to}
-              activeProps={{ className: "text-[color:var(--blue)]" }}
-              className="text-sm font-medium text-[color:var(--navy)] transition hover:text-[color:var(--blue)]"
-            >
-              {l.label}
-            </Link>
-          ))}
-        </nav>
-        <div className="flex items-center gap-2">
-          <Link
-            to="/"
-            className="hidden rounded-full bg-[color:var(--navy)] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[color:var(--blue)] md:inline-flex"
-          >
-            Apply Now
-          </Link>
-          <button
-            aria-label="Menu"
-            className="grid h-9 w-9 place-items-center rounded-full border border-[color:var(--border)] text-[color:var(--navy)] md:hidden"
-          >
-            <Menu className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
-    </header>
-  );
-}
 
 /* ---------- Hero ---------- */
 
