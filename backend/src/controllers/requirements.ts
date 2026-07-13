@@ -41,6 +41,6 @@ export async function convertRequirement(req: Request, res: Response) {
     if (error) throw error;
     res.json({ success: true, data });
   } catch (err: any) {
-    res.status(400).json({ success: false, message: error?.message ?? err.message });
+    res.status(400).json({ success: false, message: err.message });
   }
 }

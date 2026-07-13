@@ -27,7 +27,7 @@ export async function saveJob(req: Request, res: Response) {
 
 export async function removeSavedJob(req: Request, res: Response) {
   try {
-    const { data, error } = await SavedJobsService.removeSavedJob(req.params.id);
+    const { data, error } = await SavedJobsService.removeSavedJob(String(req.params.id));
     if (error) throw error;
     res.json({ success: true, data });
   } catch (err: any) {

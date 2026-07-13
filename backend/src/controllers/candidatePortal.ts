@@ -141,7 +141,7 @@ APPLICATION DETAILS
 
 export async function getApplication(req: Request, res: Response) {
   try {
-    const { data, error } = await CandidateService.getApplication(req.params.id);
+    const { data, error } = await CandidateService.getApplication(String(req.params.id));
 
     if (error) {
       return res.status(404).json({

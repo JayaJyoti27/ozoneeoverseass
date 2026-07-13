@@ -40,7 +40,10 @@ export async function updateCountry(req: Request, res: Response) {
       return res.status(400).json({ success: false, error: parsed.error.flatten() });
     }
 
-    const { data, error } = await CountriesService.updateCountry(req.params.id, parsed.data);
+    const { data, error } = await CountriesService.updateCountry(
+      String(req.params.id),
+      parsed.data,
+    );
     if (error) throw error;
     res.json({ success: true, data });
   } catch (err: any) {
@@ -50,7 +53,7 @@ export async function updateCountry(req: Request, res: Response) {
 
 export async function deleteCountry(req: Request, res: Response) {
   try {
-    const { error } = await CountriesService.deleteCountry(req.params.id);
+    const { error } = await CountriesService.deleteCountry(String(req.params.id));
     if (error) throw error;
     res.json({ success: true });
   } catch (err: any) {

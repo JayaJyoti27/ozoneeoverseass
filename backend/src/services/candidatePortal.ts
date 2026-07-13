@@ -111,11 +111,10 @@ export async function getApplication(id: string) {
     status: data.status,
     applied_at: data.applied_at,
     notes: data.notes,
-    job_title: data.job?.title ?? null,
-    country: data.job?.country ?? null,
-    company_name: data.job?.title ?? null, // adjust if you have a real employer/company join
+    job_title: (data.job as any)?.title ?? null,
+    country: (data.job as any)?.country ?? null,
+    company_name: (data.job as any)?.title ?? null,
   };
-
   return { data: flattened, error: null };
 }
 
@@ -141,11 +140,12 @@ export async function getDashboard() {
     "specialty",
     "experience_years",
   ];
+  // what you have now (broken — missing ": 0;")
   const filledCount = profile
-    ? requiredFields.filter((f) => profile[f] !== null && profile[f] !== "").length
+    ? requiredFields.filter((f) => (profile as any)[f] !== null && (profile as any)[f] !== "")
+        .length
     : 0;
   const profileCompletion = Math.round((filledCount / requiredFields.length) * 100);
-
   const { data: applications } = await supabase
     .from("applications")
     .select("id, status, applied_at, job:jobs(title, country)")

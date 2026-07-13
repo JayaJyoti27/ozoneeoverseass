@@ -57,3 +57,40 @@ export async function getAdminDashboard() {
     };
   }
 }
+import * as CandidatePortalService from "./candidatePortal";
+
+export async function getDashboardStats() {
+  try {
+    const stats = await CandidatePortalService.getStats();
+    return { success: true, status: 200, data: stats };
+  } catch (err: any) {
+    return { success: false, status: 500, message: err.message };
+  }
+}
+
+export async function getRecentApplications() {
+  try {
+    const dashboard = await CandidatePortalService.getDashboard();
+    return { success: true, status: 200, data: dashboard.recentApplications };
+  } catch (err: any) {
+    return { success: false, status: 500, message: err.message };
+  }
+}
+
+export async function getApplicationStatus() {
+  try {
+    const stats = await CandidatePortalService.getStats();
+    return { success: true, status: 200, data: stats };
+  } catch (err: any) {
+    return { success: false, status: 500, message: err.message };
+  }
+}
+
+export async function getRecentJobs() {
+  try {
+    const dashboard = await CandidatePortalService.getDashboard();
+    return { success: true, status: 200, data: dashboard.recommendedJobs };
+  } catch (err: any) {
+    return { success: false, status: 500, message: err.message };
+  }
+}
