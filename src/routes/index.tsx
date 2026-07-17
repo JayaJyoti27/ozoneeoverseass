@@ -21,7 +21,7 @@ import {
   Mail,
   Phone,
 } from "lucide-react";
-
+import { Footer } from "@/components/site/footer";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
 import about1 from "@/assets/about-1.jpg";
@@ -1135,67 +1135,3 @@ function CTA() {
 }
 
 /* ---------- 13. footer ---------- */
-
-function Footer() {
-  const cols = {
-    Candidates: ["Browse Jobs", "How to Apply", "Documentation", "Pre-Departure"],
-    Employers: ["Post a Mandate", "Hiring Process", "Industries", "Case Studies"],
-    Company: ["About Ozone", "MEA License", "Careers", "Contact"],
-    Sectors: ["Healthcare", "Engineering", "Hospitality", "Construction"],
-  };
-  return (
-    <footer className="relative bg-navy text-white">
-      <div className="absolute inset-x-0 top-0 -translate-y-px text-navy">
-        <WaveBand className="h-10 w-full" flip />
-      </div>
-
-      <div className="mx-auto max-w-7xl px-6 pt-20 pb-10">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_3fr]">
-          <div>
-            <div className="font-display text-2xl font-bold">
-              Ozone<span className="text-blue-soft">Overseas</span>
-            </div>
-            <p className="mt-4 max-w-sm text-sm text-blue-soft/80">
-              India's MEA-licensed international recruitment partner. Bridging Indian talent with
-              verified GCC employers since 2009.
-            </p>
-            <div className="mt-6 flex gap-3">
-              {["in", "tw", "fb", "ig"].map((s) => (
-                <a
-                  key={s}
-                  href="#"
-                  className="grid h-9 w-9 place-items-center rounded-full bg-white/10 text-xs font-semibold uppercase hover:bg-blue transition"
-                >
-                  {s}
-                </a>
-              ))}
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
-            {Object.entries(cols).map(([k, v]) => (
-              <div key={k}>
-                <div className="text-xs font-semibold uppercase tracking-widest text-blue-soft">
-                  {k}
-                </div>
-                <ul className="mt-4 space-y-2.5 text-sm text-white/80">
-                  {v.map((i) => (
-                    <li key={i}>
-                      <a href="#" className="hover:text-white">
-                        {i}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-14 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6 text-xs text-blue-soft/70">
-          <div>MEA License No. B-0123/MUM/PER/1000+/5/8525/2009 — Government of India.</div>
-          <div>© {new Date().getFullYear()} Ozone Overseas. All rights reserved.</div>
-        </div>
-      </div>
-    </footer>
-  );
-}

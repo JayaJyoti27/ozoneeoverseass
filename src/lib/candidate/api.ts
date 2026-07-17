@@ -1,0 +1,231 @@
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+export const getProfile = async () => {
+  const { data } = await api.get("/candidate/profile");
+  return data;
+};
+
+export const updateProfile = async (payload: any) => {
+  const { data } = await api.put("/candidate/profile", payload);
+  return data;
+};
+
+/* =========================================================
+   JOBS
+========================================================= */
+
+export const getJobs = async (params?: any) => {
+  const { data } = await api.get("/candidate/jobs", { params });
+  return data;
+};
+
+export const getJob = async (jobId: string) => {
+  const { data } = await api.get(`/candidate/jobs/${jobId}`);
+  return data;
+};
+
+export const saveJob = async (jobId: string) => {
+  const { data } = await api.post(`/candidate/jobs/${jobId}/save`);
+  return data;
+};
+
+export const removeSavedJob = async (jobId: string) => {
+  const { data } = await api.delete(`/candidate/jobs/${jobId}/save`);
+  return data;
+};
+
+export const getSavedJobs = async () => {
+  const { data } = await api.get("/candidate/jobs/saved");
+  return data;
+};
+
+export const apply = async (jobId: string) => {
+  const { data } = await api.post(`/candidate/jobs/${jobId}/apply`);
+  return data;
+};
+
+/* =========================================================
+   APPLICATIONS
+========================================================= */
+
+export const getApplications = async () => {
+  const { data } = await api.get("/candidate/applications");
+  return data;
+};
+
+export const getApplication = async (applicationId: string) => {
+  const { data } = await api.get(`/candidate/applications/${applicationId}`);
+  return data;
+};
+
+export const withdrawApplication = async (applicationId: string) => {
+  const { data } = await api.post(`/candidate/applications/${applicationId}/withdraw`);
+  return data;
+};
+
+/* =========================================================
+   DOCUMENTS
+========================================================= */
+
+import type { CandidateDocument } from "./types";
+
+export const getDocuments = async (): Promise<CandidateDocument[]> => {
+  const { data } = await api.get<CandidateDocument[]>("/candidate/documents");
+
+  return data;
+};
+export const uploadDocument = async (formData: FormData) => {
+  const { data } = await api.post("/candidate/documents", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return data;
+};
+
+export const deleteDocument = async (documentId: string) => {
+  const { data } = await api.delete(`/candidate/documents/${documentId}`);
+
+  return data;
+};
+
+/* =========================================================
+   INTERVIEWS
+========================================================= */
+
+export const getInterviews = async () => {
+  const { data } = await api.get("/candidate/interviews");
+  return data;
+};
+
+export const getInterview = async (interviewId: string) => {
+  const { data } = await api.get(`/candidate/interviews/${interviewId}`);
+
+  return data;
+};
+
+/* =========================================================
+   OFFERS
+========================================================= */
+
+export const getOffers = async () => {
+  const { data } = await api.get("/candidate/offers");
+  return data;
+};
+
+export const getOffer = async (offerId: string) => {
+  const { data } = await api.get(`/candidate/offers/${offerId}`);
+  return data;
+};
+
+export const acceptOffer = async (offerId: string) => {
+  const { data } = await api.post(`/candidate/offers/${offerId}/accept`);
+
+  return data;
+};
+
+export const rejectOffer = async (offerId: string, reason?: string) => {
+  const { data } = await api.post(`/candidate/offers/${offerId}/reject`, { reason });
+
+  return data;
+};
+
+/* =========================================================
+   MEDICAL
+========================================================= */
+
+export const getMedicals = async () => {
+  const { data } = await api.get("/candidate/medical");
+  return data;
+};
+
+/* =========================================================
+   VISA
+========================================================= */
+
+export const getVisaStatus = async () => {
+  const { data } = await api.get("/candidate/visa");
+  return data;
+};
+
+/* =========================================================
+   DEPLOYMENT
+========================================================= */
+
+export const getDeployment = async () => {
+  const { data } = await api.get("/candidate/deployment");
+  return data;
+};
+
+/* =========================================================
+   NOTIFICATIONS
+========================================================= */
+
+export const getNotifications = async () => {
+  const { data } = await api.get("/candidate/notifications");
+  return data;
+};
+
+export const markNotificationRead = async (notificationId: string) => {
+  const { data } = await api.patch(`/candidate/notifications/${notificationId}/read`);
+
+  return data;
+};
+export const getProfileCompletion = async () => {
+  const { data } = await api.get("/candidate/profile/completion");
+  return data;
+};
+export const markAllNotificationsRead = async () => {
+  const { data } = await api.patch("/candidate/notifications/read-all");
+
+  return data;
+};
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+import type { CandidateDashboard } from "./types";
+
+export const getDashboard = async (): Promise<CandidateDashboard> => {
+  const { data } = await api.get<CandidateDashboard>("/candidate/dashboard");
+
+  return data;
+};
+export const getTimeline = async (applicationId: string) => {
+  const { data } = await api.get(`/candidate/applications/${applicationId}/timeline`);
+  return data;
+};
+export const replaceDocument = async (id: string, formData: FormData) => {
+  const { data } = await api.put(`/candidate/documents/${id}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return data;
+};
+export default api;

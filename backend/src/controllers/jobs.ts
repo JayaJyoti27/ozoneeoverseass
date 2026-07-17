@@ -1,190 +1,194 @@
 import { Request, Response } from "express";
-import * as JobsService from "../services/jobs";
 import { z } from "zod";
 
-const JobSchema = z.object({
-  title: z.string().min(1),
-  country: z.string().min(1),
-  city: z.string().min(1),
-  sector: z.string().min(1),
-  employer_type: z.string().min(1),
-  salary_min: z.coerce.number().positive(),
-  salary_max: z.coerce.number().positive(),
-  currency: z.string().min(1),
-  experience_required: z.string().min(1),
-  license_required: z.string(),
-  description: z.string().min(1),
-  status: z.enum(["active", "archived", "draft"]).default("active"),
-});
-export async function listJobs(req: Request, res: Response) {
+import * as JobOrderService from "../services/jobs";
+
+import {
+  CreateJobOrderSchema,
+  UpdateJobOrderSchema,
+  UpdateJobOrderStatusSchema,
+} from "../validators/jobOrderSchema";
+
+/*
+|--------------------------------------------------------------------------
+| TEMP IDs
+|--------------------------------------------------------------------------
+| Replace with req.user.id after authentication is implemented.
+*/
+
+const DEMO_EMPLOYER_ID = "00000000-0000-0000-0000-000000000001";
+
+const DEMO_ADMIN_ID = "00000000-0000-0000-0000-000000000002";
+
+/*
+|--------------------------------------------------------------------------
+| CREATE
+|--------------------------------------------------------------------------
+*/
+
+export async function createJobOrder(req: Request, res: Response) {
   try {
-    const country = typeof req.query.country === "string" ? req.query.country : undefined;
+    const parsed = CreateJobOrderSchema.safeParse(req.body);
 
-    const sector = typeof req.query.sector === "string" ? req.query.sector : undefined;
+    if (!parsed.success) {
+      return res.status(400).json({
+        success: false,
+        errors: parsed.error.flatten(),
+      });
+    }
 
-    const search = typeof req.query.search === "string" ? req.query.search : undefined;
-    const sort = typeof req.query.sort === "string" ? req.query.sort : "newest";
-    const city = typeof req.query.city === "string" ? req.query.city : undefined;
+    const data = await JobOrderService.create(DEMO_EMPLOYER_ID, parsed.data);
 
-    const employerType =
-      typeof req.query.employerType === "string" ? req.query.employerType : undefined;
+    return res.status(201).json({
+      success: true,
+      message: "Job Order created successfully.",
+      data,
+    });
+  } catch (err: any) {
+    return res.status(500).json({
+      success: false,
+      message: err.message ?? "Failed to create Job Order.",
+    });
+  }
+}
 
-    const experience = typeof req.query.experience === "string" ? req.query.experience : undefined;
+/*
+|--------------------------------------------------------------------------
+| LIST
+|--------------------------------------------------------------------------
+*/
 
-    const salaryMin = req.query.salaryMin ? Number(req.query.salaryMin) : undefined;
+export async function listJobOrders(req: Request, res: Response) {
+  try {
+    const page = Number(req.query.page ?? 1);
 
-    const salaryMax = req.query.salaryMax ? Number(req.query.salaryMax) : undefined;
+    const limit = Number(req.query.limit ?? 20);
 
-    const page = Number(req.query.page) || 1;
-    const limit = Number(req.query.limit) || 12;
-
-    const { data, error, count } = await JobsService.listJobs({
-      country,
-      city,
-      sector,
-      employerType,
-      experience,
-      salaryMin,
-      salaryMax,
-      search,
+    const data = await JobOrderService.listJobOrders({
       page,
       limit,
-      sort,
+      employerId: req.query.employerId as string,
+      country: req.query.country as string,
+      category: req.query.category as string,
+      status: req.query.status as any,
     });
 
-    if (error) throw error;
+    return res.json({
+      success: true,
+      ...data,
+    });
+  } catch (err: any) {
+    return res.status(500).json({
+      success: false,
+      message: err.message ?? "Unable to fetch Job Orders.",
+    });
+  }
+}
 
-    res.json({
+/*
+|--------------------------------------------------------------------------
+| GET
+|--------------------------------------------------------------------------
+*/
+
+export async function getJobOrder(req: Request, res: Response) {
+  try {
+    const data = await JobOrderService.getJobOrder(String(req.params.id));
+
+    return res.json({
       success: true,
       data,
-      pagination: {
-        page,
-        limit,
-        total: count ?? 0,
-        totalPages: Math.ceil((count ?? 0) / limit),
-      },
     });
   } catch (err: any) {
-    res.status(500).json({
+    return res.status(404).json({
       success: false,
-      message: err.message,
+      message: err.message ?? "Job Order not found.",
     });
   }
 }
 
-export async function getJob(req: Request, res: Response) {
+/*
+|--------------------------------------------------------------------------
+| UPDATE
+|--------------------------------------------------------------------------
+*/
+
+export async function updateJobOrder(req: Request, res: Response) {
   try {
-    const { data, error } = await JobsService.getJob(String(req.params.id));
-
-    if (error || !data) {
-      return res.status(404).json({
-        error: "Job not found",
-      });
-    }
-
-    res.json({ data });
-  } catch (err: any) {
-    res.status(500).json({ error: err.message });
-  }
-}
-
-export async function createJob(req: Request, res: Response) {
-  try {
-    const parsed = JobSchema.safeParse(req.body);
+    const parsed = UpdateJobOrderSchema.safeParse(req.body);
 
     if (!parsed.success) {
       return res.status(400).json({
-        error: parsed.error.flatten(),
+        success: false,
+        errors: parsed.error.flatten(),
       });
     }
 
-    const { data, error } = await JobsService.createJob(parsed.data);
+    const data = await JobOrderService.updateJobOrder(String(req.params.id), parsed.data);
 
-    if (error) throw error;
-
-    res.status(201).json({ data });
+    return res.json({
+      success: true,
+      message: "Job Order updated successfully.",
+      data,
+    });
   } catch (err: any) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({
+      success: false,
+      message: err.message ?? "Unable to update Job Order.",
+    });
   }
 }
 
-export async function updateJob(req: Request, res: Response) {
+/*
+|--------------------------------------------------------------------------
+| UPDATE STATUS
+|--------------------------------------------------------------------------
+*/
+
+export async function updateJobOrderStatus(req: Request, res: Response) {
   try {
-    const parsed = JobSchema.partial().safeParse(req.body);
+    const parsed = UpdateJobOrderStatusSchema.safeParse(req.body);
 
     if (!parsed.success) {
       return res.status(400).json({
-        error: parsed.error.flatten(),
+        success: false,
+        errors: parsed.error.flatten(),
       });
     }
 
-    const { data, error } = await JobsService.updateJob(String(req.params.id), parsed.data);
+    const data = await JobOrderService.updateJobOrder(String(req.params.id), parsed.data);
 
-    if (error) throw error;
-
-    res.json({ data });
-  } catch (err: any) {
-    res.status(500).json({ error: err.message });
-  }
-}
-
-export async function archiveJob(req: Request, res: Response) {
-  try {
-    const { data, error } = await JobsService.archiveJob(String(req.params.id));
-
-    if (error) throw error;
-
-    res.json({ data });
-  } catch (err: any) {
-    res.status(500).json({ error: err.message });
-  }
-}
-export async function getSimilarJobs(req: Request, res: Response) {
-  try {
-    const { data, error } = await JobsService.getSimilarJobs(String(req.params.id));
-
-    if (error) throw error;
-
-    res.json({
+    return res.json({
       success: true,
+      message: "Status updated successfully.",
       data,
     });
   } catch (err: any) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: err.message,
+      message: err.message ?? "Unable to update status.",
     });
   }
 }
-export async function getFeaturedJobs(req: Request, res: Response) {
+
+/*
+|--------------------------------------------------------------------------
+| DELETE
+|--------------------------------------------------------------------------
+*/
+
+export async function deleteJobOrder(req: Request, res: Response) {
   try {
-    const { data, error } = await JobsService.getFeaturedJobs();
+    await JobOrderService.deleteJobOrder(String(req.params.id), DEMO_EMPLOYER_ID);
 
-    if (error) throw error;
-
-    res.json({
+    return res.json({
       success: true,
-      data,
+      message: "Job Order deleted successfully.",
     });
   } catch (err: any) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
-      message: err.message,
-    });
-  }
-}
-export async function getJobStats(req: Request, res: Response) {
-  try {
-    const data = await JobsService.getJobStats();
-
-    res.json({
-      success: true,
-      data,
-    });
-  } catch (err: any) {
-    res.status(500).json({
-      success: false,
-      message: err.message,
+      message: err.message ?? "Unable to delete Job Order.",
     });
   }
 }

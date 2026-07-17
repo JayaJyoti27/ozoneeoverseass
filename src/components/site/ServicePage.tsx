@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Check, ArrowUpRight } from "lucide-react";
+import { ArrowRight, Check, ArrowUpRight, ChevronDown, Building2 } from "lucide-react";
 import { Header } from "./Header";
 import { Footer } from "./footer";
 import { Blob, DotGrid } from "./decor";
+
 export type ServiceData = {
   slug: string;
   serviceName: string;
@@ -28,9 +30,19 @@ export type ServiceData = {
   whoHeading?: string;
   audiences: [Audience, Audience];
 
+  // NEW — Industries Served
+  industriesHeading?: string;
+  industriesSubline?: string;
+  industries?: Industry[];
+
   processHeading: string;
   processSubline: string;
   steps: [Step, Step, Step, Step];
+
+  // NEW — FAQs
+  faqHeading?: string;
+  faqSubline?: string;
+  faqs?: FAQ[];
 
   ctaHeading: string;
   ctaSubline: string;
@@ -48,6 +60,8 @@ type Audience = {
   photo: string;
 };
 type Step = { title: string; desc: string; tag: string };
+type Industry = { title: string; desc: string };
+type FAQ = { q: string; a: string };
 
 const featureCardStyle = (i: number) => {
   switch (i) {
@@ -62,7 +76,74 @@ const featureCardStyle = (i: number) => {
   }
 };
 
+// Fallback content so sections never look empty on services-data.ts entries
+// that haven't been updated with industries/faqs yet.
+const DEFAULT_INDUSTRIES: Industry[] = [
+  {
+    title: "Hospitals & Healthcare Groups",
+    desc: "Multi-specialty and specialty hospitals across the GCC.",
+  },
+  { title: "Nursing Homes & Clinics", desc: "Long-term care and outpatient facilities." },
+  { title: "Government Health Authorities", desc: "MOH-affiliated and public sector facilities." },
+  { title: "Diagnostic & Lab Networks", desc: "Imaging, pathology, and diagnostic chains." },
+  { title: "Home Healthcare Providers", desc: "In-home nursing and care agencies." },
+  { title: "Rehabilitation Centers", desc: "Post-acute and physiotherapy-led facilities." },
+];
+
+const DEFAULT_FAQS: FAQ[] = [
+  {
+    q: "How long does the placement process take?",
+    a: "Typically 6-8 weeks from requirement confirmation to candidate deployment, depending on documentation, licensing, and visa processing timelines.",
+  },
+  {
+    q: "Are candidates pre-screened before submission?",
+    a: "Yes. Every candidate goes through credential verification, skills assessment, and interview rounds before being shortlisted for an employer.",
+  },
+  {
+    q: "Is Ozone Overseas licensed for overseas recruitment?",
+    a: "Yes, we are an MEA-licensed recruitment agency with 15+ years of experience placing healthcare and technical professionals into the GCC.",
+  },
+  {
+    q: "What support is provided after deployment?",
+    a: "We assist with onboarding, documentation follow-up, and remain the point of contact for both employer and candidate post-placement.",
+  },
+];
+
+function FaqItem({ faq, isOpen, onToggle }: { faq: FAQ; isOpen: boolean; onToggle: () => void }) {
+  return (
+    <div className="border-b border-border">
+      <button
+        onClick={onToggle}
+        className="w-full flex items-center justify-between gap-4 py-6 text-left group"
+      >
+        <span className="font-display font-semibold text-lg text-navy group-hover:text-blue transition">
+          {faq.q}
+        </span>
+        <ChevronDown
+          className={`w-5 h-5 shrink-0 text-blue transition-transform duration-300 ${
+            isOpen ? "rotate-180" : ""
+          }`}
+        />
+      </button>
+      <div
+        className={`grid transition-all duration-300 ease-in-out ${
+          isOpen ? "grid-rows-[1fr] opacity-100 pb-6" : "grid-rows-[0fr] opacity-0"
+        }`}
+        style={{ display: "grid" }}
+      >
+        <div className="overflow-hidden">
+          <p className="text-muted-foreground leading-relaxed max-w-2xl">{faq.a}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ServicePage({ data }: { data: ServiceData }) {
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+  const industries = data.industries ?? DEFAULT_INDUSTRIES;
+  const faqs = data.faqs ?? DEFAULT_FAQS;
+
   return (
     <div className="bg-background text-foreground min-h-screen">
       <Header />
@@ -211,7 +292,7 @@ export function ServicePage({ data }: { data: ServiceData }) {
         </div>
       </section>
 
-      {/* WHAT'S INCLUDED */}
+      {/* WHAT'S INCLUDED (Key Benefits) */}
       <section className="relative py-20 md:py-28 overflow-hidden">
         <Blob className="absolute -top-10 -right-16 w-72 h-72 -z-10" style={{ opacity: 0.9 }} />
         <div className="container-ozone relative">
@@ -339,8 +420,44 @@ export function ServicePage({ data }: { data: ServiceData }) {
         </div>
       </section>
 
-      {/* PROCESS */}
+      {/* INDUSTRIES SERVED — NEW */}
       <section className="relative py-20 md:py-28 overflow-hidden">
+        <DotGrid className="absolute top-16 right-8 w-24 h-24 opacity-60" />
+        <div className="container-ozone relative">
+          <div className="max-w-2xl mb-12">
+            <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-blue mb-3">
+              Industries Served
+            </div>
+            <h2 className="font-display font-extrabold text-3xl md:text-5xl text-navy leading-tight">
+              {data.industriesHeading ?? "Where our placements land"}
+            </h2>
+            <p className="mt-4 text-muted-foreground text-lg">
+              {data.industriesSubline ??
+                "Built for the sectors that need verified, ready-to-deploy talent."}
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {industries.map((ind, i) => (
+              <div
+                key={i}
+                className="rounded-2xl border border-border bg-white p-6 hover:border-blue transition shadow-[0_4px_20px_-14px_rgba(11,31,58,0.15)]"
+              >
+                <div className="w-10 h-10 rounded-full bg-sky grid place-items-center">
+                  <Building2 className="w-4.5 h-4.5 text-blue" />
+                </div>
+                <h3 className="mt-4 font-display font-bold text-lg text-navy leading-snug">
+                  {ind.title}
+                </h3>
+                <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{ind.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PROCESS (Recruitment Process) */}
+      <section className="relative py-20 md:py-28 overflow-hidden bg-mist">
         <Blob className="absolute -top-10 -right-16 w-72 h-72 -z-10" style={{ opacity: 0.9 }} />
         <div className="container-ozone relative">
           <div className="max-w-2xl mb-16">
@@ -397,6 +514,37 @@ export function ServicePage({ data }: { data: ServiceData }) {
                   </div>
                 );
               })}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQs — NEW */}
+      <section className="relative py-20 md:py-28 overflow-hidden">
+        <div className="container-ozone relative">
+          <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16">
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.18em] text-blue mb-3">
+                FAQs
+              </div>
+              <h2 className="font-display font-extrabold text-3xl md:text-5xl text-navy leading-tight">
+                {data.faqHeading ?? "Frequently Asked Questions"}
+              </h2>
+              <p className="mt-4 text-muted-foreground text-lg max-w-sm">
+                {data.faqSubline ??
+                  "Everything employers and candidates usually ask before starting."}
+              </p>
+            </div>
+
+            <div>
+              {faqs.map((faq, i) => (
+                <FaqItem
+                  key={i}
+                  faq={faq}
+                  isOpen={openFaq === i}
+                  onToggle={() => setOpenFaq(openFaq === i ? null : i)}
+                />
+              ))}
             </div>
           </div>
         </div>

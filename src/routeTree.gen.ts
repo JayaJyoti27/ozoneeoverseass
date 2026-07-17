@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivacypolicyRouteImport } from './routes/privacypolicy'
 import { Route as EmployersRouteImport } from './routes/employers'
-import { Route as CountriesRouteImport } from './routes/countries'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as HomeRouteImport } from './routes/Home'
@@ -29,52 +28,19 @@ import { Route as ServicesHealthcareRecRouteImport } from './routes/Services/Hea
 import { Route as ServicesGroomingRouteImport } from './routes/Services/Grooming'
 import { Route as ServicesDocumentationRouteImport } from './routes/Services/Documentation'
 import { Route as ServicesDoctorsRouteImport } from './routes/Services/Doctors'
-import { Route as EmployerSettingsRouteImport } from './routes/Employer/settings'
-import { Route as EmployerRequirementsRouteImport } from './routes/Employer/requirements'
-import { Route as EmployerMyCompanyRouteImport } from './routes/Employer/my-company'
-import { Route as EmployerJobsRouteImport } from './routes/Employer/jobs'
-import { Route as EmployerEmployerRouteImport } from './routes/Employer/employer'
-import { Route as EmployerDashboardRouteImport } from './routes/Employer/dashboard'
-import { Route as EmployerCandidateRouteImport } from './routes/Employer/candidate'
-import { Route as EmployerApplicationsRouteImport } from './routes/Employer/applications'
-import { Route as CountriesUKRouteImport } from './routes/Countries/UK'
-import { Route as CountriesUAERouteImport } from './routes/Countries/UAE'
-import { Route as CountriesSingaporeRouteImport } from './routes/Countries/Singapore'
-import { Route as CountriesSaudiArabiaRouteImport } from './routes/Countries/SaudiArabia'
-import { Route as CountriesRussiaRouteImport } from './routes/Countries/Russia'
-import { Route as CountriesQatarRouteImport } from './routes/Countries/Qatar'
-import { Route as CountriesOmanRouteImport } from './routes/Countries/Oman'
-import { Route as CountriesNewZealandRouteImport } from './routes/Countries/New-Zealand'
-import { Route as CountriesMaltaRouteImport } from './routes/Countries/Malta'
-import { Route as CountriesMalaysiaRouteImport } from './routes/Countries/Malaysia'
-import { Route as CountriesKuwaitRouteImport } from './routes/Countries/Kuwait'
-import { Route as CountriesIrelandRouteImport } from './routes/Countries/Ireland'
-import { Route as CountriesGermanyRouteImport } from './routes/Countries/Germany'
-import { Route as CountriesDenmarkRouteImport } from './routes/Countries/Denmark'
-import { Route as CountriesCanadaRouteImport } from './routes/Countries/Canada'
-import { Route as CountriesAustraliaRouteImport } from './routes/Countries/Australia'
-import { Route as CandidatesSavedJobsRouteImport } from './routes/Candidates/saved-jobs'
-import { Route as CandidatesResumeRouteImport } from './routes/Candidates/resume'
+import { Route as CandidatesVisaRouteImport } from './routes/Candidates/visa'
 import { Route as CandidatesProfileRouteImport } from './routes/Candidates/profile'
+import { Route as CandidatesOffersRouteImport } from './routes/Candidates/offers'
 import { Route as CandidatesNotificationsRouteImport } from './routes/Candidates/notifications'
+import { Route as CandidatesMedicalRouteImport } from './routes/Candidates/medical'
 import { Route as CandidatesJobsRouteImport } from './routes/Candidates/jobs'
+import { Route as CandidatesInterviewsRouteImport } from './routes/Candidates/interviews'
+import { Route as CandidatesDocumentsRouteImport } from './routes/Candidates/documents'
+import { Route as CandidatesDeploymentRouteImport } from './routes/Candidates/deployment'
 import { Route as CandidatesDashboardRouteImport } from './routes/Candidates/dashboard'
-import { Route as CandidatesCandidateRouteImport } from './routes/Candidates/candidate'
 import { Route as CandidatesApplicationsRouteImport } from './routes/Candidates/applications'
-import { Route as AdminSettingsRouteImport } from './routes/Admin/settings'
-import { Route as AdminRequirementsRouteImport } from './routes/Admin/requirements'
-import { Route as AdminJobsRouteImport } from './routes/Admin/jobs'
-import { Route as AdminEmployerRouteImport } from './routes/Admin/employer'
-import { Route as AdminDashboardRouteImport } from './routes/Admin/dashboard'
-import { Route as AdminCountriesRouteImport } from './routes/Admin/countries'
-import { Route as AdminCandidatesRouteImport } from './routes/Admin/candidates'
-import { Route as AdminApplicationsRouteImport } from './routes/Admin/applications'
 import { Route as CandidatesJobsIdRouteImport } from './routes/Candidates/jobs.$id'
 import { Route as CandidatesApplicationsIdRouteImport } from './routes/Candidates/applications.$id'
-import { Route as AdminJobIdRouteImport } from './routes/Admin/job.$id'
-import { Route as AdminEmployerIdRouteImport } from './routes/Admin/employer.$id'
-import { Route as AdminCandidateIdRouteImport } from './routes/Admin/candidate.$id'
-import { Route as AdminApplicationIdRouteImport } from './routes/Admin/application.$id'
 
 const PrivacypolicyRoute = PrivacypolicyRouteImport.update({
   id: '/privacypolicy',
@@ -84,11 +50,6 @@ const PrivacypolicyRoute = PrivacypolicyRouteImport.update({
 const EmployersRoute = EmployersRouteImport.update({
   id: '/employers',
   path: '/employers',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesRoute = CountriesRouteImport.update({
-  id: '/countries',
-  path: '/countries',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -177,134 +138,9 @@ const ServicesDoctorsRoute = ServicesDoctorsRouteImport.update({
   path: '/Services/Doctors',
   getParentRoute: () => rootRouteImport,
 } as any)
-const EmployerSettingsRoute = EmployerSettingsRouteImport.update({
-  id: '/Employer/settings',
-  path: '/Employer/settings',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmployerRequirementsRoute = EmployerRequirementsRouteImport.update({
-  id: '/Employer/requirements',
-  path: '/Employer/requirements',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmployerMyCompanyRoute = EmployerMyCompanyRouteImport.update({
-  id: '/Employer/my-company',
-  path: '/Employer/my-company',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmployerJobsRoute = EmployerJobsRouteImport.update({
-  id: '/Employer/jobs',
-  path: '/Employer/jobs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmployerEmployerRoute = EmployerEmployerRouteImport.update({
-  id: '/Employer/employer',
-  path: '/Employer/employer',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmployerDashboardRoute = EmployerDashboardRouteImport.update({
-  id: '/Employer/dashboard',
-  path: '/Employer/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmployerCandidateRoute = EmployerCandidateRouteImport.update({
-  id: '/Employer/candidate',
-  path: '/Employer/candidate',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmployerApplicationsRoute = EmployerApplicationsRouteImport.update({
-  id: '/Employer/applications',
-  path: '/Employer/applications',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesUKRoute = CountriesUKRouteImport.update({
-  id: '/Countries/UK',
-  path: '/Countries/UK',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesUAERoute = CountriesUAERouteImport.update({
-  id: '/Countries/UAE',
-  path: '/Countries/UAE',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesSingaporeRoute = CountriesSingaporeRouteImport.update({
-  id: '/Countries/Singapore',
-  path: '/Countries/Singapore',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesSaudiArabiaRoute = CountriesSaudiArabiaRouteImport.update({
-  id: '/Countries/SaudiArabia',
-  path: '/Countries/SaudiArabia',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesRussiaRoute = CountriesRussiaRouteImport.update({
-  id: '/Countries/Russia',
-  path: '/Countries/Russia',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesQatarRoute = CountriesQatarRouteImport.update({
-  id: '/Countries/Qatar',
-  path: '/Countries/Qatar',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesOmanRoute = CountriesOmanRouteImport.update({
-  id: '/Countries/Oman',
-  path: '/Countries/Oman',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesNewZealandRoute = CountriesNewZealandRouteImport.update({
-  id: '/Countries/New-Zealand',
-  path: '/Countries/New-Zealand',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesMaltaRoute = CountriesMaltaRouteImport.update({
-  id: '/Countries/Malta',
-  path: '/Countries/Malta',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesMalaysiaRoute = CountriesMalaysiaRouteImport.update({
-  id: '/Countries/Malaysia',
-  path: '/Countries/Malaysia',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesKuwaitRoute = CountriesKuwaitRouteImport.update({
-  id: '/Countries/Kuwait',
-  path: '/Countries/Kuwait',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesIrelandRoute = CountriesIrelandRouteImport.update({
-  id: '/Countries/Ireland',
-  path: '/Countries/Ireland',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesGermanyRoute = CountriesGermanyRouteImport.update({
-  id: '/Countries/Germany',
-  path: '/Countries/Germany',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesDenmarkRoute = CountriesDenmarkRouteImport.update({
-  id: '/Countries/Denmark',
-  path: '/Countries/Denmark',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesCanadaRoute = CountriesCanadaRouteImport.update({
-  id: '/Countries/Canada',
-  path: '/Countries/Canada',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CountriesAustraliaRoute = CountriesAustraliaRouteImport.update({
-  id: '/Countries/Australia',
-  path: '/Countries/Australia',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CandidatesSavedJobsRoute = CandidatesSavedJobsRouteImport.update({
-  id: '/Candidates/saved-jobs',
-  path: '/Candidates/saved-jobs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CandidatesResumeRoute = CandidatesResumeRouteImport.update({
-  id: '/Candidates/resume',
-  path: '/Candidates/resume',
+const CandidatesVisaRoute = CandidatesVisaRouteImport.update({
+  id: '/Candidates/visa',
+  path: '/Candidates/visa',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CandidatesProfileRoute = CandidatesProfileRouteImport.update({
@@ -312,9 +148,19 @@ const CandidatesProfileRoute = CandidatesProfileRouteImport.update({
   path: '/Candidates/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CandidatesOffersRoute = CandidatesOffersRouteImport.update({
+  id: '/Candidates/offers',
+  path: '/Candidates/offers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CandidatesNotificationsRoute = CandidatesNotificationsRouteImport.update({
   id: '/Candidates/notifications',
   path: '/Candidates/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CandidatesMedicalRoute = CandidatesMedicalRouteImport.update({
+  id: '/Candidates/medical',
+  path: '/Candidates/medical',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CandidatesJobsRoute = CandidatesJobsRouteImport.update({
@@ -322,59 +168,29 @@ const CandidatesJobsRoute = CandidatesJobsRouteImport.update({
   path: '/Candidates/jobs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CandidatesInterviewsRoute = CandidatesInterviewsRouteImport.update({
+  id: '/Candidates/interviews',
+  path: '/Candidates/interviews',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CandidatesDocumentsRoute = CandidatesDocumentsRouteImport.update({
+  id: '/Candidates/documents',
+  path: '/Candidates/documents',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CandidatesDeploymentRoute = CandidatesDeploymentRouteImport.update({
+  id: '/Candidates/deployment',
+  path: '/Candidates/deployment',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CandidatesDashboardRoute = CandidatesDashboardRouteImport.update({
   id: '/Candidates/dashboard',
   path: '/Candidates/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CandidatesCandidateRoute = CandidatesCandidateRouteImport.update({
-  id: '/Candidates/candidate',
-  path: '/Candidates/candidate',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CandidatesApplicationsRoute = CandidatesApplicationsRouteImport.update({
   id: '/Candidates/applications',
   path: '/Candidates/applications',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminSettingsRoute = AdminSettingsRouteImport.update({
-  id: '/Admin/settings',
-  path: '/Admin/settings',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRequirementsRoute = AdminRequirementsRouteImport.update({
-  id: '/Admin/requirements',
-  path: '/Admin/requirements',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminJobsRoute = AdminJobsRouteImport.update({
-  id: '/Admin/jobs',
-  path: '/Admin/jobs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminEmployerRoute = AdminEmployerRouteImport.update({
-  id: '/Admin/employer',
-  path: '/Admin/employer',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminDashboardRoute = AdminDashboardRouteImport.update({
-  id: '/Admin/dashboard',
-  path: '/Admin/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminCountriesRoute = AdminCountriesRouteImport.update({
-  id: '/Admin/countries',
-  path: '/Admin/countries',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminCandidatesRoute = AdminCandidatesRouteImport.update({
-  id: '/Admin/candidates',
-  path: '/Admin/candidates',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminApplicationsRoute = AdminApplicationsRouteImport.update({
-  id: '/Admin/applications',
-  path: '/Admin/applications',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CandidatesJobsIdRoute = CandidatesJobsIdRouteImport.update({
@@ -388,75 +204,25 @@ const CandidatesApplicationsIdRoute =
     path: '/$id',
     getParentRoute: () => CandidatesApplicationsRoute,
   } as any)
-const AdminJobIdRoute = AdminJobIdRouteImport.update({
-  id: '/Admin/job/$id',
-  path: '/Admin/job/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminEmployerIdRoute = AdminEmployerIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AdminEmployerRoute,
-} as any)
-const AdminCandidateIdRoute = AdminCandidateIdRouteImport.update({
-  id: '/Admin/candidate/$id',
-  path: '/Admin/candidate/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminApplicationIdRoute = AdminApplicationIdRouteImport.update({
-  id: '/Admin/application/$id',
-  path: '/Admin/application/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/Home': typeof HomeRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/countries': typeof CountriesRoute
   '/employers': typeof EmployersRoute
   '/privacypolicy': typeof PrivacypolicyRoute
-  '/Admin/applications': typeof AdminApplicationsRoute
-  '/Admin/candidates': typeof AdminCandidatesRoute
-  '/Admin/countries': typeof AdminCountriesRoute
-  '/Admin/dashboard': typeof AdminDashboardRoute
-  '/Admin/employer': typeof AdminEmployerRouteWithChildren
-  '/Admin/jobs': typeof AdminJobsRoute
-  '/Admin/requirements': typeof AdminRequirementsRoute
-  '/Admin/settings': typeof AdminSettingsRoute
   '/Candidates/applications': typeof CandidatesApplicationsRouteWithChildren
-  '/Candidates/candidate': typeof CandidatesCandidateRoute
   '/Candidates/dashboard': typeof CandidatesDashboardRoute
+  '/Candidates/deployment': typeof CandidatesDeploymentRoute
+  '/Candidates/documents': typeof CandidatesDocumentsRoute
+  '/Candidates/interviews': typeof CandidatesInterviewsRoute
   '/Candidates/jobs': typeof CandidatesJobsRouteWithChildren
+  '/Candidates/medical': typeof CandidatesMedicalRoute
   '/Candidates/notifications': typeof CandidatesNotificationsRoute
+  '/Candidates/offers': typeof CandidatesOffersRoute
   '/Candidates/profile': typeof CandidatesProfileRoute
-  '/Candidates/resume': typeof CandidatesResumeRoute
-  '/Candidates/saved-jobs': typeof CandidatesSavedJobsRoute
-  '/Countries/Australia': typeof CountriesAustraliaRoute
-  '/Countries/Canada': typeof CountriesCanadaRoute
-  '/Countries/Denmark': typeof CountriesDenmarkRoute
-  '/Countries/Germany': typeof CountriesGermanyRoute
-  '/Countries/Ireland': typeof CountriesIrelandRoute
-  '/Countries/Kuwait': typeof CountriesKuwaitRoute
-  '/Countries/Malaysia': typeof CountriesMalaysiaRoute
-  '/Countries/Malta': typeof CountriesMaltaRoute
-  '/Countries/New-Zealand': typeof CountriesNewZealandRoute
-  '/Countries/Oman': typeof CountriesOmanRoute
-  '/Countries/Qatar': typeof CountriesQatarRoute
-  '/Countries/Russia': typeof CountriesRussiaRoute
-  '/Countries/SaudiArabia': typeof CountriesSaudiArabiaRoute
-  '/Countries/Singapore': typeof CountriesSingaporeRoute
-  '/Countries/UAE': typeof CountriesUAERoute
-  '/Countries/UK': typeof CountriesUKRoute
-  '/Employer/applications': typeof EmployerApplicationsRoute
-  '/Employer/candidate': typeof EmployerCandidateRoute
-  '/Employer/dashboard': typeof EmployerDashboardRoute
-  '/Employer/employer': typeof EmployerEmployerRoute
-  '/Employer/jobs': typeof EmployerJobsRoute
-  '/Employer/my-company': typeof EmployerMyCompanyRoute
-  '/Employer/requirements': typeof EmployerRequirementsRoute
-  '/Employer/settings': typeof EmployerSettingsRoute
+  '/Candidates/visa': typeof CandidatesVisaRoute
   '/Services/Doctors': typeof ServicesDoctorsRoute
   '/Services/Documentation': typeof ServicesDocumentationRoute
   '/Services/Grooming': typeof ServicesGroomingRoute
@@ -470,10 +236,6 @@ export interface FileRoutesByFullPath {
   '/Services/Training': typeof ServicesTrainingRoute
   '/Services/Visa': typeof ServicesVisaRoute
   '/Services/': typeof ServicesIndexRoute
-  '/Admin/application/$id': typeof AdminApplicationIdRoute
-  '/Admin/candidate/$id': typeof AdminCandidateIdRoute
-  '/Admin/employer/$id': typeof AdminEmployerIdRoute
-  '/Admin/job/$id': typeof AdminJobIdRoute
   '/Candidates/applications/$id': typeof CandidatesApplicationsIdRoute
   '/Candidates/jobs/$id': typeof CandidatesJobsIdRoute
 }
@@ -482,49 +244,19 @@ export interface FileRoutesByTo {
   '/Home': typeof HomeRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/countries': typeof CountriesRoute
   '/employers': typeof EmployersRoute
   '/privacypolicy': typeof PrivacypolicyRoute
-  '/Admin/applications': typeof AdminApplicationsRoute
-  '/Admin/candidates': typeof AdminCandidatesRoute
-  '/Admin/countries': typeof AdminCountriesRoute
-  '/Admin/dashboard': typeof AdminDashboardRoute
-  '/Admin/employer': typeof AdminEmployerRouteWithChildren
-  '/Admin/jobs': typeof AdminJobsRoute
-  '/Admin/requirements': typeof AdminRequirementsRoute
-  '/Admin/settings': typeof AdminSettingsRoute
   '/Candidates/applications': typeof CandidatesApplicationsRouteWithChildren
-  '/Candidates/candidate': typeof CandidatesCandidateRoute
   '/Candidates/dashboard': typeof CandidatesDashboardRoute
+  '/Candidates/deployment': typeof CandidatesDeploymentRoute
+  '/Candidates/documents': typeof CandidatesDocumentsRoute
+  '/Candidates/interviews': typeof CandidatesInterviewsRoute
   '/Candidates/jobs': typeof CandidatesJobsRouteWithChildren
+  '/Candidates/medical': typeof CandidatesMedicalRoute
   '/Candidates/notifications': typeof CandidatesNotificationsRoute
+  '/Candidates/offers': typeof CandidatesOffersRoute
   '/Candidates/profile': typeof CandidatesProfileRoute
-  '/Candidates/resume': typeof CandidatesResumeRoute
-  '/Candidates/saved-jobs': typeof CandidatesSavedJobsRoute
-  '/Countries/Australia': typeof CountriesAustraliaRoute
-  '/Countries/Canada': typeof CountriesCanadaRoute
-  '/Countries/Denmark': typeof CountriesDenmarkRoute
-  '/Countries/Germany': typeof CountriesGermanyRoute
-  '/Countries/Ireland': typeof CountriesIrelandRoute
-  '/Countries/Kuwait': typeof CountriesKuwaitRoute
-  '/Countries/Malaysia': typeof CountriesMalaysiaRoute
-  '/Countries/Malta': typeof CountriesMaltaRoute
-  '/Countries/New-Zealand': typeof CountriesNewZealandRoute
-  '/Countries/Oman': typeof CountriesOmanRoute
-  '/Countries/Qatar': typeof CountriesQatarRoute
-  '/Countries/Russia': typeof CountriesRussiaRoute
-  '/Countries/SaudiArabia': typeof CountriesSaudiArabiaRoute
-  '/Countries/Singapore': typeof CountriesSingaporeRoute
-  '/Countries/UAE': typeof CountriesUAERoute
-  '/Countries/UK': typeof CountriesUKRoute
-  '/Employer/applications': typeof EmployerApplicationsRoute
-  '/Employer/candidate': typeof EmployerCandidateRoute
-  '/Employer/dashboard': typeof EmployerDashboardRoute
-  '/Employer/employer': typeof EmployerEmployerRoute
-  '/Employer/jobs': typeof EmployerJobsRoute
-  '/Employer/my-company': typeof EmployerMyCompanyRoute
-  '/Employer/requirements': typeof EmployerRequirementsRoute
-  '/Employer/settings': typeof EmployerSettingsRoute
+  '/Candidates/visa': typeof CandidatesVisaRoute
   '/Services/Doctors': typeof ServicesDoctorsRoute
   '/Services/Documentation': typeof ServicesDocumentationRoute
   '/Services/Grooming': typeof ServicesGroomingRoute
@@ -538,10 +270,6 @@ export interface FileRoutesByTo {
   '/Services/Training': typeof ServicesTrainingRoute
   '/Services/Visa': typeof ServicesVisaRoute
   '/Services': typeof ServicesIndexRoute
-  '/Admin/application/$id': typeof AdminApplicationIdRoute
-  '/Admin/candidate/$id': typeof AdminCandidateIdRoute
-  '/Admin/employer/$id': typeof AdminEmployerIdRoute
-  '/Admin/job/$id': typeof AdminJobIdRoute
   '/Candidates/applications/$id': typeof CandidatesApplicationsIdRoute
   '/Candidates/jobs/$id': typeof CandidatesJobsIdRoute
 }
@@ -551,49 +279,19 @@ export interface FileRoutesById {
   '/Home': typeof HomeRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/countries': typeof CountriesRoute
   '/employers': typeof EmployersRoute
   '/privacypolicy': typeof PrivacypolicyRoute
-  '/Admin/applications': typeof AdminApplicationsRoute
-  '/Admin/candidates': typeof AdminCandidatesRoute
-  '/Admin/countries': typeof AdminCountriesRoute
-  '/Admin/dashboard': typeof AdminDashboardRoute
-  '/Admin/employer': typeof AdminEmployerRouteWithChildren
-  '/Admin/jobs': typeof AdminJobsRoute
-  '/Admin/requirements': typeof AdminRequirementsRoute
-  '/Admin/settings': typeof AdminSettingsRoute
   '/Candidates/applications': typeof CandidatesApplicationsRouteWithChildren
-  '/Candidates/candidate': typeof CandidatesCandidateRoute
   '/Candidates/dashboard': typeof CandidatesDashboardRoute
+  '/Candidates/deployment': typeof CandidatesDeploymentRoute
+  '/Candidates/documents': typeof CandidatesDocumentsRoute
+  '/Candidates/interviews': typeof CandidatesInterviewsRoute
   '/Candidates/jobs': typeof CandidatesJobsRouteWithChildren
+  '/Candidates/medical': typeof CandidatesMedicalRoute
   '/Candidates/notifications': typeof CandidatesNotificationsRoute
+  '/Candidates/offers': typeof CandidatesOffersRoute
   '/Candidates/profile': typeof CandidatesProfileRoute
-  '/Candidates/resume': typeof CandidatesResumeRoute
-  '/Candidates/saved-jobs': typeof CandidatesSavedJobsRoute
-  '/Countries/Australia': typeof CountriesAustraliaRoute
-  '/Countries/Canada': typeof CountriesCanadaRoute
-  '/Countries/Denmark': typeof CountriesDenmarkRoute
-  '/Countries/Germany': typeof CountriesGermanyRoute
-  '/Countries/Ireland': typeof CountriesIrelandRoute
-  '/Countries/Kuwait': typeof CountriesKuwaitRoute
-  '/Countries/Malaysia': typeof CountriesMalaysiaRoute
-  '/Countries/Malta': typeof CountriesMaltaRoute
-  '/Countries/New-Zealand': typeof CountriesNewZealandRoute
-  '/Countries/Oman': typeof CountriesOmanRoute
-  '/Countries/Qatar': typeof CountriesQatarRoute
-  '/Countries/Russia': typeof CountriesRussiaRoute
-  '/Countries/SaudiArabia': typeof CountriesSaudiArabiaRoute
-  '/Countries/Singapore': typeof CountriesSingaporeRoute
-  '/Countries/UAE': typeof CountriesUAERoute
-  '/Countries/UK': typeof CountriesUKRoute
-  '/Employer/applications': typeof EmployerApplicationsRoute
-  '/Employer/candidate': typeof EmployerCandidateRoute
-  '/Employer/dashboard': typeof EmployerDashboardRoute
-  '/Employer/employer': typeof EmployerEmployerRoute
-  '/Employer/jobs': typeof EmployerJobsRoute
-  '/Employer/my-company': typeof EmployerMyCompanyRoute
-  '/Employer/requirements': typeof EmployerRequirementsRoute
-  '/Employer/settings': typeof EmployerSettingsRoute
+  '/Candidates/visa': typeof CandidatesVisaRoute
   '/Services/Doctors': typeof ServicesDoctorsRoute
   '/Services/Documentation': typeof ServicesDocumentationRoute
   '/Services/Grooming': typeof ServicesGroomingRoute
@@ -607,10 +305,6 @@ export interface FileRoutesById {
   '/Services/Training': typeof ServicesTrainingRoute
   '/Services/Visa': typeof ServicesVisaRoute
   '/Services/': typeof ServicesIndexRoute
-  '/Admin/application/$id': typeof AdminApplicationIdRoute
-  '/Admin/candidate/$id': typeof AdminCandidateIdRoute
-  '/Admin/employer/$id': typeof AdminEmployerIdRoute
-  '/Admin/job/$id': typeof AdminJobIdRoute
   '/Candidates/applications/$id': typeof CandidatesApplicationsIdRoute
   '/Candidates/jobs/$id': typeof CandidatesJobsIdRoute
 }
@@ -621,49 +315,19 @@ export interface FileRouteTypes {
     | '/Home'
     | '/about'
     | '/contact'
-    | '/countries'
     | '/employers'
     | '/privacypolicy'
-    | '/Admin/applications'
-    | '/Admin/candidates'
-    | '/Admin/countries'
-    | '/Admin/dashboard'
-    | '/Admin/employer'
-    | '/Admin/jobs'
-    | '/Admin/requirements'
-    | '/Admin/settings'
     | '/Candidates/applications'
-    | '/Candidates/candidate'
     | '/Candidates/dashboard'
+    | '/Candidates/deployment'
+    | '/Candidates/documents'
+    | '/Candidates/interviews'
     | '/Candidates/jobs'
+    | '/Candidates/medical'
     | '/Candidates/notifications'
+    | '/Candidates/offers'
     | '/Candidates/profile'
-    | '/Candidates/resume'
-    | '/Candidates/saved-jobs'
-    | '/Countries/Australia'
-    | '/Countries/Canada'
-    | '/Countries/Denmark'
-    | '/Countries/Germany'
-    | '/Countries/Ireland'
-    | '/Countries/Kuwait'
-    | '/Countries/Malaysia'
-    | '/Countries/Malta'
-    | '/Countries/New-Zealand'
-    | '/Countries/Oman'
-    | '/Countries/Qatar'
-    | '/Countries/Russia'
-    | '/Countries/SaudiArabia'
-    | '/Countries/Singapore'
-    | '/Countries/UAE'
-    | '/Countries/UK'
-    | '/Employer/applications'
-    | '/Employer/candidate'
-    | '/Employer/dashboard'
-    | '/Employer/employer'
-    | '/Employer/jobs'
-    | '/Employer/my-company'
-    | '/Employer/requirements'
-    | '/Employer/settings'
+    | '/Candidates/visa'
     | '/Services/Doctors'
     | '/Services/Documentation'
     | '/Services/Grooming'
@@ -677,10 +341,6 @@ export interface FileRouteTypes {
     | '/Services/Training'
     | '/Services/Visa'
     | '/Services/'
-    | '/Admin/application/$id'
-    | '/Admin/candidate/$id'
-    | '/Admin/employer/$id'
-    | '/Admin/job/$id'
     | '/Candidates/applications/$id'
     | '/Candidates/jobs/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -689,49 +349,19 @@ export interface FileRouteTypes {
     | '/Home'
     | '/about'
     | '/contact'
-    | '/countries'
     | '/employers'
     | '/privacypolicy'
-    | '/Admin/applications'
-    | '/Admin/candidates'
-    | '/Admin/countries'
-    | '/Admin/dashboard'
-    | '/Admin/employer'
-    | '/Admin/jobs'
-    | '/Admin/requirements'
-    | '/Admin/settings'
     | '/Candidates/applications'
-    | '/Candidates/candidate'
     | '/Candidates/dashboard'
+    | '/Candidates/deployment'
+    | '/Candidates/documents'
+    | '/Candidates/interviews'
     | '/Candidates/jobs'
+    | '/Candidates/medical'
     | '/Candidates/notifications'
+    | '/Candidates/offers'
     | '/Candidates/profile'
-    | '/Candidates/resume'
-    | '/Candidates/saved-jobs'
-    | '/Countries/Australia'
-    | '/Countries/Canada'
-    | '/Countries/Denmark'
-    | '/Countries/Germany'
-    | '/Countries/Ireland'
-    | '/Countries/Kuwait'
-    | '/Countries/Malaysia'
-    | '/Countries/Malta'
-    | '/Countries/New-Zealand'
-    | '/Countries/Oman'
-    | '/Countries/Qatar'
-    | '/Countries/Russia'
-    | '/Countries/SaudiArabia'
-    | '/Countries/Singapore'
-    | '/Countries/UAE'
-    | '/Countries/UK'
-    | '/Employer/applications'
-    | '/Employer/candidate'
-    | '/Employer/dashboard'
-    | '/Employer/employer'
-    | '/Employer/jobs'
-    | '/Employer/my-company'
-    | '/Employer/requirements'
-    | '/Employer/settings'
+    | '/Candidates/visa'
     | '/Services/Doctors'
     | '/Services/Documentation'
     | '/Services/Grooming'
@@ -745,10 +375,6 @@ export interface FileRouteTypes {
     | '/Services/Training'
     | '/Services/Visa'
     | '/Services'
-    | '/Admin/application/$id'
-    | '/Admin/candidate/$id'
-    | '/Admin/employer/$id'
-    | '/Admin/job/$id'
     | '/Candidates/applications/$id'
     | '/Candidates/jobs/$id'
   id:
@@ -757,49 +383,19 @@ export interface FileRouteTypes {
     | '/Home'
     | '/about'
     | '/contact'
-    | '/countries'
     | '/employers'
     | '/privacypolicy'
-    | '/Admin/applications'
-    | '/Admin/candidates'
-    | '/Admin/countries'
-    | '/Admin/dashboard'
-    | '/Admin/employer'
-    | '/Admin/jobs'
-    | '/Admin/requirements'
-    | '/Admin/settings'
     | '/Candidates/applications'
-    | '/Candidates/candidate'
     | '/Candidates/dashboard'
+    | '/Candidates/deployment'
+    | '/Candidates/documents'
+    | '/Candidates/interviews'
     | '/Candidates/jobs'
+    | '/Candidates/medical'
     | '/Candidates/notifications'
+    | '/Candidates/offers'
     | '/Candidates/profile'
-    | '/Candidates/resume'
-    | '/Candidates/saved-jobs'
-    | '/Countries/Australia'
-    | '/Countries/Canada'
-    | '/Countries/Denmark'
-    | '/Countries/Germany'
-    | '/Countries/Ireland'
-    | '/Countries/Kuwait'
-    | '/Countries/Malaysia'
-    | '/Countries/Malta'
-    | '/Countries/New-Zealand'
-    | '/Countries/Oman'
-    | '/Countries/Qatar'
-    | '/Countries/Russia'
-    | '/Countries/SaudiArabia'
-    | '/Countries/Singapore'
-    | '/Countries/UAE'
-    | '/Countries/UK'
-    | '/Employer/applications'
-    | '/Employer/candidate'
-    | '/Employer/dashboard'
-    | '/Employer/employer'
-    | '/Employer/jobs'
-    | '/Employer/my-company'
-    | '/Employer/requirements'
-    | '/Employer/settings'
+    | '/Candidates/visa'
     | '/Services/Doctors'
     | '/Services/Documentation'
     | '/Services/Grooming'
@@ -813,10 +409,6 @@ export interface FileRouteTypes {
     | '/Services/Training'
     | '/Services/Visa'
     | '/Services/'
-    | '/Admin/application/$id'
-    | '/Admin/candidate/$id'
-    | '/Admin/employer/$id'
-    | '/Admin/job/$id'
     | '/Candidates/applications/$id'
     | '/Candidates/jobs/$id'
   fileRoutesById: FileRoutesById
@@ -826,49 +418,19 @@ export interface RootRouteChildren {
   HomeRoute: typeof HomeRoute
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
-  CountriesRoute: typeof CountriesRoute
   EmployersRoute: typeof EmployersRoute
   PrivacypolicyRoute: typeof PrivacypolicyRoute
-  AdminApplicationsRoute: typeof AdminApplicationsRoute
-  AdminCandidatesRoute: typeof AdminCandidatesRoute
-  AdminCountriesRoute: typeof AdminCountriesRoute
-  AdminDashboardRoute: typeof AdminDashboardRoute
-  AdminEmployerRoute: typeof AdminEmployerRouteWithChildren
-  AdminJobsRoute: typeof AdminJobsRoute
-  AdminRequirementsRoute: typeof AdminRequirementsRoute
-  AdminSettingsRoute: typeof AdminSettingsRoute
   CandidatesApplicationsRoute: typeof CandidatesApplicationsRouteWithChildren
-  CandidatesCandidateRoute: typeof CandidatesCandidateRoute
   CandidatesDashboardRoute: typeof CandidatesDashboardRoute
+  CandidatesDeploymentRoute: typeof CandidatesDeploymentRoute
+  CandidatesDocumentsRoute: typeof CandidatesDocumentsRoute
+  CandidatesInterviewsRoute: typeof CandidatesInterviewsRoute
   CandidatesJobsRoute: typeof CandidatesJobsRouteWithChildren
+  CandidatesMedicalRoute: typeof CandidatesMedicalRoute
   CandidatesNotificationsRoute: typeof CandidatesNotificationsRoute
+  CandidatesOffersRoute: typeof CandidatesOffersRoute
   CandidatesProfileRoute: typeof CandidatesProfileRoute
-  CandidatesResumeRoute: typeof CandidatesResumeRoute
-  CandidatesSavedJobsRoute: typeof CandidatesSavedJobsRoute
-  CountriesAustraliaRoute: typeof CountriesAustraliaRoute
-  CountriesCanadaRoute: typeof CountriesCanadaRoute
-  CountriesDenmarkRoute: typeof CountriesDenmarkRoute
-  CountriesGermanyRoute: typeof CountriesGermanyRoute
-  CountriesIrelandRoute: typeof CountriesIrelandRoute
-  CountriesKuwaitRoute: typeof CountriesKuwaitRoute
-  CountriesMalaysiaRoute: typeof CountriesMalaysiaRoute
-  CountriesMaltaRoute: typeof CountriesMaltaRoute
-  CountriesNewZealandRoute: typeof CountriesNewZealandRoute
-  CountriesOmanRoute: typeof CountriesOmanRoute
-  CountriesQatarRoute: typeof CountriesQatarRoute
-  CountriesRussiaRoute: typeof CountriesRussiaRoute
-  CountriesSaudiArabiaRoute: typeof CountriesSaudiArabiaRoute
-  CountriesSingaporeRoute: typeof CountriesSingaporeRoute
-  CountriesUAERoute: typeof CountriesUAERoute
-  CountriesUKRoute: typeof CountriesUKRoute
-  EmployerApplicationsRoute: typeof EmployerApplicationsRoute
-  EmployerCandidateRoute: typeof EmployerCandidateRoute
-  EmployerDashboardRoute: typeof EmployerDashboardRoute
-  EmployerEmployerRoute: typeof EmployerEmployerRoute
-  EmployerJobsRoute: typeof EmployerJobsRoute
-  EmployerMyCompanyRoute: typeof EmployerMyCompanyRoute
-  EmployerRequirementsRoute: typeof EmployerRequirementsRoute
-  EmployerSettingsRoute: typeof EmployerSettingsRoute
+  CandidatesVisaRoute: typeof CandidatesVisaRoute
   ServicesDoctorsRoute: typeof ServicesDoctorsRoute
   ServicesDocumentationRoute: typeof ServicesDocumentationRoute
   ServicesGroomingRoute: typeof ServicesGroomingRoute
@@ -882,9 +444,6 @@ export interface RootRouteChildren {
   ServicesTrainingRoute: typeof ServicesTrainingRoute
   ServicesVisaRoute: typeof ServicesVisaRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
-  AdminApplicationIdRoute: typeof AdminApplicationIdRoute
-  AdminCandidateIdRoute: typeof AdminCandidateIdRoute
-  AdminJobIdRoute: typeof AdminJobIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -901,13 +460,6 @@ declare module '@tanstack/react-router' {
       path: '/employers'
       fullPath: '/employers'
       preLoaderRoute: typeof EmployersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/countries': {
-      id: '/countries'
-      path: '/countries'
-      fullPath: '/countries'
-      preLoaderRoute: typeof CountriesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -1029,186 +581,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesDoctorsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/Employer/settings': {
-      id: '/Employer/settings'
-      path: '/Employer/settings'
-      fullPath: '/Employer/settings'
-      preLoaderRoute: typeof EmployerSettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Employer/requirements': {
-      id: '/Employer/requirements'
-      path: '/Employer/requirements'
-      fullPath: '/Employer/requirements'
-      preLoaderRoute: typeof EmployerRequirementsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Employer/my-company': {
-      id: '/Employer/my-company'
-      path: '/Employer/my-company'
-      fullPath: '/Employer/my-company'
-      preLoaderRoute: typeof EmployerMyCompanyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Employer/jobs': {
-      id: '/Employer/jobs'
-      path: '/Employer/jobs'
-      fullPath: '/Employer/jobs'
-      preLoaderRoute: typeof EmployerJobsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Employer/employer': {
-      id: '/Employer/employer'
-      path: '/Employer/employer'
-      fullPath: '/Employer/employer'
-      preLoaderRoute: typeof EmployerEmployerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Employer/dashboard': {
-      id: '/Employer/dashboard'
-      path: '/Employer/dashboard'
-      fullPath: '/Employer/dashboard'
-      preLoaderRoute: typeof EmployerDashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Employer/candidate': {
-      id: '/Employer/candidate'
-      path: '/Employer/candidate'
-      fullPath: '/Employer/candidate'
-      preLoaderRoute: typeof EmployerCandidateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Employer/applications': {
-      id: '/Employer/applications'
-      path: '/Employer/applications'
-      fullPath: '/Employer/applications'
-      preLoaderRoute: typeof EmployerApplicationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/UK': {
-      id: '/Countries/UK'
-      path: '/Countries/UK'
-      fullPath: '/Countries/UK'
-      preLoaderRoute: typeof CountriesUKRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/UAE': {
-      id: '/Countries/UAE'
-      path: '/Countries/UAE'
-      fullPath: '/Countries/UAE'
-      preLoaderRoute: typeof CountriesUAERouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/Singapore': {
-      id: '/Countries/Singapore'
-      path: '/Countries/Singapore'
-      fullPath: '/Countries/Singapore'
-      preLoaderRoute: typeof CountriesSingaporeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/SaudiArabia': {
-      id: '/Countries/SaudiArabia'
-      path: '/Countries/SaudiArabia'
-      fullPath: '/Countries/SaudiArabia'
-      preLoaderRoute: typeof CountriesSaudiArabiaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/Russia': {
-      id: '/Countries/Russia'
-      path: '/Countries/Russia'
-      fullPath: '/Countries/Russia'
-      preLoaderRoute: typeof CountriesRussiaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/Qatar': {
-      id: '/Countries/Qatar'
-      path: '/Countries/Qatar'
-      fullPath: '/Countries/Qatar'
-      preLoaderRoute: typeof CountriesQatarRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/Oman': {
-      id: '/Countries/Oman'
-      path: '/Countries/Oman'
-      fullPath: '/Countries/Oman'
-      preLoaderRoute: typeof CountriesOmanRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/New-Zealand': {
-      id: '/Countries/New-Zealand'
-      path: '/Countries/New-Zealand'
-      fullPath: '/Countries/New-Zealand'
-      preLoaderRoute: typeof CountriesNewZealandRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/Malta': {
-      id: '/Countries/Malta'
-      path: '/Countries/Malta'
-      fullPath: '/Countries/Malta'
-      preLoaderRoute: typeof CountriesMaltaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/Malaysia': {
-      id: '/Countries/Malaysia'
-      path: '/Countries/Malaysia'
-      fullPath: '/Countries/Malaysia'
-      preLoaderRoute: typeof CountriesMalaysiaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/Kuwait': {
-      id: '/Countries/Kuwait'
-      path: '/Countries/Kuwait'
-      fullPath: '/Countries/Kuwait'
-      preLoaderRoute: typeof CountriesKuwaitRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/Ireland': {
-      id: '/Countries/Ireland'
-      path: '/Countries/Ireland'
-      fullPath: '/Countries/Ireland'
-      preLoaderRoute: typeof CountriesIrelandRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/Germany': {
-      id: '/Countries/Germany'
-      path: '/Countries/Germany'
-      fullPath: '/Countries/Germany'
-      preLoaderRoute: typeof CountriesGermanyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/Denmark': {
-      id: '/Countries/Denmark'
-      path: '/Countries/Denmark'
-      fullPath: '/Countries/Denmark'
-      preLoaderRoute: typeof CountriesDenmarkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/Canada': {
-      id: '/Countries/Canada'
-      path: '/Countries/Canada'
-      fullPath: '/Countries/Canada'
-      preLoaderRoute: typeof CountriesCanadaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Countries/Australia': {
-      id: '/Countries/Australia'
-      path: '/Countries/Australia'
-      fullPath: '/Countries/Australia'
-      preLoaderRoute: typeof CountriesAustraliaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Candidates/saved-jobs': {
-      id: '/Candidates/saved-jobs'
-      path: '/Candidates/saved-jobs'
-      fullPath: '/Candidates/saved-jobs'
-      preLoaderRoute: typeof CandidatesSavedJobsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Candidates/resume': {
-      id: '/Candidates/resume'
-      path: '/Candidates/resume'
-      fullPath: '/Candidates/resume'
-      preLoaderRoute: typeof CandidatesResumeRouteImport
+    '/Candidates/visa': {
+      id: '/Candidates/visa'
+      path: '/Candidates/visa'
+      fullPath: '/Candidates/visa'
+      preLoaderRoute: typeof CandidatesVisaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Candidates/profile': {
@@ -1218,11 +595,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CandidatesProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/Candidates/offers': {
+      id: '/Candidates/offers'
+      path: '/Candidates/offers'
+      fullPath: '/Candidates/offers'
+      preLoaderRoute: typeof CandidatesOffersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/Candidates/notifications': {
       id: '/Candidates/notifications'
       path: '/Candidates/notifications'
       fullPath: '/Candidates/notifications'
       preLoaderRoute: typeof CandidatesNotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Candidates/medical': {
+      id: '/Candidates/medical'
+      path: '/Candidates/medical'
+      fullPath: '/Candidates/medical'
+      preLoaderRoute: typeof CandidatesMedicalRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Candidates/jobs': {
@@ -1232,6 +623,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CandidatesJobsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/Candidates/interviews': {
+      id: '/Candidates/interviews'
+      path: '/Candidates/interviews'
+      fullPath: '/Candidates/interviews'
+      preLoaderRoute: typeof CandidatesInterviewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Candidates/documents': {
+      id: '/Candidates/documents'
+      path: '/Candidates/documents'
+      fullPath: '/Candidates/documents'
+      preLoaderRoute: typeof CandidatesDocumentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Candidates/deployment': {
+      id: '/Candidates/deployment'
+      path: '/Candidates/deployment'
+      fullPath: '/Candidates/deployment'
+      preLoaderRoute: typeof CandidatesDeploymentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/Candidates/dashboard': {
       id: '/Candidates/dashboard'
       path: '/Candidates/dashboard'
@@ -1239,74 +651,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CandidatesDashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/Candidates/candidate': {
-      id: '/Candidates/candidate'
-      path: '/Candidates/candidate'
-      fullPath: '/Candidates/candidate'
-      preLoaderRoute: typeof CandidatesCandidateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/Candidates/applications': {
       id: '/Candidates/applications'
       path: '/Candidates/applications'
       fullPath: '/Candidates/applications'
       preLoaderRoute: typeof CandidatesApplicationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Admin/settings': {
-      id: '/Admin/settings'
-      path: '/Admin/settings'
-      fullPath: '/Admin/settings'
-      preLoaderRoute: typeof AdminSettingsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Admin/requirements': {
-      id: '/Admin/requirements'
-      path: '/Admin/requirements'
-      fullPath: '/Admin/requirements'
-      preLoaderRoute: typeof AdminRequirementsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Admin/jobs': {
-      id: '/Admin/jobs'
-      path: '/Admin/jobs'
-      fullPath: '/Admin/jobs'
-      preLoaderRoute: typeof AdminJobsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Admin/employer': {
-      id: '/Admin/employer'
-      path: '/Admin/employer'
-      fullPath: '/Admin/employer'
-      preLoaderRoute: typeof AdminEmployerRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Admin/dashboard': {
-      id: '/Admin/dashboard'
-      path: '/Admin/dashboard'
-      fullPath: '/Admin/dashboard'
-      preLoaderRoute: typeof AdminDashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Admin/countries': {
-      id: '/Admin/countries'
-      path: '/Admin/countries'
-      fullPath: '/Admin/countries'
-      preLoaderRoute: typeof AdminCountriesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Admin/candidates': {
-      id: '/Admin/candidates'
-      path: '/Admin/candidates'
-      fullPath: '/Admin/candidates'
-      preLoaderRoute: typeof AdminCandidatesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Admin/applications': {
-      id: '/Admin/applications'
-      path: '/Admin/applications'
-      fullPath: '/Admin/applications'
-      preLoaderRoute: typeof AdminApplicationsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Candidates/jobs/$id': {
@@ -1323,48 +672,8 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CandidatesApplicationsIdRouteImport
       parentRoute: typeof CandidatesApplicationsRoute
     }
-    '/Admin/job/$id': {
-      id: '/Admin/job/$id'
-      path: '/Admin/job/$id'
-      fullPath: '/Admin/job/$id'
-      preLoaderRoute: typeof AdminJobIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Admin/employer/$id': {
-      id: '/Admin/employer/$id'
-      path: '/$id'
-      fullPath: '/Admin/employer/$id'
-      preLoaderRoute: typeof AdminEmployerIdRouteImport
-      parentRoute: typeof AdminEmployerRoute
-    }
-    '/Admin/candidate/$id': {
-      id: '/Admin/candidate/$id'
-      path: '/Admin/candidate/$id'
-      fullPath: '/Admin/candidate/$id'
-      preLoaderRoute: typeof AdminCandidateIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/Admin/application/$id': {
-      id: '/Admin/application/$id'
-      path: '/Admin/application/$id'
-      fullPath: '/Admin/application/$id'
-      preLoaderRoute: typeof AdminApplicationIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
-
-interface AdminEmployerRouteChildren {
-  AdminEmployerIdRoute: typeof AdminEmployerIdRoute
-}
-
-const AdminEmployerRouteChildren: AdminEmployerRouteChildren = {
-  AdminEmployerIdRoute: AdminEmployerIdRoute,
-}
-
-const AdminEmployerRouteWithChildren = AdminEmployerRoute._addFileChildren(
-  AdminEmployerRouteChildren,
-)
 
 interface CandidatesApplicationsRouteChildren {
   CandidatesApplicationsIdRoute: typeof CandidatesApplicationsIdRoute
@@ -1397,49 +706,19 @@ const rootRouteChildren: RootRouteChildren = {
   HomeRoute: HomeRoute,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
-  CountriesRoute: CountriesRoute,
   EmployersRoute: EmployersRoute,
   PrivacypolicyRoute: PrivacypolicyRoute,
-  AdminApplicationsRoute: AdminApplicationsRoute,
-  AdminCandidatesRoute: AdminCandidatesRoute,
-  AdminCountriesRoute: AdminCountriesRoute,
-  AdminDashboardRoute: AdminDashboardRoute,
-  AdminEmployerRoute: AdminEmployerRouteWithChildren,
-  AdminJobsRoute: AdminJobsRoute,
-  AdminRequirementsRoute: AdminRequirementsRoute,
-  AdminSettingsRoute: AdminSettingsRoute,
   CandidatesApplicationsRoute: CandidatesApplicationsRouteWithChildren,
-  CandidatesCandidateRoute: CandidatesCandidateRoute,
   CandidatesDashboardRoute: CandidatesDashboardRoute,
+  CandidatesDeploymentRoute: CandidatesDeploymentRoute,
+  CandidatesDocumentsRoute: CandidatesDocumentsRoute,
+  CandidatesInterviewsRoute: CandidatesInterviewsRoute,
   CandidatesJobsRoute: CandidatesJobsRouteWithChildren,
+  CandidatesMedicalRoute: CandidatesMedicalRoute,
   CandidatesNotificationsRoute: CandidatesNotificationsRoute,
+  CandidatesOffersRoute: CandidatesOffersRoute,
   CandidatesProfileRoute: CandidatesProfileRoute,
-  CandidatesResumeRoute: CandidatesResumeRoute,
-  CandidatesSavedJobsRoute: CandidatesSavedJobsRoute,
-  CountriesAustraliaRoute: CountriesAustraliaRoute,
-  CountriesCanadaRoute: CountriesCanadaRoute,
-  CountriesDenmarkRoute: CountriesDenmarkRoute,
-  CountriesGermanyRoute: CountriesGermanyRoute,
-  CountriesIrelandRoute: CountriesIrelandRoute,
-  CountriesKuwaitRoute: CountriesKuwaitRoute,
-  CountriesMalaysiaRoute: CountriesMalaysiaRoute,
-  CountriesMaltaRoute: CountriesMaltaRoute,
-  CountriesNewZealandRoute: CountriesNewZealandRoute,
-  CountriesOmanRoute: CountriesOmanRoute,
-  CountriesQatarRoute: CountriesQatarRoute,
-  CountriesRussiaRoute: CountriesRussiaRoute,
-  CountriesSaudiArabiaRoute: CountriesSaudiArabiaRoute,
-  CountriesSingaporeRoute: CountriesSingaporeRoute,
-  CountriesUAERoute: CountriesUAERoute,
-  CountriesUKRoute: CountriesUKRoute,
-  EmployerApplicationsRoute: EmployerApplicationsRoute,
-  EmployerCandidateRoute: EmployerCandidateRoute,
-  EmployerDashboardRoute: EmployerDashboardRoute,
-  EmployerEmployerRoute: EmployerEmployerRoute,
-  EmployerJobsRoute: EmployerJobsRoute,
-  EmployerMyCompanyRoute: EmployerMyCompanyRoute,
-  EmployerRequirementsRoute: EmployerRequirementsRoute,
-  EmployerSettingsRoute: EmployerSettingsRoute,
+  CandidatesVisaRoute: CandidatesVisaRoute,
   ServicesDoctorsRoute: ServicesDoctorsRoute,
   ServicesDocumentationRoute: ServicesDocumentationRoute,
   ServicesGroomingRoute: ServicesGroomingRoute,
@@ -1453,9 +732,6 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesTrainingRoute: ServicesTrainingRoute,
   ServicesVisaRoute: ServicesVisaRoute,
   ServicesIndexRoute: ServicesIndexRoute,
-  AdminApplicationIdRoute: AdminApplicationIdRoute,
-  AdminCandidateIdRoute: AdminCandidateIdRoute,
-  AdminJobIdRoute: AdminJobIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

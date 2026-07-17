@@ -1,31 +1,83 @@
 import { Router } from "express";
+
+import adminRoutes from "./admin";
+import candidateRoutes from "./candidates";
+import employerRoutes from "./employer";
+
+import recruitmentRoutes from "./recruitment";
+
 import jobsRoutes from "./jobs";
-import applicationRoutes from "./application";
-import employerPortalRoutes from "./employerPortal";
-import applyRoutes from "./apply";
-import uploadRoutes from "./upload";
-import dashboardRoutes from "./dashboard";
-import authRoutes from "./auth";
-import candidatePortalRoutes from "./candidatePortal";
-import adminCandidateRoutes from "./adminCandidate";
-import adminEmployerRoutes from "./adminEmployer";
-import requirementsRoutes from "./requirements";
-import countriesRoutes from "./countries";
+import documentsRoutes from "./documents";
+import interviewRoutes from "./interview";
+import medicalRoutes from "./medical";
+import visaRoutes from "./visa";
+import deploymentRoutes from "./deployment";
+import offerRoutes from "./offer";
+import notificationRoutes from "./notifications";
+import reportsRoutes from "./reports";
+
 const router = Router();
 
-router.use("/admin/candidates", adminCandidateRoutes);
-router.use("/admin/employers", adminEmployerRoutes);
-router.use("/admin/jobs", jobsRoutes);
-router.use("/admin/applications", applicationRoutes);
-router.use("/admin/dashboard", dashboardRoutes);
-router.use("/admin/countries", countriesRoutes);
-router.use("/applications", applicationRoutes);
+/*
+|--------------------------------------------------------------------------
+| Public
+|--------------------------------------------------------------------------
+*/
+
 router.use("/jobs", jobsRoutes);
-router.use("/employer", employerPortalRoutes);
-router.use("/apply", applyRoutes);
-router.use("/upload", uploadRoutes);
-router.use("/auth", authRoutes);
-router.use("/candidate", candidatePortalRoutes);
-router.use("/dashboard", dashboardRoutes);
-router.use("/admin/requirements", requirementsRoutes);
+
+/*
+|--------------------------------------------------------------------------
+| Candidate Portal
+|--------------------------------------------------------------------------
+*/
+
+router.use("/candidate", candidateRoutes);
+
+/*
+|--------------------------------------------------------------------------
+| Employer Portal
+|--------------------------------------------------------------------------
+*/
+
+router.use("/employer", employerRoutes);
+
+/*
+|--------------------------------------------------------------------------
+| Admin
+|--------------------------------------------------------------------------
+*/
+
+router.use("/admin", adminRoutes);
+
+/*
+|--------------------------------------------------------------------------
+| Recruitment
+|--------------------------------------------------------------------------
+*/
+
+router.use("/recruitment", recruitmentRoutes);
+
+/*
+|--------------------------------------------------------------------------
+| Standalone Modules
+|--------------------------------------------------------------------------
+*/
+
+router.use("/documents", documentsRoutes);
+
+router.use("/interviews", interviewRoutes);
+
+router.use("/medicals", medicalRoutes);
+
+router.use("/visas", visaRoutes);
+
+router.use("/deployments", deploymentRoutes);
+
+router.use("/offers", offerRoutes);
+
+router.use("/notifications", notificationRoutes);
+
+router.use("/reports", reportsRoutes);
+
 export default router;

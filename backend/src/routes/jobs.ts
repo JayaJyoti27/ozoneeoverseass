@@ -1,37 +1,64 @@
 import { Router } from "express";
 
 import {
-  listJobs,
-  getJob,
-  createJob,
-  updateJob,
-  archiveJob,
-  getFeaturedJobs,
-  getSimilarJobs,
-  getJobStats,
+  createJobOrder,
+  listJobOrders,
+  getJobOrder,
+  updateJobOrder,
+  updateJobOrderStatus,
+  deleteJobOrder,
 } from "../controllers/jobs";
-
-import { verifyToken } from "../middleware/auth";
-import { isAdmin } from "../middleware/admin";
 
 const router = Router();
 
-/* ===========================
-   Public Routes
-=========================== */
+/*
+|--------------------------------------------------------------------------
+| Job Orders
+|--------------------------------------------------------------------------
+*/
 
-router.get("/", listJobs);
-router.get("/featured", getFeaturedJobs);
-router.get("/similar/:id", getSimilarJobs);
-router.get("/stats", getJobStats);
-router.get("/:id", getJob);
+/**
+ * Create Job Order
+ * POST /api/job-orders
+ */
+router.post("/", createJobOrder);
 
-/* ===========================
-   Admin Routes
-=========================== */
+/**
+ * List Job Orders
+ * GET /api/job-orders
+ *
+ * Query Params
+ * page
+ * limit
+ * employerId
+ * country
+ * category
+ * status
+ */
+router.get("/", listJobOrders);
 
-router.post("/", verifyToken, isAdmin, createJob);
-router.patch("/:id", verifyToken, isAdmin, updateJob);
-router.delete("/:id", verifyToken, isAdmin, archiveJob);
+/**
+ * Get Single Job Order
+ * GET /api/job-orders/:id
+ */
+router.get("/:id", getJobOrder);
+
+/**
+ * Update Job Order
+ * PATCH /api/job-orders/:id
+ */
+router.patch("/:id", updateJobOrder);
+
+/**
+ * Update Job Order Status
+ * PATCH /api/job-orders/:id/status
+ */
+router.patch("/:id/status", updateJobOrderStatus);
+
+/**
+ * Soft Delete Job Order
+ * DELETE /api/job-orders/:id
+ */
+router.delete("/:id", deleteJobOrder);
 
 export default router;

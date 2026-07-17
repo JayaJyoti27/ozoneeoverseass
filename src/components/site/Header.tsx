@@ -5,26 +5,6 @@ import { Menu, X, ChevronDown, MessageCircle } from "lucide-react";
 // ─── Data ─────────────────────────────────────────────────────────────────────
 // NOTE: paths below match routeTree.gen.ts exactly (case-sensitive).
 
-const COUNTRIES = [
-  { label: "🇸🇦 Saudi Arabia", to: "/Countries/SaudiArabia", roles: "15 roles" },
-  { label: "🇦🇪 UAE", to: "/Countries/UAE", roles: "12 roles" },
-  { label: "🇶🇦 Qatar", to: "/Countries/Qatar", roles: "8 roles" },
-  { label: "🇴🇲 Oman", to: "/Countries/Oman", roles: "5 roles" },
-  { label: "🇰🇼 Kuwait", to: "/Countries/Kuwait", roles: "4 roles" },
-  { label: "🇲🇾 Malaysia", to: "/Countries/Malaysia", roles: "6 roles" },
-  { label: "🇸🇬 Singapore", to: "/Countries/Singapore", roles: "3 roles" },
-  { label: "🇬🇧 United Kingdom", to: "/Countries/UK", roles: "8 roles" },
-  { label: "🇨🇦 Canada", to: "/Countries/Canada", roles: "7 roles" },
-  { label: "🇦🇺 Australia", to: "/Countries/Australia", roles: "5 roles" },
-  { label: "🇩🇪 Germany", to: "/Countries/Germany", roles: "4 roles" },
-  { label: "🇮🇪 Ireland", to: "/Countries/Ireland", roles: "3 roles" },
-  { label: "🇩🇰 Denmark", to: "/Countries/Denmark", roles: "2 roles" },
-  { label: "🇲🇹 Malta", to: "/Countries/Malta", roles: "2 roles" },
-  { label: "🇷🇺 Russia", to: "/Countries/Russia", roles: "1 role" },
-  { label: "🇳🇿 New Zealand", to: "/Countries/New-Zealand", roles: "2 roles" },
-  // USA removed — no /Countries/USA route exists yet. Add it back once that page is built.
-];
-
 const CANDIDATE_SERVICES = [
   { label: "For Candidates", to: "/Candidates/candidate", desc: "Overview & how it works" },
   { label: "Browse Jobs", to: "/Jobs", desc: "42+ live roles across 17 countries" },
@@ -88,59 +68,6 @@ const COMPANY_LINKS = [
 type DropdownKey = "countries" | "candidates" | "employers" | "admin" | "company" | null;
 
 // ─── Panels ───────────────────────────────────────────────────────────────────
-
-function CountriesPanel() {
-  const gcc = COUNTRIES.slice(0, 7);
-  const intl = COUNTRIES.slice(7);
-  return (
-    <div className="w-[560px] rounded-2xl border border-blue/15 bg-card p-5 shadow-elevated">
-      <div className="grid grid-cols-2 gap-5">
-        <div>
-          <p className="mb-2.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-            GCC & Asia
-          </p>
-          <div className="space-y-0.5">
-            {gcc.map((c) => (
-              <Link
-                key={c.to}
-                to={c.to}
-                className="flex items-center justify-between rounded-xl px-3 py-2 transition-colors hover:bg-lightblue"
-              >
-                <span className="text-sm font-medium text-navy">{c.label}</span>
-                <span className="text-[11px] text-muted-foreground">{c.roles}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-        <div>
-          <p className="mb-2.5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-            Europe & Beyond
-          </p>
-          <div className="space-y-0.5">
-            {intl.map((c) => (
-              <Link
-                key={c.to}
-                to={c.to}
-                className="flex items-center justify-between rounded-xl px-3 py-2 transition-colors hover:bg-lightblue"
-              >
-                <span className="text-sm font-medium text-navy">{c.label}</span>
-                <span className="text-[11px] text-muted-foreground">{c.roles}</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="mt-4 flex items-center justify-between border-t border-blue/10 pt-4">
-        <span className="text-xs text-muted-foreground">
-          16 active destinations · 5,000+ placements
-        </span>
-        <Link to="/countries" className="text-xs font-bold text-blue hover:underline">
-          View all →
-        </Link>
-      </div>
-    </div>
-  );
-}
 
 function ServicePanel({ items }: { items: { label: string; to: string; desc: string }[] }) {
   return (
@@ -293,16 +220,6 @@ export function Header() {
             </Link>
 
             <DropdownTrigger
-              label="Countries"
-              id="countries"
-              open={open}
-              onEnter={handleEnter}
-              onLeave={handleLeave}
-            >
-              <CountriesPanel />
-            </DropdownTrigger>
-
-            <DropdownTrigger
               label="Candidates"
               id="candidates"
               open={open}
@@ -395,30 +312,10 @@ export function Header() {
                 <p className="px-3 pt-1 pb-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                   GCC & Asia
                 </p>
-                {COUNTRIES.slice(0, 7).map((c) => (
-                  <MobileLink
-                    key={c.to}
-                    to={c.to}
-                    label={c.label}
-                    onClick={() => setMobileOpen(false)}
-                  />
-                ))}
+
                 <p className="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                   Europe & Beyond
                 </p>
-                {COUNTRIES.slice(7).map((c) => (
-                  <MobileLink
-                    key={c.to}
-                    to={c.to}
-                    label={c.label}
-                    onClick={() => setMobileOpen(false)}
-                  />
-                ))}
-                <MobileLink
-                  to="/countries"
-                  label="→ View All Countries"
-                  onClick={() => setMobileOpen(false)}
-                />
               </MobileGroup>
 
               <MobileGroup

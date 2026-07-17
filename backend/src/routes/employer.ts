@@ -1,0 +1,141 @@
+import { Router } from "express";
+
+import {
+
+  getDashboard,
+
+  getProfile,
+  updateProfile,
+
+  getRequirements,
+  getRequirement,
+  createRequirement,
+  updateRequirement,
+  withdrawRequirement,
+
+  getInterviews,
+  confirmInterview,
+
+  getDeployments,
+  getDeployment,
+
+  getNotifications,
+  markNotificationRead,
+  markAllNotificationsRead,
+
+} from "../controllers/employer";
+
+const router = Router();
+
+/*
+|--------------------------------------------------------------------------
+| Dashboard
+|--------------------------------------------------------------------------
+*/
+
+router.get(
+  "/dashboard",
+  getDashboard,
+);
+
+/*
+|--------------------------------------------------------------------------
+| Company Profile
+|--------------------------------------------------------------------------
+*/
+
+router.get(
+  "/profile",
+  getProfile,
+);
+
+router.patch(
+  "/profile",
+  updateProfile,
+);
+
+/*
+|--------------------------------------------------------------------------
+| Requirements
+|--------------------------------------------------------------------------
+*/
+
+router.get(
+  "/requirements",
+  getRequirements,
+);
+
+router.post(
+  "/requirements",
+  createRequirement,
+);
+
+router.get(
+  "/requirements/:id",
+  getRequirement,
+);
+
+router.patch(
+  "/requirements/:id",
+  updateRequirement,
+);
+
+router.patch(
+  "/requirements/:id/withdraw",
+  withdrawRequirement,
+);
+
+/*
+|--------------------------------------------------------------------------
+| Interviews
+|--------------------------------------------------------------------------
+*/
+
+router.get(
+  "/interviews",
+  getInterviews,
+);
+
+router.patch(
+  "/interviews/:id/confirm",
+  confirmInterview,
+);
+
+/*
+|--------------------------------------------------------------------------
+| Deployments
+|--------------------------------------------------------------------------
+*/
+
+router.get(
+  "/deployments",
+  getDeployments,
+);
+
+router.get(
+  "/deployments/:id",
+  getDeployment,
+);
+
+/*
+|--------------------------------------------------------------------------
+| Notifications
+|--------------------------------------------------------------------------
+*/
+
+router.get(
+  "/notifications",
+  getNotifications,
+);
+
+router.patch(
+  "/notifications/read-all",
+  markAllNotificationsRead,
+);
+
+router.patch(
+  "/notifications/:id/read",
+  markNotificationRead,
+);
+
+export default router;

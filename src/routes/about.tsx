@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import {
   ShieldCheck,
   BadgeCheck,
@@ -9,7 +10,6 @@ import {
   MessageCircle,
   Phone,
   Mail,
-  Menu,
   Handshake,
   Building2,
   GraduationCap,
@@ -17,6 +17,29 @@ import {
   Award,
   Sparkles,
   Stamp,
+  Target,
+  Eye,
+  Users,
+  HeartPulse,
+  Wrench,
+  HardHat,
+  Flame,
+  UtensilsCrossed,
+  Factory,
+  Truck,
+  Plane,
+  Cpu,
+  ClipboardCheck,
+  FileCheck2,
+  Languages,
+  UserCheck,
+  Stethoscope,
+  FileText,
+  PlaneTakeoff,
+  TrendingUp,
+  Quote,
+  ScrollText,
+  ClipboardList,
 } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import heroTeam from "@/assets/about-hero-team.jpg";
@@ -24,6 +47,7 @@ import heroDeparture from "@/assets/about-hero-departure.jpg";
 import coordinatorImg from "@/assets/about-coordinator.jpg";
 import teamMeetingImg from "@/assets/about-team-meeting.jpg";
 import reshmaImg from "@/assets/about-reshma.jpg";
+import { Footer } from "@/components/site/footer";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
@@ -83,7 +107,51 @@ function Pill({ children, icon: Icon }: { children: React.ReactNode; icon?: Reac
   );
 }
 
-/* ---------- Header ---------- */
+/* ---------- Animated counter ---------- */
+
+function Counter({
+  to,
+  suffix = "",
+  duration = 1600,
+}: {
+  to: number;
+  suffix?: string;
+  duration?: number;
+}) {
+  const [value, setValue] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const start = performance.now();
+          const tick = (now: number) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setValue(Math.round(eased * to));
+            if (progress < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [to, duration]);
+
+  return (
+    <span ref={ref}>
+      {value.toLocaleString()}
+      {suffix}
+    </span>
+  );
+}
 
 /* ---------- Hero ---------- */
 
@@ -179,36 +247,71 @@ function Hero() {
   );
 }
 
-/* ---------- Stats band ---------- */
+/* ---------- Achievements (counters + icons) ---------- */
 
-function StatsBand() {
-  const stats = [
-    { n: "15+", l: "Years in Recruitment" },
-    { n: "5,000+", l: "Careers Placed" },
-    { n: "17", l: "Countries Active" },
-  ];
+const achievements = [
+  {
+    icon: Stamp,
+    value: 1,
+    suffix: "",
+    display: "MEA",
+    label: "Govt. of India Recruitment Licence",
+    sub: "RA-PB1238/KER/2014",
+  },
+  { icon: Award, value: 15, suffix: "+", label: "Years of Industry Experience" },
+  { icon: Globe2, value: 17, suffix: "", label: "Countries Served" },
+  { icon: Users, value: 5000, suffix: "+", label: "Candidates Successfully Deployed" },
+  { icon: Handshake, value: 200, suffix: "+", label: "Global Employer Network" },
+  { icon: Building2, value: 9, suffix: "", label: "Industry Sectors Served" },
+];
+
+function Achievements() {
   return (
-    <section className="px-5 md:px-8">
+    <section className="relative px-5 md:px-8">
       <div
-        className="mx-auto max-w-7xl rounded-[32px] bg-[color:var(--blue-wash)] px-8 py-10 md:py-12"
+        className="mx-auto max-w-7xl rounded-[32px] bg-[color:var(--blue-wash)] px-6 py-12 md:px-10 md:py-14"
         style={{
-          clipPath: "polygon(0 12%, 4% 0, 96% 0, 100% 12%, 100% 88%, 96% 100%, 4% 100%, 0 88%)",
+          clipPath: "polygon(0 8%, 3% 0, 97% 0, 100% 8%, 100% 92%, 97% 100%, 3% 100%, 0 92%)",
         }}
       >
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-          {stats.map((s, i) => (
-            <div key={s.l} className="relative flex flex-col items-center text-center">
-              <div className="font-display text-5xl font-bold text-[color:var(--navy)] md:text-[56px]">
-                {s.n}
-              </div>
-              <div className="mt-2 text-sm font-medium tracking-wide text-[color:var(--muted-foreground)]">
-                {s.l}
-              </div>
-              {i < stats.length - 1 && (
-                <span className="absolute right-0 top-1/2 hidden h-14 w-px -translate-y-1/2 bg-[color:var(--gold)]/60 md:block" />
-              )}
-            </div>
-          ))}
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="inline-flex items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--blue)]">
+            Our Track Record
+          </span>
+          <h2 className="mt-4 font-display text-3xl font-bold text-[color:var(--navy)] md:text-4xl">
+            Numbers That Back the Promise
+          </h2>
+        </div>
+
+        <div className="mt-10 grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-6">
+          {achievements.map((a, i) => {
+            const Icon = a.icon;
+            return (
+              <motion.div
+                key={a.label}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4, delay: i * 0.06 }}
+                className="flex flex-col items-center rounded-[20px] bg-white p-5 text-center shadow-[0_16px_32px_-24px_rgba(11,31,58,0.35)]"
+              >
+                <span className="grid h-11 w-11 place-items-center rounded-full bg-[color:var(--blue-soft)]">
+                  <Icon className="h-5 w-5 text-[color:var(--blue)]" />
+                </span>
+                <div className="mt-3 font-display text-2xl font-bold text-[color:var(--navy)] md:text-[28px]">
+                  {a.display ? a.display : <Counter to={a.value} suffix={a.suffix} />}
+                </div>
+                <div className="mt-1.5 text-xs leading-snug text-[color:var(--muted-foreground)]">
+                  {a.label}
+                </div>
+                {a.sub && (
+                  <div className="mt-1 text-[10px] font-semibold text-[color:var(--gold)]">
+                    {a.sub}
+                  </div>
+                )}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -353,14 +456,121 @@ function StoryTimeline() {
   );
 }
 
-/* ---------- Why We Exist ---------- */
+/* ---------- Mission / Vision / Leadership ---------- */
+
+function MissionVisionLeadership() {
+  return (
+    <section className="relative overflow-hidden bg-white px-5 py-24 md:px-8">
+      <DotCluster className="right-8 top-8 h-32 w-32" />
+      <div className="relative mx-auto max-w-7xl">
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[color:var(--blue-soft)] px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--blue)]">
+            What Drives Us
+          </span>
+          <h2 className="mt-4 font-display text-4xl font-bold text-[color:var(--navy)] md:text-5xl">
+            Mission, Vision &amp; Leadership
+          </h2>
+        </div>
+
+        <div className="mt-14 grid gap-6 md:grid-cols-2">
+          <div className="rounded-[26px] border border-[color:var(--border)] bg-white p-8 shadow-[0_20px_40px_-30px_rgba(11,31,58,0.4)]">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[color:var(--blue)]/10">
+              <Target className="h-6 w-6 text-[color:var(--blue)]" />
+            </span>
+            <h3 className="mt-5 font-display text-xl font-bold text-[color:var(--navy)]">
+              Our Mission
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-[color:var(--muted-foreground)]">
+              To connect skilled candidates with genuine overseas opportunities through a
+              transparent, ethical, and fully compliant recruitment process — with no sub-agents, no
+              hidden fees, and no shortcuts.
+            </p>
+          </div>
+
+          <div className="rounded-[26px] bg-[color:var(--navy)] p-8 text-white shadow-[0_20px_40px_-30px_rgba(11,31,58,0.5)]">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/10">
+              <Eye className="h-6 w-6 text-[color:var(--gold)]" />
+            </span>
+            <h3 className="mt-5 font-display text-xl font-bold">Our Vision</h3>
+            <p className="mt-3 text-sm leading-relaxed text-white/75">
+              To be the most trusted name in international recruitment from India — recognised for
+              deployment-ready candidates, long-term employer partnerships, and an unwavering
+              commitment to ethical practice.
+            </p>
+          </div>
+        </div>
+
+        {/* Leadership */}
+        <div className="mt-6 grid gap-6 md:grid-cols-3">
+          <div className="rounded-[26px] border border-[color:var(--border)] bg-[color:var(--blue-soft)] p-8 md:col-span-1">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white">
+              <Users className="h-6 w-6 text-[color:var(--blue)]" />
+            </span>
+            <h3 className="mt-5 font-display text-xl font-bold text-[color:var(--navy)]">
+              Leadership
+            </h3>
+            <p className="mt-3 text-sm leading-relaxed text-[color:var(--muted-foreground)]">
+              Guided by a management team with deep roots in Gulf recruitment, healthcare placement,
+              and immigration compliance — every major decision runs through the same question: does
+              this serve the candidate first?
+            </p>
+          </div>
+
+          <div className="relative overflow-hidden rounded-[26px] border border-[color:var(--border)] bg-white p-8 md:col-span-2">
+            <Quote className="h-8 w-8 text-[color:var(--gold)]/40" />
+            <blockquote className="mt-4 font-display text-xl font-semibold leading-snug text-[color:var(--navy)] md:text-2xl">
+              "We built Ozone on one rule: never place a candidate we wouldn't be comfortable
+              sending a family member to."
+            </blockquote>
+            <div className="mt-5 flex items-center gap-3">
+              <span className="grid h-11 w-11 place-items-center rounded-full bg-[color:var(--navy)] font-display text-sm font-bold text-white">
+                MD
+              </span>
+              <div>
+                <div className="font-display text-sm font-bold text-[color:var(--navy)]">
+                  Managing Director
+                </div>
+                <div className="text-xs text-[color:var(--muted-foreground)]">
+                  Ozone Overseas Consultants Pvt. Ltd.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Why We Exist (Ethical practice, transparency, compliance) ---------- */
 
 function WhyWeExist() {
   const points = [
-    "Direct employer relationships — no middlemen",
-    "One coordinator per candidate, start to landing",
-    "Fee policy in writing before any engagement",
-    "Post-placement support through first 90 days",
+    {
+      title: "Ethical Recruitment",
+      body: "Direct employer relationships — zero sub-agents, zero candidate fees.",
+      icon: Handshake,
+    },
+    {
+      title: "Full Transparency",
+      body: "Every fee, timeline, and step of the process is put in writing upfront.",
+      icon: ScrollText,
+    },
+    {
+      title: "Regulatory Compliance",
+      body: "MEA-licensed and IRIS-signatory, operating strictly within Govt. of India norms.",
+      icon: ShieldCheck,
+    },
+    {
+      title: "Commitment to Quality",
+      body: "Every candidate is screened, verified, and deployment-ready before travel.",
+      icon: BadgeCheck,
+    },
+    {
+      title: "Long-Term Relationships",
+      body: "94% of employer partners renew — coordinators stay engaged well past placement.",
+      icon: TrendingUp,
+    },
   ];
   return (
     <section className="relative overflow-hidden bg-white px-5 py-24 md:px-8">
@@ -412,15 +622,25 @@ function WhyWeExist() {
             Most recruitment agencies optimize for volume. We optimize for fit — which is why 94% of
             our placements renew their contracts, and why candidates refer their colleagues to us.
           </p>
-          <ul className="mt-8 space-y-3.5">
-            {points.map((p) => (
-              <li key={p} className="flex items-start gap-3">
-                <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[color:var(--blue)]/10">
-                  <Check className="h-3.5 w-3.5 text-[color:var(--blue)]" strokeWidth={3} />
-                </span>
-                <span className="text-[15px] text-[color:var(--navy)]">{p}</span>
-              </li>
-            ))}
+          <ul className="mt-8 space-y-4">
+            {points.map((p) => {
+              const Icon = p.icon;
+              return (
+                <li key={p.title} className="flex items-start gap-3.5">
+                  <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[color:var(--blue)]/10">
+                    <Icon className="h-4.5 w-4.5 text-[color:var(--blue)]" />
+                  </span>
+                  <div>
+                    <div className="font-display text-sm font-bold text-[color:var(--navy)]">
+                      {p.title}
+                    </div>
+                    <div className="mt-0.5 text-sm text-[color:var(--muted-foreground)]">
+                      {p.body}
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>
@@ -428,7 +648,135 @@ function WhyWeExist() {
   );
 }
 
-/* ---------- Team ---------- */
+/* ---------- Quality Assurance & Compliance ---------- */
+
+const qaPoints = [
+  { icon: ClipboardCheck, label: "Rigorous Candidate Pre-Screening" },
+  { icon: FileCheck2, label: "Qualification & Experience Verification" },
+  { icon: BadgeCheck, label: "Skill Assessment" },
+  { icon: Users, label: "Interview Preparation" },
+  { icon: UserCheck, label: "Candidate Grooming" },
+  { icon: Languages, label: "Language Training Support" },
+  { icon: GraduationCap, label: "Prometric Coaching (Healthcare)" },
+  { icon: FileText, label: "Documentation Verification" },
+  { icon: Stethoscope, label: "Medical Fitness Coordination" },
+  { icon: ClipboardList, label: "Visa Documentation Support" },
+  { icon: ShieldCheck, label: "Government Compliance" },
+  { icon: Handshake, label: "Ethical Recruitment Practices" },
+  { icon: PlaneTakeoff, label: "Pre-Departure Orientation" },
+  { icon: MessageCircle, label: "Continuous Employer & Candidate Coordination" },
+  { icon: Check, label: "Quality Checks Before Deployment" },
+];
+
+function QualityAssurance() {
+  return (
+    <section className="relative overflow-hidden px-5 py-24 md:px-8">
+      <WaveBlob className="-left-24 -top-10 h-[380px] w-[380px]" />
+      <div className="relative mx-auto max-w-7xl">
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[color:var(--blue-soft)] px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--blue)]">
+            Our Differentiator
+          </span>
+          <h2 className="mt-4 font-display text-4xl font-bold text-[color:var(--navy)] md:text-5xl">
+            Quality Assurance &amp; Compliance
+          </h2>
+          <p className="mt-4 text-[color:var(--muted-foreground)]">
+            Every candidate who travels through Ozone is qualified, compliant, and deployment-ready
+            — vetted through a 15-point process before the file ever reaches an employer.
+          </p>
+        </div>
+
+        <div className="mt-14 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {qaPoints.map((q, i) => {
+            const Icon = q.icon;
+            return (
+              <motion.div
+                key={q.label}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.35, delay: (i % 6) * 0.05 }}
+                className="flex items-center gap-3.5 rounded-2xl border border-[color:var(--border)] bg-white p-4 shadow-[0_10px_24px_-20px_rgba(11,31,58,0.4)]"
+              >
+                <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[color:var(--blue-soft)]">
+                  <Icon className="h-4.5 w-4.5 text-[color:var(--blue)]" />
+                </span>
+                <span className="text-sm font-medium leading-snug text-[color:var(--navy)]">
+                  {q.label}
+                </span>
+              </motion.div>
+            );
+          })}
+        </div>
+
+        <div className="mt-10 rounded-[24px] bg-[color:var(--navy)] px-6 py-6 text-center md:px-10">
+          <p className="text-sm font-medium leading-relaxed text-white/85 md:text-base">
+            This is how Ozone Overseas delivers qualified, compliant, deployment-ready candidates —
+            while holding the highest standards of ethical recruitment and client service.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Industry Coverage ---------- */
+
+const industries = [
+  { icon: HeartPulse, label: "Healthcare" },
+  { icon: Wrench, label: "Engineering" },
+  { icon: HardHat, label: "Construction" },
+  { icon: Flame, label: "Oil & Gas" },
+  { icon: UtensilsCrossed, label: "Hospitality" },
+  { icon: Factory, label: "Manufacturing" },
+  { icon: Truck, label: "Logistics" },
+  { icon: Plane, label: "Aviation" },
+  { icon: Cpu, label: "IT & Technology" },
+];
+
+function IndustryCoverage() {
+  return (
+    <section className="relative overflow-hidden bg-white px-5 py-24 md:px-8">
+      <DotCluster className="right-10 bottom-10 h-32 w-32" />
+      <div className="relative mx-auto max-w-7xl">
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="inline-flex items-center gap-2 rounded-full bg-[color:var(--blue-soft)] px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.12em] text-[color:var(--blue)]">
+            Where We Place
+          </span>
+          <h2 className="mt-4 font-display text-4xl font-bold text-[color:var(--navy)] md:text-5xl">
+            Industry Coverage
+          </h2>
+          <p className="mt-4 text-[color:var(--muted-foreground)]">
+            Nine sectors, one consistent process — from pre-screening to pre-departure.
+          </p>
+        </div>
+
+        <div className="mt-14 grid grid-cols-2 gap-5 sm:grid-cols-3">
+          {industries.map((ind, i) => {
+            const Icon = ind.icon;
+            return (
+              <motion.div
+                key={ind.label}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.4, delay: i * 0.05 }}
+                className="group flex flex-col items-center gap-3 rounded-[22px] border border-[color:var(--border)] bg-white p-6 text-center shadow-[0_16px_32px_-26px_rgba(11,31,58,0.35)] transition hover:-translate-y-1 hover:border-[color:var(--blue)]/40 hover:shadow-[0_24px_44px_-24px_rgba(11,31,58,0.4)]"
+              >
+                <span className="grid h-14 w-14 place-items-center rounded-2xl bg-[color:var(--blue-soft)] transition group-hover:bg-[color:var(--blue)]">
+                  <Icon className="h-6 w-6 text-[color:var(--blue)] transition group-hover:text-white" />
+                </span>
+                <span className="font-display text-sm font-bold text-[color:var(--navy)]">
+                  {ind.label}
+                </span>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 /* ---------- Credentials ---------- */
 
@@ -677,86 +1025,6 @@ function ContactCTA() {
   );
 }
 
-/* ---------- Footer ---------- */
-
-function Footer() {
-  return (
-    <footer className="relative mt-24 bg-[color:var(--navy)] text-white">
-      {/* Soft light-blue wave divider at top */}
-      <svg
-        aria-hidden
-        className="absolute -top-1 left-0 h-10 w-full"
-        viewBox="0 0 1440 60"
-        preserveAspectRatio="none"
-      >
-        <path
-          fill="var(--blue-soft)"
-          d="M0,60 C240,0 480,60 720,30 C960,0 1200,60 1440,20 L1440,0 L0,0 Z"
-        />
-      </svg>
-      <div className="mx-auto max-w-7xl px-5 pb-10 pt-20 md:px-8">
-        <div className="grid gap-12 md:grid-cols-4">
-          <div className="md:col-span-1">
-            <div className="flex items-center gap-2.5">
-              <div className="grid h-9 w-9 place-items-center rounded-xl bg-white font-display text-sm font-bold text-[color:var(--navy)]">
-                OO
-              </div>
-              <div className="font-display text-lg font-bold">Ozone Overseas</div>
-            </div>
-            <p className="mt-4 text-sm text-white/70">
-              MEA Licensed International Recruitment Since 2009.
-            </p>
-          </div>
-          {[
-            {
-              h: "Services",
-              l: ["Candidates", "Employers", "Prometric Coaching", "Documentation"],
-            },
-            {
-              h: "Destinations",
-              l: ["Saudi Arabia", "UAE", "Qatar", "United Kingdom"],
-            },
-            {
-              h: "Company",
-              l: ["About", "Careers", "Press", "Contact"],
-            },
-          ].map((c) => (
-            <div key={c.h}>
-              <div className="font-display text-xs font-bold uppercase tracking-[0.16em] text-[color:var(--gold)]">
-                {c.h}
-              </div>
-              <ul className="mt-4 space-y-2.5 text-sm text-white/75">
-                {c.l.map((x) => (
-                  <li key={x}>
-                    <a href="#" className="transition hover:text-white">
-                      {x}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/60 md:flex-row md:items-center md:justify-between">
-          <div>
-            MEA License No. B-0123/KER/PER/1000+/5/8888/2009 · © 2025 Ozone Overseas Consultants
-            Pvt. Ltd.
-          </div>
-          <div className="flex gap-5">
-            <a href="#" className="hover:text-white">
-              Privacy Policy
-            </a>
-            <a href="#" className="hover:text-white">
-              Terms
-            </a>
-          </div>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
 /* ---------- Page ---------- */
 
 function AboutPage() {
@@ -765,10 +1033,12 @@ function AboutPage() {
       <Header />
       <main>
         <Hero />
-        <StatsBand />
+        <Achievements />
         <StoryTimeline />
+        <MissionVisionLeadership />
         <WhyWeExist />
-
+        <QualityAssurance />
+        <IndustryCoverage />
         <Credentials />
         <FeaturedTestimonial />
         <ContactCTA />
