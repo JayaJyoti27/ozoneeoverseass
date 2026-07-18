@@ -1,13 +1,12 @@
 import { supabase } from "../../config/supabase";
 import { DatabaseError } from "../../utils/AppError";
 
-/*
-|--------------------------------------------------------------------------
-| Candidate Dashboard
-|--------------------------------------------------------------------------
-*/
-
 export async function getCandidateDashboard(candidateId: string) {
+  const applicationIds =
+    (await supabase.from("applications").select("id").eq("candidate_id", candidateId)).data?.map(
+      (x) => x.id,
+    ) ?? [];
+
   const [
     profileResult,
     applicationsResult,
@@ -22,32 +21,41 @@ export async function getCandidateDashboard(candidateId: string) {
 
     supabase
       .from("applications")
-      .select("id,status", { count: "exact" })
-      .eq("candidate_id", candidateId),
+      .select("*, job:jobs(*)")
+      .eq("candidate_id", candidateId)
+      .order("created_at", { ascending: false }),
+
+    supabase.from("interviews").select("*").in("application_id", applicationIds),
 
     supabase
-      .from("interviews")
-      .select("id,status,interview_date")
-      .in(
-        "application_id",
-        (
-          await supabase.from("applications").select("id").eq("candidate_id", candidateId)
-        ).data?.map((x) => x.id) ?? [],
-      ),
+      .from("offers")
+      .select("*")
+      .eq("candidate_id", candidateId)
+      .order("created_at", { ascending: false }),
 
-    supabase.from("offers").select("id,status").eq("candidate_id", candidateId),
+    supabase
+      .from("medicals")
+      .select("*")
+      .eq("candidate_id", candidateId)
+      .order("created_at", { ascending: false }),
 
-    supabase.from("medicals").select("id,status").eq("candidate_id", candidateId),
+    supabase
+      .from("visas")
+      .select("*")
+      .eq("candidate_id", candidateId)
+      .order("created_at", { ascending: false }),
 
-    supabase.from("visas").select("id,status").eq("candidate_id", candidateId),
-
-    supabase.from("deployments").select("id,status").eq("candidate_id", candidateId),
+    supabase
+      .from("deployments")
+      .select("*")
+      .eq("candidate_id", candidateId)
+      .order("created_at", { ascending: false }),
 
     supabase
       .from("notifications")
-      .select("id", { count: "exact" })
+      .select("*")
       .eq("user_id", candidateId)
-      .eq("is_read", false),
+      .order("created_at", { ascending: false }),
   ]);
 
   if (profileResult.error) {
@@ -56,7 +64,7 @@ export async function getCandidateDashboard(candidateId: string) {
 
   const candidate = profileResult.data;
 
-  const completion = [
+  const completionFields = [
     candidate?.first_name,
     candidate?.last_name,
     candidate?.email,
@@ -67,34 +75,59 @@ export async function getCandidateDashboard(candidateId: string) {
     candidate?.nationality,
   ];
 
-  const completed = completion.filter(Boolean).length;
+  const completed = completionFields.filter(Boolean).length;
+
+  const interviews = interviewsResult.data ?? [];
+  const offers = offersResult.data ?? [];
+  const medicals = medicalResult.data ?? [];
+  const visas = visaResult.data ?? [];
+  const deployments = deploymentResult.data ?? [];
+  const applications = applicationsResult.data ?? [];
+  const notifications = notificationsResult.data ?? [];
+
+  const recentActivity = notifications.map((n) => ({
+    id: n.id,
+    title: n.title,
+    description: n.message,
+    created_at: n.created_at,
+  }));
+
+  const upcomingInterview =
+    interviews
+      .filter((i) => i.status !== "completed")
+      .sort(
+        (a, b) => new Date(a.interview_date).getTime() - new Date(b.interview_date).getTime(),
+      )[0] ?? null;
 
   return {
-    profileCompletion: Math.round((completed / completion.length) * 100),
+    profileCompletion: Math.round((completed / completionFields.length) * 100),
+
+    activeApplications: applications.length,
+
+    interviews: interviews.length,
+
+    offers: offers.length,
+
+    medicalStatus: medicals[0]?.status ?? "Pending",
+
+    visaStatus: visas[0]?.status ?? "Pending",
+
+    deploymentStatus: deployments[0]?.status ?? "Pending",
+
+    recentActivity,
+
+    recentApplications: applications.slice(0, 5),
+
+    upcomingInterview,
+
+    latestOffer: offers[0] ?? null,
+
+    latestMedical: medicals[0] ?? null,
+
+    latestVisa: visas[0] ?? null,
+
+    latestDeployment: deployments[0] ?? null,
 
     profile: candidate,
-
-    stats: {
-      applications: applicationsResult.count ?? 0,
-
-      interviews: interviewsResult.data?.length ?? 0,
-
-      offers: offersResult.data?.length ?? 0,
-
-      unreadNotifications: notificationsResult.count ?? 0,
-    },
-
-    latestMedical: medicalResult.data?.[0] ?? null,
-
-    latestVisa: visaResult.data?.[0] ?? null,
-
-    latestDeployment: deploymentResult.data?.[0] ?? null,
-
-    upcomingInterview:
-      interviewsResult.data
-        ?.filter((x) => x.status !== "completed")
-        ?.sort(
-          (a, b) => new Date(a.interview_date).getTime() - new Date(b.interview_date).getTime(),
-        )[0] ?? null,
   };
 }

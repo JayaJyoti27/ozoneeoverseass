@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import * as CandidateService from "../services/candidates";
 
-const DEMO_CANDIDATE_ID = "candidate-demo";
+const DEMO_CANDIDATE_ID = "e7d9fc7d-5a85-4f51-8706-c6492dd94b4d";
 
 /*
 |--------------------------------------------------------------------------
