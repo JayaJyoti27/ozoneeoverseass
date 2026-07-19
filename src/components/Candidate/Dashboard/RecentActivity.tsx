@@ -6,10 +6,6 @@ import { Badge } from "@/components/ui/badge";
 
 import type { Activity } from "@/lib/candidate/types";
 
-interface Props {
-  activity: Activity[];
-}
-
 function getIcon(title: string) {
   const t = title.toLowerCase();
 
@@ -57,7 +53,11 @@ function getRelativeTime(date: string) {
   return new Date(date).toLocaleDateString();
 }
 
-export default function RecentActivity({ activity }: Props) {
+interface Props {
+  activity?: Activity[];
+}
+
+export default function RecentActivity({ activity = [] }: Props) {
   if (!activity.length) {
     return (
       <Card>

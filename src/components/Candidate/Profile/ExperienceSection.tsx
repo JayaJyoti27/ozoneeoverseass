@@ -21,9 +21,9 @@ interface Experience {
 export default function ExperienceSection() {
   const [editing, setEditing] = useState(false);
 
-  const [experience, setExperience] = useState<Experience>([
+  const [experience, setExperience] = useState<Experience[]>([
     {
-      id: crypto.randomUUID(),
+      id: `${Date.now()}-${Math.random()}`,
       company: "",
       designation: "",
       location: "",
@@ -34,7 +34,7 @@ export default function ExperienceSection() {
     },
   ]);
 
-  function update(index: number, key: keyof Experience, value: any) {
+  function update<K extends keyof Experience>(index: number, key: K, value: Experience[K]) {
     const copy = [...experience];
 
     copy[index][key] = value;
@@ -46,7 +46,7 @@ export default function ExperienceSection() {
     setExperience((prev) => [
       ...prev,
       {
-        id: crypto.randomUUID(),
+        id: `${Date.now()}-${Math.random()}`,
         company: "",
         designation: "",
         location: "",

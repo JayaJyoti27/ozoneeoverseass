@@ -1,5 +1,5 @@
 import { supabase } from "../../config/supabase";
-import { DatabaseError } from "../../utils/AppError";
+import { DatabaseError } from "../../../../src/utils/AppError";
 
 export async function getCandidateDashboard(candidateId: string) {
   const applicationIds =

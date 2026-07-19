@@ -1,5 +1,5 @@
 import { supabase } from "../../config/supabase";
-import { DatabaseError, NotFoundError } from "../../utils/AppError";
+import { DatabaseError, NotFoundError } from "../../../../src/utils/AppError";
 
 interface CandidateFilters {
   page?: number;

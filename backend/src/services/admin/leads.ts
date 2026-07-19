@@ -1,5 +1,5 @@
 import { supabase } from "../../config/supabase";
-import { DatabaseError, NotFoundError } from "../../utils/AppError";
+import { DatabaseError, NotFoundError } from "../../../../src/utils/AppError";
 
 interface LeadFilters {
   page?: number;
@@ -18,9 +18,7 @@ export async function getLeads(filters: LeadFilters) {
   const page = filters.page ?? 1;
   const limit = filters.limit ?? 20;
 
-  let query = supabase
-    .from("leads")
-    .select("*", { count: "exact" });
+  let query = supabase.from("leads").select("*", { count: "exact" });
 
   if (filters.type) {
     query = query.eq("type", filters.type);
@@ -60,11 +58,7 @@ export async function getLeads(filters: LeadFilters) {
 */
 
 export async function getLead(id: string) {
-  const { data, error } = await supabase
-    .from("leads")
-    .select("*")
-    .eq("id", id)
-    .single();
+  const { data, error } = await supabase.from("leads").select("*").eq("id", id).single();
 
   if (error || !data) {
     throw new NotFoundError("Lead not found.");
@@ -80,11 +74,7 @@ export async function getLead(id: string) {
 */
 
 export async function createLead(payload: any) {
-  const { data, error } = await supabase
-    .from("leads")
-    .insert(payload)
-    .select()
-    .single();
+  const { data, error } = await supabase.from("leads").insert(payload).select().single();
 
   if (error) {
     throw new DatabaseError("Unable to create lead.", error);
@@ -100,10 +90,7 @@ export async function createLead(payload: any) {
 */
 
 export async function deleteLead(id: string) {
-  const { error } = await supabase
-    .from("leads")
-    .delete()
-    .eq("id", id);
+  const { error } = await supabase.from("leads").delete().eq("id", id);
 
   if (error) {
     throw new DatabaseError("Unable to delete lead.", error);

@@ -18,78 +18,62 @@ export const candidateNavigation = [
   {
     title: "Dashboard",
     icon: Home,
-    href: "/candidate/dashboard",
+    href: "/Candidates/dashboard",
   },
-
   {
     title: "Profile",
     icon: User,
-    href: "/candidate/profile",
+    href: "/Candidates/profile",
   },
-
   {
     title: "Browse Jobs",
     icon: Briefcase,
-    href: "/candidate/jobs",
+    href: "/Candidates/jobs",
   },
-
-  {
-    title: "Saved Jobs",
-    icon: Bookmark,
-    href: "/candidate/saved",
-  },
-
+  // Remove this for now because the route doesn't exist
+  // {
+  //   title: "Saved Jobs",
+  //   icon: Bookmark,
+  //   href: "/Candidates/saved",
+  // },
   {
     title: "Applications",
     icon: ClipboardList,
-    href: "/candidate/applications",
+    href: "/Candidates/applications",
   },
-
   {
     title: "Documents",
     icon: FileText,
-    href: "/candidate/documents",
+    href: "/Candidates/documents",
   },
-
   {
     title: "Interviews",
     icon: CalendarClock,
-    href: "/candidate/interviews",
+    href: "/Candidates/interviews",
   },
-
   {
     title: "Offers",
     icon: BadgeCheck,
-    href: "/candidate/offers",
+    href: "/Candidates/offers",
   },
-
   {
     title: "Medical",
     icon: HeartPulse,
-    href: "/candidate/medical",
+    href: "/Candidates/medical",
   },
-
   {
     title: "Visa",
     icon: Plane,
-    href: "/candidate/visa",
+    href: "/Candidates/visa",
   },
-
   {
     title: "Deployment",
     icon: PlaneTakeoff,
-    href: "/candidate/deployment",
+    href: "/Candidates/deployment",
   },
-
   {
     title: "Notifications",
     icon: Bell,
-    href: "/candidate/notifications",
-  },
-
-  {
-    title: "Settings",
-    icon: Settings,
-    href: "/candidate/settings",
+    href: "/Candidates/notifications",
   },
 ];

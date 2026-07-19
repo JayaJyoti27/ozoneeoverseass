@@ -15,7 +15,7 @@ import deploymentRoutes from "./deployment";
 import offerRoutes from "./offer";
 import notificationRoutes from "./notifications";
 import reportsRoutes from "./reports";
-
+import settingsRoutes from "./settings";
 const router = Router();
 
 /*
@@ -25,7 +25,7 @@ const router = Router();
 */
 
 router.use("/jobs", jobsRoutes);
-
+router.use("/settings", settingsRoutes);
 /*
 |--------------------------------------------------------------------------
 | Candidate Portal
@@ -78,6 +78,6 @@ router.use("/offers", offerRoutes);
 
 router.use("/notifications", notificationRoutes);
 
-router.use("/reports", reportsRoutes);
+router.use("/admin/reports", reportsRoutes);
 
 export default router;

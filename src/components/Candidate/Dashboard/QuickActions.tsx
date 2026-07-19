@@ -9,42 +9,37 @@ const actions = [
     title: "Complete Profile",
     description: "Update your personal information",
     icon: User,
-    href: "/Candidate/profile",
+    href: "/Candidates/profile",
   },
-
   {
     title: "Browse Jobs",
     description: "Find new overseas opportunities",
     icon: Briefcase,
-    href: "/Candidate/jobs",
+    href: "/Candidates/jobs",
   },
-
   {
     title: "Upload Documents",
     description: "Passport, CV and certificates",
     icon: FileText,
-    href: "/Candidate/documents",
+    href: "/Candidates/documents",
   },
-
   {
     title: "My Applications",
     description: "Track your application progress",
     icon: ClipboardList,
-    href: "/Candidate/applications",
+    href: "/Candidates/applications",
   },
-
   {
     title: "Interviews",
     description: "Upcoming interview schedule",
     icon: CalendarDays,
-    href: "/Candidate/interviews",
+    href: "/Candidates/interviews",
   },
-
   {
     title: "Offers",
     description: "View your offer letters",
     icon: BadgeCheck,
-    href: "/Candidate/offers",
+    href: "/Candidates/offers",
   },
 ];
 

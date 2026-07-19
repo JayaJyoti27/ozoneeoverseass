@@ -1,6 +1,6 @@
 import { supabase } from "../../../config/supabase";
-import { DatabaseError } from "../../../utils/AppError";
-
+import { DatabaseError } from "../../../../../src/utils/AppError";
+import { getRecruitmentFunnel } from "./recruitment";
 /*
 |--------------------------------------------------------------------------
 | Admin Dashboard Report
@@ -135,11 +135,17 @@ export async function getPendingOverview() {
 |--------------------------------------------------------------------------
 */
 
+/*
+|--------------------------------------------------------------------------
+| Dashboard Analytics
+|--------------------------------------------------------------------------
+*/
+
 export async function getDashboardAnalytics() {
   const [summary, pending, funnel] = await Promise.all([
     getDashboardReport(),
     getPendingOverview(),
-    ,
+    getRecruitmentFunnel(),
   ]);
 
   return {

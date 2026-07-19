@@ -1,20 +1,23 @@
-import { Outlet } from "@tanstack/react-router";
+import { Outlet, createFileRoute } from "@tanstack/react-router";
 
-import Sidebar from "./Sidebar";
-import Topbar from "./Topbar";
+import AppShell from "@/components/Candidate/Layout/AppShell";
+import { candidateNavigation } from "@/components/Candidate/Layout/navigation";
 
-export default function CandidateLayout() {
+export const Route = createFileRoute("/")({
+  component: CandidateLayout,
+});
+
+function CandidateLayout() {
   return (
-    <div className="flex h-screen w-full bg-background">
-      <Sidebar />
-
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <Topbar />
-
-        <main className="flex-1 overflow-y-auto bg-muted/20 p-6">
-          <Outlet />
-        </main>
-      </div>
-    </div>
+    <AppShell
+      title="Candidate Portal"
+      items={candidateNavigation}
+      user={{
+        name: "Candidate",
+        email: "candidate@example.com",
+      }}
+    >
+      <Outlet />
+    </AppShell>
   );
 }

@@ -32,7 +32,7 @@ export default function EducationSection() {
 
   const [education, setEducation] = useState<Education[]>([
     {
-      id: crypto.randomUUID(),
+      id: Date.now().toString(),
       institution: "",
       degree: "",
       field: "",
@@ -56,7 +56,7 @@ export default function EducationSection() {
       ...prev,
 
       {
-        id: crypto.randomUUID(),
+        id: `${Date.now()}-${Math.random()}`,
         institution: "",
         degree: "",
         field: "",

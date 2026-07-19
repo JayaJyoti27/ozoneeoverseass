@@ -18,17 +18,22 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+import type { CandidateDocument } from "./types";
+
 /* =========================================================
    PROFILE
 ========================================================= */
-
+export const getDashboard = async () => {
+  const response = await api.get("/candidate/dashboard");
+  return response.data.data;
+};
 export const getProfile = async () => {
   const { data } = await api.get("/candidate/profile");
   return data;
 };
 
 export const updateProfile = async (payload: any) => {
-  const { data } = await api.put("/candidate/profile", payload);
+  const { data } = await api.patch("/candidate/profile", payload);
   return data;
 };
 
@@ -70,31 +75,30 @@ export const apply = async (jobId: string) => {
    APPLICATIONS
 ========================================================= */
 
-export const getApplications = async () => {
-  const { data } = await api.get("/candidate/applications");
-  return data;
-};
-
 export const getApplication = async (applicationId: string) => {
   const { data } = await api.get(`/candidate/applications/${applicationId}`);
   return data;
 };
 
 export const withdrawApplication = async (applicationId: string) => {
-  const { data } = await api.post(`/candidate/applications/${applicationId}/withdraw`);
+  const { data } = await api.patch(`/candidate/applications/${applicationId}/withdraw`);
   return data;
+};
+export const getApplications = async () => {
+  const response = await api.get("/candidate/applications");
+  return response.data.data;
 };
 
 /* =========================================================
    DOCUMENTS
 ========================================================= */
 
-import type { CandidateDocument } from "./types";
-
 export const getDocuments = async (): Promise<CandidateDocument[]> => {
-  const { data } = await api.get<CandidateDocument[]>("/candidate/documents");
+  const response = await api.get("/candidate/documents");
 
-  return data;
+  console.log(response.data);
+
+  return response.data.data;
 };
 export const uploadDocument = async (formData: FormData) => {
   const { data } = await api.post("/candidate/documents", formData, {
@@ -116,39 +120,26 @@ export const deleteDocument = async (documentId: string) => {
    INTERVIEWS
 ========================================================= */
 
-export const getInterviews = async () => {
-  const { data } = await api.get("/candidate/interviews");
-  return data;
-};
-
-export const getInterview = async (interviewId: string) => {
-  const { data } = await api.get(`/candidate/interviews/${interviewId}`);
-
-  return data;
-};
-
 /* =========================================================
    OFFERS
 ========================================================= */
 
 export const getOffers = async () => {
-  const { data } = await api.get("/candidate/offers");
-  return data;
+  const response = await api.get("/candidate/offers");
+  return response.data.data;
 };
-
 export const getOffer = async (offerId: string) => {
   const { data } = await api.get(`/candidate/offers/${offerId}`);
   return data;
 };
 
 export const acceptOffer = async (offerId: string) => {
-  const { data } = await api.post(`/candidate/offers/${offerId}/accept`);
-
+  const { data } = await api.patch(`/candidate/offers/${offerId}/accept`);
   return data;
 };
 
 export const rejectOffer = async (offerId: string, reason?: string) => {
-  const { data } = await api.post(`/candidate/offers/${offerId}/reject`, { reason });
+  const { data } = await api.patch(`/candidate/offers/${offerId}/reject`, { reason });
 
   return data;
 };
@@ -158,7 +149,7 @@ export const rejectOffer = async (offerId: string, reason?: string) => {
 ========================================================= */
 
 export const getMedicals = async () => {
-  const { data } = await api.get("/candidate/medical");
+  const { data } = await api.get("/candidate/medicals");
   return data;
 };
 
@@ -167,7 +158,7 @@ export const getMedicals = async () => {
 ========================================================= */
 
 export const getVisaStatus = async () => {
-  const { data } = await api.get("/candidate/visa");
+  const { data } = await api.get("/candidate/visas");
   return data;
 };
 
@@ -176,7 +167,7 @@ export const getVisaStatus = async () => {
 ========================================================= */
 
 export const getDeployment = async () => {
-  const { data } = await api.get("/candidate/deployment");
+  const { data } = await api.get("/candidate/deployments");
   return data;
 };
 
@@ -210,17 +201,16 @@ export const markAllNotificationsRead = async () => {
 
 import type { CandidateDashboard } from "./types";
 
-export const getDashboard = async (): Promise<CandidateDashboard> => {
-  const { data } = await api.get<CandidateDashboard>("/candidate/dashboard");
-
-  return data;
+export const getInterviews = async () => {
+  const response = await api.get("/candidate/interviews");
+  return response.data.data;
 };
 export const getTimeline = async (applicationId: string) => {
   const { data } = await api.get(`/candidate/applications/${applicationId}/timeline`);
   return data;
 };
 export const replaceDocument = async (id: string, formData: FormData) => {
-  const { data } = await api.put(`/candidate/documents/${id}`, formData, {
+  const { data } = await api.patch(`/candidate/documents/${id}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

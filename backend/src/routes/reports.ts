@@ -5,6 +5,7 @@ import {
   getEmployerReport,
   getCandidateReport,
   getRecruitmentReport,
+  exportCandidateReport,
 } from "../controllers/report";
 
 const router = Router();
@@ -14,7 +15,7 @@ const router = Router();
 | Reports
 |--------------------------------------------------------------------------
 */
-
+router.get("/candidates/export", exportCandidateReport);
 router.get("/dashboard", getDashboardReport);
 
 router.get("/employers", getEmployerReport);

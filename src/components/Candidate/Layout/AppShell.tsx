@@ -1,4 +1,4 @@
-import { Outlet } from "@tanstack/react-router";
+import { ReactNode } from "react";
 import AppSidebar, { SidebarItem } from "./AppSidebar";
 import AppTopbar from "./AppTopbar";
 
@@ -9,9 +9,10 @@ interface AppShellProps {
     name: string;
     email: string;
   };
+  children: ReactNode;
 }
 
-export default function AppShell({ title, items, user }: AppShellProps) {
+export default function AppShell({ title, items, user, children }: AppShellProps) {
   return (
     <div className="flex h-screen bg-background">
       <AppSidebar title={title} items={items} user={user} />
@@ -20,9 +21,7 @@ export default function AppShell({ title, items, user }: AppShellProps) {
         <AppTopbar />
 
         <main className="flex-1 overflow-y-auto bg-muted/20 p-6">
-          <div className="mx-auto max-w-7xl">
-            <Outlet />
-          </div>
+          <div className="mx-auto max-w-7xl">{children}</div>
         </main>
       </div>
     </div>
