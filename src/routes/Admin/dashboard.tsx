@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Building2, Users, FileText, BriefcaseBusiness, Loader2 } from "lucide-react";
+import { Building2, Users, FileText, BriefcaseBusiness, Loader2, AlertCircle } from "lucide-react";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { getDashboard } from "@/lib/employer/api";
+import { Button } from "@/components/ui/button";
+import { getDashboard } from "@/lib/admin/api";
 
 export const Route = createFileRoute("/Admin/dashboard")({
   component: Dashboard,
@@ -38,6 +39,7 @@ function StatCard({
 function Dashboard() {
   const [dashboard, setDashboard] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadDashboard();
@@ -45,8 +47,13 @@ function Dashboard() {
 
   async function loadDashboard() {
     try {
+      setLoading(true);
+      setError(null);
       const data = await getDashboard();
       setDashboard(data);
+    } catch (err) {
+      console.error("Failed to load admin dashboard:", err);
+      setError("Couldn't load dashboard data. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -56,6 +63,16 @@ function Dashboard() {
     return (
       <div className="flex h-[70vh] items-center justify-center">
         <Loader2 className="animate-spin" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex h-[70vh] flex-col items-center justify-center gap-4">
+        <AlertCircle className="text-red-500" size={40} />
+        <p className="text-muted-foreground">{error}</p>
+        <Button onClick={loadDashboard}>Retry</Button>
       </div>
     );
   }
