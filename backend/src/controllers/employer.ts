@@ -314,3 +314,9 @@ export async function markAllNotificationsRead(req: Request, res: Response) {
     });
   }
 }
+import { getEmployerCandidate } from "../services/employer/candidate";
+
+export async function getCandidate(req: Request, res: Response) {
+  const data = await getEmployerCandidate(String(req.params.id));
+  res.json(data);
+}

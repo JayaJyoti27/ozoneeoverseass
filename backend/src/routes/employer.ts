@@ -1,28 +1,21 @@
 import { Router } from "express";
 
 import {
-
   getDashboard,
-
   getProfile,
   updateProfile,
-
   getRequirements,
   getRequirement,
   createRequirement,
   updateRequirement,
   withdrawRequirement,
-
   getInterviews,
   confirmInterview,
-
   getDeployments,
   getDeployment,
-
   getNotifications,
   markNotificationRead,
   markAllNotificationsRead,
-
 } from "../controllers/employer";
 
 const router = Router();
@@ -33,10 +26,7 @@ const router = Router();
 |--------------------------------------------------------------------------
 */
 
-router.get(
-  "/dashboard",
-  getDashboard,
-);
+router.get("/dashboard", getDashboard);
 
 /*
 |--------------------------------------------------------------------------
@@ -44,15 +34,9 @@ router.get(
 |--------------------------------------------------------------------------
 */
 
-router.get(
-  "/profile",
-  getProfile,
-);
+router.get("/profile", getProfile);
 
-router.patch(
-  "/profile",
-  updateProfile,
-);
+router.patch("/profile", updateProfile);
 
 /*
 |--------------------------------------------------------------------------
@@ -60,30 +44,15 @@ router.patch(
 |--------------------------------------------------------------------------
 */
 
-router.get(
-  "/requirements",
-  getRequirements,
-);
+router.get("/requirements", getRequirements);
 
-router.post(
-  "/requirements",
-  createRequirement,
-);
+router.post("/requirements", createRequirement);
 
-router.get(
-  "/requirements/:id",
-  getRequirement,
-);
+router.get("/requirements/:id", getRequirement);
 
-router.patch(
-  "/requirements/:id",
-  updateRequirement,
-);
+router.patch("/requirements/:id", updateRequirement);
 
-router.patch(
-  "/requirements/:id/withdraw",
-  withdrawRequirement,
-);
+router.patch("/requirements/:id/withdraw", withdrawRequirement);
 
 /*
 |--------------------------------------------------------------------------
@@ -91,15 +60,9 @@ router.patch(
 |--------------------------------------------------------------------------
 */
 
-router.get(
-  "/interviews",
-  getInterviews,
-);
+router.get("/interviews", getInterviews);
 
-router.patch(
-  "/interviews/:id/confirm",
-  confirmInterview,
-);
+router.patch("/interviews/:id/confirm", confirmInterview);
 
 /*
 |--------------------------------------------------------------------------
@@ -107,15 +70,9 @@ router.patch(
 |--------------------------------------------------------------------------
 */
 
-router.get(
-  "/deployments",
-  getDeployments,
-);
+router.get("/deployments", getDeployments);
 
-router.get(
-  "/deployments/:id",
-  getDeployment,
-);
+router.get("/deployments/:id", getDeployment);
 
 /*
 |--------------------------------------------------------------------------
@@ -123,19 +80,12 @@ router.get(
 |--------------------------------------------------------------------------
 */
 
-router.get(
-  "/notifications",
-  getNotifications,
-);
+router.get("/notifications", getNotifications);
 
-router.patch(
-  "/notifications/read-all",
-  markAllNotificationsRead,
-);
+router.patch("/notifications/read-all", markAllNotificationsRead);
 
-router.patch(
-  "/notifications/:id/read",
-  markNotificationRead,
-);
+router.patch("/notifications/:id/read", markNotificationRead);
+import { getCandidate } from "../controllers/employer";
 
+router.get("/candidates/:id", getCandidate);
 export default router;
