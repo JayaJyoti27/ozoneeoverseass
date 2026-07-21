@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { Briefcase, Users, CalendarDays, Plane } from "lucide-react";
 
 import { StatCard } from "@/components/Employer/Dashboard/StatCard";
-import { dashboardStats } from "@/components/Employer/Dashboard/mock";
 import { RecruitmentPipeline } from "@/components/Employer/Dashboard/RecruitmentPipeline";
 import { QuickActions } from "@/components/Employer/Dashboard/QuickActions";
 
@@ -15,6 +15,13 @@ export const Route = createFileRoute("/Employer/dashboard")({
   component: EmployerDashboard,
 });
 
+const STAT_CONFIG = {
+  activeJobOrders: { title: "Active Job Orders", icon: Briefcase, color: "blue" },
+  totalCandidates: { title: "Candidates", icon: Users, color: "green" },
+  upcomingInterviews: { title: "Interviews", icon: CalendarDays, color: "amber" },
+  deployments: { title: "Deployments", icon: Plane, color: "purple" },
+} as const;
+
 function EmployerDashboard() {
   const [dashboard, setDashboard] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -23,7 +30,6 @@ function EmployerDashboard() {
     async function load() {
       try {
         const data = await getDashboard();
-        console.log(JSON.stringify(data, null, 2));
         setDashboard(data);
       } catch (err) {
         console.error(err);
@@ -61,31 +67,31 @@ function EmployerDashboard() {
       {/* KPI Cards */}
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard
-          title="Active Job Orders"
+          title={STAT_CONFIG.activeJobOrders.title}
           value={dashboard?.dashboard?.activeJobOrders ?? 0}
-          icon={dashboardStats[0].icon}
-          color={dashboardStats[0].color}
+          icon={STAT_CONFIG.activeJobOrders.icon}
+          color={STAT_CONFIG.activeJobOrders.color}
         />
 
         <StatCard
-          title="Candidates"
+          title={STAT_CONFIG.totalCandidates.title}
           value={dashboard?.dashboard?.totalCandidates ?? 0}
-          icon={dashboardStats[1].icon}
-          color={dashboardStats[1].color}
+          icon={STAT_CONFIG.totalCandidates.icon}
+          color={STAT_CONFIG.totalCandidates.color}
         />
 
         <StatCard
-          title="Interviews"
+          title={STAT_CONFIG.upcomingInterviews.title}
           value={dashboard?.dashboard?.upcomingInterviews ?? 0}
-          icon={dashboardStats[2].icon}
-          color={dashboardStats[2].color}
+          icon={STAT_CONFIG.upcomingInterviews.icon}
+          color={STAT_CONFIG.upcomingInterviews.color}
         />
 
         <StatCard
-          title="Deployments"
+          title={STAT_CONFIG.deployments.title}
           value={dashboard?.dashboard?.deployments ?? 0}
-          icon={dashboardStats[3].icon}
-          color={dashboardStats[3].color}
+          icon={STAT_CONFIG.deployments.icon}
+          color={STAT_CONFIG.deployments.color}
         />
       </section>
 

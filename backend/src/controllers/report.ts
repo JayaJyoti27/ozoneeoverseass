@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as ReportService from "../services/admin/reports";
-import { exportCsv } from "../../../src/utils/exportCsv";
+import { exportCsv } from "../utils/exportCsv";
 /*
 |--------------------------------------------------------------------------
 | Dashboard Report

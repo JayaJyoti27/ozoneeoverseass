@@ -1,5 +1,5 @@
 import { supabase } from "../config/supabase";
-import { ConflictError, DatabaseError, NotFoundError } from "../../../src/utils/AppError";
+import { ConflictError, DatabaseError, NotFoundError } from "../utils/AppError";
 
 import { CreateDeploymentDto } from "../validators/deploymentSchema";
 

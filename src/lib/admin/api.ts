@@ -87,12 +87,12 @@ export async function updateJobOrder(id: string, payload: Record<string, any>) {
 }
 
 export async function openRecruitment(id: string) {
-  const res = await api.patch(`/admin/job-orders/${id}/open-recruitment`);
+  const res = await api.patch(`/admin/job-orders/${id}/open`);
   return res.data.data;
 }
 
 export async function closeRecruitment(id: string) {
-  const res = await api.patch(`/admin/job-orders/${id}/close-recruitment`);
+  const res = await api.patch(`/admin/job-orders/${id}/close`);
   return res.data.data;
 }
 
@@ -118,7 +118,7 @@ export async function rejectRequirement(id: string, reason?: string) {
 }
 
 export async function requestClarification(id: string, message: string) {
-  const res = await api.patch(`/admin/requirements/${id}/request-clarification`, {
+  const res = await api.patch(`/admin/requirements/${id}/clarification`, {
     message,
   });
   return res.data.data;

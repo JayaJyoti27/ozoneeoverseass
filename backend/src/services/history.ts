@@ -1,5 +1,5 @@
 import { supabase } from "../config/supabase";
-import { DatabaseError } from "../../../src/utils/AppError";
+import { DatabaseError } from "../utils/AppError";
 
 export async function insertHistory(table: string, payload: Record<string, any>) {
   const { error } = await supabase.from(table).insert(payload);

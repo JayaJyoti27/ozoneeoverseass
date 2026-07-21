@@ -1,31 +1,31 @@
 import { api } from "./api";
 
 export async function getSettings() {
-  const res = await api.get("/admin/settings");
+  const res = await api.get("/settings");
 
   return res.data.data;
 }
 
 export async function updateSettings(payload: any) {
-  const res = await api.put("/admin/settings", payload);
+  const res = await api.put("/settings", payload);
 
   return res.data.data;
 }
 
 export async function getCountries() {
-  const res = await api.get("/admin/settings/countries");
+  const res = await api.get("/settings/countries");
 
   return res.data.data;
 }
 
 export async function getJobCategories() {
-  const res = await api.get("/admin/settings/job-categories");
+  const res = await api.get("/settings/job-categories");
 
   return res.data.data;
 }
 
 export async function getEmailTemplates() {
-  const res = await api.get("/admin/settings/email-templates");
+  const res = await api.get("/settings/email-templates");
 
   return res.data.data;
 }

@@ -34,7 +34,6 @@ import { Route as ServicesDoctorsRouteImport } from './routes/Services/Doctors'
 import { Route as EmployerSettingsRouteImport } from './routes/Employer/settings'
 import { Route as EmployerRegisterRouteImport } from './routes/Employer/register'
 import { Route as EmployerNotificationsRouteImport } from './routes/Employer/notifications'
-import { Route as EmployerJobsRouteImport } from './routes/Employer/jobs'
 import { Route as EmployerJobOrdersRouteImport } from './routes/Employer/job-orders'
 import { Route as EmployerInterviewsRouteImport } from './routes/Employer/interviews'
 import { Route as EmployerDeploymentRouteImport } from './routes/Employer/deployment'
@@ -197,11 +196,6 @@ const EmployerRegisterRoute = EmployerRegisterRouteImport.update({
 const EmployerNotificationsRoute = EmployerNotificationsRouteImport.update({
   id: '/notifications',
   path: '/notifications',
-  getParentRoute: () => EmployerRouteRoute,
-} as any)
-const EmployerJobsRoute = EmployerJobsRouteImport.update({
-  id: '/jobs',
-  path: '/jobs',
   getParentRoute: () => EmployerRouteRoute,
 } as any)
 const EmployerJobOrdersRoute = EmployerJobOrdersRouteImport.update({
@@ -421,7 +415,6 @@ export interface FileRoutesByFullPath {
   '/Employer/deployment': typeof EmployerDeploymentRouteWithChildren
   '/Employer/interviews': typeof EmployerInterviewsRouteWithChildren
   '/Employer/job-orders': typeof EmployerJobOrdersRouteWithChildren
-  '/Employer/jobs': typeof EmployerJobsRoute
   '/Employer/notifications': typeof EmployerNotificationsRoute
   '/Employer/register': typeof EmployerRegisterRoute
   '/Employer/settings': typeof EmployerSettingsRoute
@@ -486,7 +479,6 @@ export interface FileRoutesByTo {
   '/Employer/deployment': typeof EmployerDeploymentRouteWithChildren
   '/Employer/interviews': typeof EmployerInterviewsRouteWithChildren
   '/Employer/job-orders': typeof EmployerJobOrdersRouteWithChildren
-  '/Employer/jobs': typeof EmployerJobsRoute
   '/Employer/notifications': typeof EmployerNotificationsRoute
   '/Employer/register': typeof EmployerRegisterRoute
   '/Employer/settings': typeof EmployerSettingsRoute
@@ -552,7 +544,6 @@ export interface FileRoutesById {
   '/Employer/deployment': typeof EmployerDeploymentRouteWithChildren
   '/Employer/interviews': typeof EmployerInterviewsRouteWithChildren
   '/Employer/job-orders': typeof EmployerJobOrdersRouteWithChildren
-  '/Employer/jobs': typeof EmployerJobsRoute
   '/Employer/notifications': typeof EmployerNotificationsRoute
   '/Employer/register': typeof EmployerRegisterRoute
   '/Employer/settings': typeof EmployerSettingsRoute
@@ -619,7 +610,6 @@ export interface FileRouteTypes {
     | '/Employer/deployment'
     | '/Employer/interviews'
     | '/Employer/job-orders'
-    | '/Employer/jobs'
     | '/Employer/notifications'
     | '/Employer/register'
     | '/Employer/settings'
@@ -684,7 +674,6 @@ export interface FileRouteTypes {
     | '/Employer/deployment'
     | '/Employer/interviews'
     | '/Employer/job-orders'
-    | '/Employer/jobs'
     | '/Employer/notifications'
     | '/Employer/register'
     | '/Employer/settings'
@@ -749,7 +738,6 @@ export interface FileRouteTypes {
     | '/Employer/deployment'
     | '/Employer/interviews'
     | '/Employer/job-orders'
-    | '/Employer/jobs'
     | '/Employer/notifications'
     | '/Employer/register'
     | '/Employer/settings'
@@ -988,13 +976,6 @@ declare module '@tanstack/react-router' {
       path: '/notifications'
       fullPath: '/Employer/notifications'
       preLoaderRoute: typeof EmployerNotificationsRouteImport
-      parentRoute: typeof EmployerRouteRoute
-    }
-    '/Employer/jobs': {
-      id: '/Employer/jobs'
-      path: '/jobs'
-      fullPath: '/Employer/jobs'
-      preLoaderRoute: typeof EmployerJobsRouteImport
       parentRoute: typeof EmployerRouteRoute
     }
     '/Employer/job-orders': {
@@ -1358,7 +1339,6 @@ interface EmployerRouteRouteChildren {
   EmployerDeploymentRoute: typeof EmployerDeploymentRouteWithChildren
   EmployerInterviewsRoute: typeof EmployerInterviewsRouteWithChildren
   EmployerJobOrdersRoute: typeof EmployerJobOrdersRouteWithChildren
-  EmployerJobsRoute: typeof EmployerJobsRoute
   EmployerNotificationsRoute: typeof EmployerNotificationsRoute
   EmployerRegisterRoute: typeof EmployerRegisterRoute
   EmployerSettingsRoute: typeof EmployerSettingsRoute
@@ -1371,7 +1351,6 @@ const EmployerRouteRouteChildren: EmployerRouteRouteChildren = {
   EmployerDeploymentRoute: EmployerDeploymentRouteWithChildren,
   EmployerInterviewsRoute: EmployerInterviewsRouteWithChildren,
   EmployerJobOrdersRoute: EmployerJobOrdersRouteWithChildren,
-  EmployerJobsRoute: EmployerJobsRoute,
   EmployerNotificationsRoute: EmployerNotificationsRoute,
   EmployerRegisterRoute: EmployerRegisterRoute,
   EmployerSettingsRoute: EmployerSettingsRoute,

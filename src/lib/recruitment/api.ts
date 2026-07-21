@@ -209,3 +209,7 @@ export const getInterviews = async (applicationId?: string) => {
 
   return data;
 };
+export const scheduleInterview = async (applicationId: string, payload: any) => {
+  const { data } = await api.post(`/recruitment/applications/${applicationId}/interview`, payload);
+  return data.data;
+};

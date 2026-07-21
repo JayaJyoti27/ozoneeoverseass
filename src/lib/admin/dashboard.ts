@@ -68,11 +68,11 @@ export async function updateJobOrder(id: string, payload: Record<string, any>) {
 }
 
 export async function openRecruitment(id: string) {
-  const res = await api.patch(`/admin/job-orders/${id}/open-recruitment`);
+  const res = await api.patch(`/admin/job-orders/${id}/open`);
   return res.data.data;
 }
 
 export async function closeRecruitment(id: string) {
-  const res = await api.patch(`/admin/job-orders/${id}/close-recruitment`);
+  const res = await api.patch(`/admin/job-orders/${id}/close`);
   return res.data.data;
 }

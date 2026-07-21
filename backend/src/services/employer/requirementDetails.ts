@@ -1,5 +1,5 @@
 import { supabase } from "../../config/supabase";
-import { NotFoundError } from "../../../../src/utils/AppError";
+import { NotFoundError } from "../../utils/AppError";
 
 /*
 |--------------------------------------------------------------------------

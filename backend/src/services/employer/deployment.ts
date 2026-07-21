@@ -1,5 +1,5 @@
 import { supabase } from "../../config/supabase";
-import { DatabaseError, NotFoundError } from "../../../../src/utils/AppError";
+import { DatabaseError, NotFoundError } from "../../utils/AppError";
 
 /*
 |--------------------------------------------------------------------------
@@ -129,7 +129,11 @@ export async function getEmployerDeployment(employerId: string, deploymentId: st
           id,
           visa_number,
           status
-        )
+        ),
+          medical:medical_checkups(
+  id,
+  status
+)
       `,
     )
     .eq("id", deploymentId)
@@ -150,13 +154,18 @@ export async function getEmployerDeployment(employerId: string, deploymentId: st
     .from("deployment_history")
     .select(
       `
+      id,
+      action,
+      old_status,
+      new_status,
+      remarks,
+      created_at,
+      performed_by,
+      performer:users(
         id,
-        action,
-        old_status,
-        new_status,
-        remarks,
-        created_at
-      `,
+        full_name
+      )
+    `,
     )
     .eq("deployment_id", deploymentId)
     .order("created_at");

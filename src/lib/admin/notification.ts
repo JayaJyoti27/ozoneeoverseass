@@ -28,25 +28,25 @@ export async function createNotification(payload: {
 }
 
 export async function markNotificationRead(id: string) {
-  const res = await api.patch(`/admin/notifications/${id}/read`);
+  const res = await api.patch(`/notifications/${id}/read`);
 
   return res.data.data;
 }
 
 export async function markAllNotificationsRead() {
-  const res = await api.patch("/admin/notifications/read-all");
+  const res = await api.patch("/notifications/read-all");
 
   return res.data.data;
 }
 
 export async function getUnreadCount() {
-  const res = await api.get("/admin/notifications/unread-count");
+  const res = await api.get("/notifications/unread-count");
 
   return res.data.data;
 }
 
 export async function deleteNotification(id: string) {
-  const res = await api.delete(`/admin/notifications/${id}`);
+  const res = await api.delete(`/notifications/${id}`);
 
   return res.data.data;
 }
