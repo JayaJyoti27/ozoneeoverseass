@@ -96,13 +96,13 @@ function Hero() {
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <a
-              href="#post"
+              href="/Login"
               className="inline-flex items-center gap-2 rounded-full bg-[color:var(--navy)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_12px_30px_-12px_rgba(11,31,58,0.6)] transition hover:bg-[color:var(--brand)]"
             >
               Post a Requirement <ArrowRight size={16} />
             </a>
             <a
-              href="#pool"
+              href="/Login"
               className="inline-flex items-center gap-2 rounded-full border border-[color:var(--brand)]/40 bg-white px-6 py-3.5 text-sm font-semibold text-[color:var(--brand)] transition hover:border-[color:var(--brand)] hover:bg-[color:var(--brand-soft)]"
             >
               Browse Talent Pool
@@ -285,13 +285,13 @@ function WhyEmployers() {
 
           <div className="mt-9 flex flex-wrap gap-3">
             <a
-              href="#post"
+              href="/Login"
               className="inline-flex items-center gap-2 rounded-full bg-[color:var(--navy)] px-6 py-3 text-sm font-semibold text-white shadow-[0_12px_30px_-12px_rgba(11,31,58,0.6)] transition hover:bg-[color:var(--brand)]"
             >
               Post a Requirement <ArrowRight size={15} />
             </a>
             <a
-              href="#pool"
+              href="/Login"
               className="inline-flex items-center gap-2 rounded-full border border-[color:var(--brand)]/40 bg-white px-6 py-3 text-sm font-semibold text-[color:var(--brand)] transition hover:bg-[color:var(--brand-soft)]"
             >
               Browse Talent Pool
@@ -459,7 +459,7 @@ function Industries() {
 
         <div className="mt-10">
           <a
-            href="#contact"
+            href="/contact"
             className="inline-flex items-center gap-2 font-[family-name:var(--font-display)] text-sm font-semibold text-[color:var(--brand)] hover:text-[color:var(--navy)]"
           >
             Talk to Our Team <ArrowRight size={16} />
@@ -813,7 +813,7 @@ function FinalCTA() {
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a
-                  href="#post"
+                  href="/Login"
                   className="inline-flex items-center gap-2 rounded-full bg-[color:var(--navy)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_12px_30px_-12px_rgba(11,31,58,0.6)] transition hover:bg-[color:var(--brand)]"
                 >
                   Post a Requirement <ArrowRight size={16} />

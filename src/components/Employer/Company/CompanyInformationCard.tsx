@@ -10,6 +10,10 @@ type CompanyProfile = {
   status: string;
   approval_status: string;
   logo_url: string | null;
+  head_office: string | null;
+  employee_count: number | null;
+  website: string | null;
+  license_number: string | null;
 };
 
 export function CompanyInformationCard() {
@@ -54,11 +58,13 @@ export function CompanyInformationCard() {
         <Info label="Status" value={company.status} />
         <Info label="Approval" value={company.approval_status} />
 
-        {/* Backend doesn't provide these yet */}
-        <Info label="City" value="—" />
-        <Info label="Employees" value="—" />
-        <Info label="Website" value="—" />
-        <Info label="License" value="—" />
+        <Info label="City" value={company.head_office ?? "—"} />
+        <Info
+          label="Employees"
+          value={company.employee_count != null ? String(company.employee_count) : "—"}
+        />
+        <Info label="Website" value={company.website ?? "—"} />
+        <Info label="License" value={company.license_number ?? "—"} />
       </CardContent>
     </Card>
   );

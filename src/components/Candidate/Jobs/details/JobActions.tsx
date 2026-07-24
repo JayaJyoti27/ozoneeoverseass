@@ -4,9 +4,7 @@ import { Bookmark, BookmarkCheck, Briefcase, Share2 } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-
-import { useApply, useRemoveSavedJob, useSaveJob } from "@/lib/Candidate/hooks";
-
+import { useApply, useRemoveSavedJob, useSaveJob } from "@/lib/candidate/hooks";
 import type { CandidateJob } from "@/lib/candidate/types";
 
 interface Props {

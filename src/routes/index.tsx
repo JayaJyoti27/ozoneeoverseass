@@ -20,7 +20,17 @@ import {
   Star,
   Mail,
   Phone,
+  Award,
+  Landmark,
+  MapPin,
+  GraduationCap,
+  Languages,
+  HeartPulse,
+  ClipboardCheck,
+  Handshake,
+  Scale,
 } from "lucide-react";
+import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/footer";
 import hero1 from "@/assets/hero-1.jpg";
 import hero2 from "@/assets/hero-2.jpg";
@@ -38,7 +48,8 @@ import ctaPerson from "@/assets/cta-person.jpg";
 import avatar1 from "@/assets/avatar-1.jpg";
 import avatar2 from "@/assets/avatar-2.jpg";
 import avatar3 from "@/assets/avatar-3.jpg";
-import { Header } from "@/components/site/Header";
+import hero from "@/assets/hero.jpg";
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -101,13 +112,15 @@ function Home() {
     <div className="min-h-screen overflow-x-hidden bg-background">
       <Header />
       <Hero />
+      <TrustCredibility />
       <TrustedStrip />
       <WhyTrustUs />
       <WhyChoose />
-
+      <LiveJobs />
       <Industries />
       <MatchEngine />
       <Process />
+      <QualityAssurance />
       <Verticals />
       <Testimonials />
       <CTA />
@@ -155,21 +168,22 @@ function Hero() {
             <ShieldCheck className="h-3.5 w-3.5" /> Govt. of India · MEA Licensed
           </span>
           <h1 className="mt-4 font-display text-4xl font-bold leading-[1.05] text-navy md:text-5xl lg:text-6xl">
-            The Easiest Way
+            Ethical, Compliant
             <br />
-            to Your Next <span className="text-blue">Career</span>
+            <span className="text-blue">International Recruitment</span>
           </h1>
           <p className="mt-4 max-w-xl text-base text-ink md:text-lg">
-            India's MEA-licensed bridge connecting top talent with verified employers across the GCC
-            — fast, screened, and trusted.
+            Ozone Overseas is a Government of India MEA-licensed recruitment partner delivering
+            end-to-end workforce solutions — sourcing, screening, documentation, visa and deployment
+            — for verified employers across the GCC.
           </p>
 
           {/* USP row */}
           <div className="mt-6 grid gap-3 rounded-2xl border border-border bg-white p-4 shadow-[0_10px_40px_-20px_rgba(11,31,58,0.18)] sm:grid-cols-3">
             {[
-              { icon: Clock, label: "48-Hour Shortlisting" },
-              { icon: Globe2, label: "200+ Global Employers" },
-              { icon: Users, label: "5,000+ Placements" },
+              { icon: ShieldCheck, label: "MEA-Licensed & Compliant" },
+              { icon: Scale, label: "Ethical Recruitment" },
+              { icon: Handshake, label: "End-to-End Workforce Solutions" },
             ].map(({ icon: Icon, label }) => (
               <div key={label} className="flex items-center gap-2.5">
                 <span className="grid h-8 w-8 place-items-center rounded-full bg-blue-wash text-blue">
@@ -182,16 +196,22 @@ function Hero() {
 
           <div className="mt-5 flex flex-wrap gap-3">
             <a
-              href="/Employer/candidate"
+              href="/Login"
               className="inline-flex items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white hover:bg-blue transition"
             >
               Hire Talent <ArrowRight className="h-4 w-4" />
             </a>
             <a
-              href="/Candidates/jobs"
+              href="/For-Candidates"
               className="inline-flex items-center gap-2 rounded-full border-2 border-blue px-6 py-3 text-sm font-semibold text-blue hover:bg-blue hover:text-white transition"
             >
-              Get a Job <ArrowRight className="h-4 w-4" />
+              Apply for Jobs <ArrowRight className="h-4 w-4" />
+            </a>
+            <a
+              href="/contact"
+              className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-navy ring-1 ring-border hover:ring-blue transition"
+            >
+              Contact Us <ArrowRight className="h-4 w-4" />
             </a>
           </div>
         </div>
@@ -201,7 +221,7 @@ function Hero() {
           <DotGrid className="absolute top-0 right-0 h-24 w-24" />
           <div className="absolute left-2 top-6 h-[360px] w-[78%] overflow-hidden rounded-[28px] ring-4 ring-blue/30 shadow-[0_30px_60px_-20px_rgba(30,77,140,0.55)]">
             <img
-              src={hero1}
+              src={hero}
               alt="Ozone Overseas recruitment consultant"
               className="h-full w-full object-cover"
               width={800}
@@ -364,7 +384,7 @@ function WhyTrustUs() {
             ))}
           </div>
           <a
-            href="#cta"
+            href="/contact"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white hover:bg-blue transition"
           >
             Get in Touch <ArrowRight className="h-4 w-4" />
@@ -516,7 +536,7 @@ function LiveJobs() {
               Live <span className="text-blue">Openings</span>, Updated Weekly
             </h2>
           </div>
-          <a href="#" className="text-sm font-semibold text-blue hover:text-navy">
+          <a href="/Login" className="text-sm font-semibold text-blue hover:text-navy">
             View all roles →
           </a>
         </div>
@@ -540,7 +560,7 @@ function LiveJobs() {
                   {j.emp}
                 </div>
                 <a
-                  href="#"
+                  href="/Login"
                   className="mt-5 flex items-center justify-between text-sm font-semibold text-navy hover:text-blue"
                 >
                   View Role <ArrowRight className="h-4 w-4" />
@@ -828,7 +848,7 @@ function Process() {
               to your first day on the job abroad.
             </p>
             <a
-              href="/Candidates/dashboard"
+              href="/For-Candidates"
               className="mt-7 inline-flex items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white hover:bg-blue transition"
             >
               Get Started <ArrowRight className="h-4 w-4" />
@@ -1108,13 +1128,13 @@ function CTA() {
           </p>
           <div className="mt-7 flex flex-wrap gap-3">
             <a
-              href="/Employer/candidates"
+              href="/employers"
               className="inline-flex items-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white hover:bg-blue transition"
             >
               Hire Talent <ArrowRight className="h-4 w-4" />
             </a>
             <a
-              href="/Candidates/jobs"
+              href="/For-Candidates"
               className="inline-flex items-center gap-2 rounded-full border-2 border-blue px-6 py-3 text-sm font-semibold text-blue hover:bg-blue hover:text-white transition"
             >
               Apply Now <ArrowRight className="h-4 w-4" />
@@ -1135,3 +1155,188 @@ function CTA() {
 }
 
 /* ---------- 13. footer ---------- */
+
+/* ---------- Trust & Credibility (counters) ---------- */
+
+function TrustCredibility() {
+  const stats = [
+    { icon: Landmark, n: "MEA", l: "Govt. of India Licensed", sub: "Recruitment Licence" },
+    { icon: Award, n: "15+", l: "Years of Experience", sub: "Since 2009" },
+    { icon: MapPin, n: "10+", l: "Countries Served", sub: "GCC & beyond" },
+    { icon: Users, n: "5,000+", l: "Candidates Deployed", sub: "Successfully placed" },
+    { icon: Building2, n: "200+", l: "Global Employer Network", sub: "Verified partners" },
+    { icon: Briefcase, n: "12+", l: "Industry Sectors Served", sub: "Healthcare to Energy" },
+  ];
+  return (
+    <section className="relative overflow-hidden px-6 py-20">
+      <Blob
+        className="absolute -top-24 -right-24 h-[360px] w-[360px] opacity-60"
+        color="var(--blue-wash)"
+      />
+      <Blob
+        className="absolute -bottom-32 -left-24 h-[320px] w-[320px] opacity-50"
+        color="var(--blue-soft)"
+      />
+      <DotGrid className="absolute top-10 left-1/3 h-20 w-20 opacity-70" />
+      <div className="relative mx-auto max-w-7xl">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-widest text-blue">
+              Trust & Credibility
+            </span>
+            <h2 className="mt-3 font-display text-3xl font-bold text-navy md:text-4xl">
+              A Track Record Built on <span className="text-blue">Compliance & Results</span>
+            </h2>
+          </div>
+          <p className="max-w-md text-sm text-ink">
+            Every number below reflects a commitment to ethical practice, government compliance and
+            long-term partnerships with global employers.
+          </p>
+        </div>
+
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {stats.map(({ icon: Icon, n, l, sub }) => (
+            <div
+              key={l}
+              className="group relative overflow-hidden rounded-[24px] border border-border bg-white p-6 shadow-[0_12px_40px_-28px_rgba(11,31,58,0.35)] hover:-translate-y-1 transition"
+            >
+              <div className="flex items-start justify-between">
+                <span className="grid h-12 w-12 place-items-center rounded-2xl bg-blue-wash text-blue">
+                  <Icon className="h-6 w-6" />
+                </span>
+                <TrendingUp className="h-4 w-4 text-blue/40" />
+              </div>
+              <div className="mt-5 font-display text-4xl font-bold text-navy">{n}</div>
+              <div className="mt-1 text-sm font-semibold text-navy">{l}</div>
+              <div className="mt-0.5 text-xs text-ink">{sub}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------- Quality Assurance & Compliance ---------- */
+
+function QualityAssurance() {
+  const items = [
+    {
+      icon: ShieldCheck,
+      t: "Rigorous Pre-Screening",
+      d: "Structured screening of every candidate before any employer sees them.",
+    },
+    {
+      icon: FileCheck2,
+      t: "Qualification & Experience Verification",
+      d: "Credentials, certificates and employment history verified at source.",
+    },
+    {
+      icon: ClipboardCheck,
+      t: "Skill Assessment",
+      d: "Role-specific practical and theoretical assessments.",
+    },
+    {
+      icon: Users,
+      t: "Interview Preparation & Grooming",
+      d: "Coaching and mock interviews before employer rounds.",
+    },
+    {
+      icon: Languages,
+      t: "Language Training Support",
+      d: "English and Arabic support for client-facing roles.",
+    },
+    {
+      icon: GraduationCap,
+      t: "Prometric Coaching (Healthcare)",
+      d: "Structured prep for DHA, HAAD, MOH and SCFHS exams.",
+    },
+    {
+      icon: FileCheck2,
+      t: "Documentation & Visa Support",
+      d: "End-to-end paperwork, attestation and visa processing.",
+    },
+    {
+      icon: HeartPulse,
+      t: "Medical Fitness Coordination",
+      d: "GAMCA-approved medicals scheduled and tracked centrally.",
+    },
+    {
+      icon: Scale,
+      t: "Government Compliance & Ethical Practice",
+      d: "MEA-compliant contracts, zero-fee ethical recruitment for candidates.",
+    },
+    {
+      icon: Plane,
+      t: "Pre-Departure Orientation",
+      d: "Country, culture and role briefings before travel.",
+    },
+    {
+      icon: Handshake,
+      t: "Continuous Employer–Candidate Coordination",
+      d: "Single-point support from offer letter through onboarding.",
+    },
+    {
+      icon: Check,
+      t: "Final Quality Checks Before Deployment",
+      d: "A last verification pass to guarantee deployment-ready talent.",
+    },
+  ];
+  return (
+    <section className="relative overflow-hidden bg-blue-wash px-6 py-24">
+      <Blob
+        className="absolute -top-32 -left-32 h-[420px] w-[420px] opacity-60"
+        color="oklch(0.94 0.025 250)"
+      />
+      <Blob
+        className="absolute -bottom-40 -right-32 h-[460px] w-[460px] opacity-60"
+        color="var(--blue-soft)"
+      />
+      <DotGrid className="absolute top-14 right-14 h-24 w-24 opacity-80" />
+      <svg
+        viewBox="0 0 1440 60"
+        className="absolute inset-x-0 top-0 h-8 w-full text-white"
+        preserveAspectRatio="none"
+        aria-hidden
+      >
+        <path
+          d="M0,30 C240,60 480,0 720,30 C960,60 1200,10 1440,30 L1440,0 L0,0 Z"
+          fill="currentColor"
+        />
+      </svg>
+      <div className="relative mx-auto max-w-7xl">
+        <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
+          <div className="max-w-2xl">
+            <span className="text-xs font-semibold uppercase tracking-widest text-blue">
+              Quality Assurance & Compliance
+            </span>
+            <h2 className="mt-3 font-display text-4xl font-bold leading-tight text-navy md:text-5xl">
+              Qualified. Compliant. <span className="text-blue">Deployment-Ready.</span>
+            </h2>
+          </div>
+          <p className="max-w-md text-sm text-ink">
+            Quality assurance runs through every stage of our recruitment lifecycle — so every
+            candidate we deploy meets the standards of the world's most demanding employers.
+          </p>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {items.map(({ icon: Icon, t, d }) => (
+            <div
+              key={t}
+              className="flex gap-4 rounded-2xl border border-border bg-white p-5 hover:border-blue transition"
+            >
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-blue-wash text-blue">
+                <Icon className="h-5 w-5" />
+              </span>
+              <div>
+                <div className="font-semibold text-navy">{t}</div>
+                <div className="mt-1 text-sm text-ink">{d}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

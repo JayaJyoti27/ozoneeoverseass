@@ -5,6 +5,8 @@ import { getProfile } from "@/lib/employer/api";
 
 type CompanyProfile = {
   contact_person: string;
+  email: string | null;
+  phone: string | null;
 };
 
 export function HRContactCard() {
@@ -57,12 +59,12 @@ export function HRContactCard() {
         <div className="space-y-4">
           <div className="flex items-center gap-3">
             <Mail className="h-5 w-5 text-muted-foreground" />
-            <span>—</span>
+            <span>{profile.email ?? "—"}</span>
           </div>
 
           <div className="flex items-center gap-3">
             <Phone className="h-5 w-5 text-muted-foreground" />
-            <span>—</span>
+            <span>{profile.phone ?? "—"}</span>
           </div>
         </div>
       </CardContent>

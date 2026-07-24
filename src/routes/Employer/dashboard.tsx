@@ -36,6 +36,7 @@ function EmployerDashboard() {
       setLoading(true);
       setError(null);
       const data = await getDashboard();
+      console.log("DASHBOARD API RESPONSE:", JSON.stringify(data, null, 2));
       setDashboard(data);
     } catch (err) {
       console.error("Failed to load employer dashboard:", err);
@@ -96,14 +97,14 @@ function EmployerDashboard() {
 
             <StatCard
               title={STAT_CONFIG.upcomingInterviews.title}
-              value={dashboard?.dashboard?.upcomingInterviews ?? 0}
+              value={dashboard?.dashboard?.interviewsScheduled ?? 0}
               icon={STAT_CONFIG.upcomingInterviews.icon}
               color={STAT_CONFIG.upcomingInterviews.color}
             />
 
             <StatCard
               title={STAT_CONFIG.deployments.title}
-              value={dashboard?.dashboard?.deployments ?? 0}
+              value={dashboard?.dashboard?.candidatesDeployed ?? 0}
               icon={STAT_CONFIG.deployments.icon}
               color={STAT_CONFIG.deployments.color}
             />

@@ -3,7 +3,7 @@ import { BadgeCheck, CalendarDays, Globe } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
-import { useVisas } from "@/lib/Candidate/hooks";
+import { useVisas } from "@/lib/candidate/hooks";
 
 export default function VisaStatusCard() {
   const { data } = useVisas();

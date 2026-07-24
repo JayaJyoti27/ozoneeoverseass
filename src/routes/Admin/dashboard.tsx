@@ -1,10 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Building2, Users, FileText, BriefcaseBusiness, Loader2, AlertCircle } from "lucide-react";
+import {
+  Building2,
+  Users,
+  FileText,
+  BriefcaseBusiness,
+  Loader2,
+  AlertCircle,
+  TrendingUp,
+  ShieldCheck,
+} from "lucide-react";
 
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getDashboard } from "@/lib/admin/api";
+import { DotGrid, Blob } from "@/components/site/decor";
 
 export const Route = createFileRoute("/Admin/dashboard")({
   component: Dashboard,
@@ -14,25 +23,67 @@ function StatCard({
   title,
   value,
   icon: Icon,
+  accent,
 }: {
   title: string;
   value: number | string;
   icon: any;
+  accent: string;
 }) {
   return (
-    <Card>
-      <CardContent className="flex items-center justify-between p-6">
+    <div className="group relative overflow-hidden rounded-[24px] border border-border bg-white p-6 shadow-[0_12px_40px_-28px_rgba(11,31,58,0.35)] transition hover:-translate-y-1">
+      <span className={`absolute inset-x-0 top-0 h-1 ${accent}`} />
+
+      <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm text-muted-foreground">{title}</p>
-
-          <h2 className="mt-2 text-3xl font-bold">{value}</h2>
+          <p className="text-sm font-medium text-ink">{title}</p>
+          <h2 className="mt-2 font-display text-3xl font-bold text-navy">{value}</h2>
         </div>
 
-        <div className="rounded-xl bg-blue-50 p-4">
-          <Icon className="text-blue-600" size={26} />
+        <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-blue-wash text-blue transition group-hover:bg-blue group-hover:text-white">
+          <Icon size={22} />
+        </span>
+      </div>
+
+      <div className="mt-4 flex items-center gap-1 text-xs font-medium text-ink/60">
+        <TrendingUp className="h-3.5 w-3.5 text-emerald-500" />
+        Live data
+      </div>
+    </div>
+  );
+}
+
+function ListPanel({
+  title,
+  emptyLabel,
+  items,
+  renderItem,
+}: {
+  title: string;
+  emptyLabel: string;
+  items: any[];
+  renderItem: (item: any) => React.ReactNode;
+}) {
+  return (
+    <div className="rounded-[24px] border border-border bg-white p-6 shadow-[0_12px_40px_-28px_rgba(11,31,58,0.35)]">
+      <div className="flex items-center justify-between">
+        <h3 className="font-display text-lg font-semibold text-navy">{title}</h3>
+        <span className="rounded-full bg-blue-wash px-2.5 py-1 text-[11px] font-bold text-blue">
+          {items.length}
+        </span>
+      </div>
+
+      {items.length === 0 ? (
+        <div className="mt-6 flex flex-col items-center justify-center gap-2 py-6 text-center">
+          <span className="grid h-11 w-11 place-items-center rounded-full bg-blue-wash text-blue">
+            <FileText size={18} />
+          </span>
+          <p className="text-sm text-ink">{emptyLabel}</p>
         </div>
-      </CardContent>
-    </Card>
+      ) : (
+        <div className="mt-4 space-y-1">{items.map(renderItem)}</div>
+      )}
+    </div>
   );
 }
 
@@ -61,8 +112,9 @@ function Dashboard() {
 
   if (loading) {
     return (
-      <div className="flex h-[70vh] items-center justify-center">
-        <Loader2 className="animate-spin" />
+      <div className="flex h-[70vh] flex-col items-center justify-center gap-3">
+        <Loader2 className="animate-spin text-blue" size={32} />
+        <p className="text-sm text-ink">Loading dashboard…</p>
       </div>
     );
   }
@@ -70,83 +122,118 @@ function Dashboard() {
   if (error) {
     return (
       <div className="flex h-[70vh] flex-col items-center justify-center gap-4">
-        <AlertCircle className="text-red-500" size={40} />
-        <p className="text-muted-foreground">{error}</p>
-        <Button onClick={loadDashboard}>Retry</Button>
+        <span className="grid h-14 w-14 place-items-center rounded-full bg-red-50 text-red-500">
+          <AlertCircle size={28} />
+        </span>
+        <p className="text-ink">{error}</p>
+        <Button onClick={loadDashboard} className="rounded-full bg-navy px-6 hover:bg-blue">
+          Retry
+        </Button>
       </div>
     );
   }
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+      {/* Hero banner — light blue-wash, matching homepage hero */}
+      <div className="relative overflow-hidden rounded-[28px] bg-blue-wash px-8 py-8">
+        <Blob
+          className="-right-16 -top-24 h-72 w-72 opacity-60"
+          color="var(--color-blue-soft, #DCE9FB)"
+        />
+        <DotGrid className="left-8 top-6 h-20 w-24 opacity-70" />
 
-        <p className="text-muted-foreground">Recruitment overview</p>
+        <div className="relative flex items-start justify-between gap-6">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-blue/20 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue backdrop-blur">
+              <ShieldCheck className="h-3.5 w-3.5" /> Overview
+            </span>
+            <h1 className="mt-3 font-display text-3xl font-bold text-navy">Admin Dashboard</h1>
+            <p className="mt-1 text-ink">
+              Recruitment overview across candidates, employers and jobs
+            </p>
+          </div>
+        </div>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-4">
-        <StatCard title="Employers" value={dashboard?.stats?.employers ?? 0} icon={Building2} />
-
-        <StatCard title="Candidates" value={dashboard?.stats?.candidates ?? 0} icon={Users} />
-
+        <StatCard
+          title="Employers"
+          value={dashboard?.statistics?.employers ?? 0}
+          icon={Building2}
+          accent="bg-blue"
+        />
+        <StatCard
+          title="Candidates"
+          value={dashboard?.statistics?.candidates ?? 0}
+          icon={Users}
+          accent="bg-navy"
+        />
         <StatCard
           title="Requirements"
-          value={dashboard?.stats?.requirements ?? 0}
+          value={dashboard?.statistics?.requirements ?? 0}
           icon={FileText}
+          accent="bg-gold"
         />
-
         <StatCard
           title="Job Orders"
-          value={dashboard?.stats?.jobOrders ?? 0}
+          value={dashboard?.statistics?.activeRecruitments ?? 0}
           icon={BriefcaseBusiness}
+          accent="bg-blue-soft"
         />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="mb-4 text-lg font-semibold">Pending Employers</h3>
-
-            {(dashboard?.pendingEmployers ?? []).length === 0 ? (
-              <p className="text-muted-foreground">No pending employers</p>
-            ) : (
-              <div className="space-y-4">
-                {dashboard.pendingEmployers.map((e: any) => (
-                  <div key={e.id} className="flex items-center justify-between border-b pb-3">
-                    <div>
-                      <p className="font-medium">{e.company_name}</p>
-
-                      <p className="text-sm text-muted-foreground">{e.email}</p>
-                    </div>
-                  </div>
-                ))}
+        <ListPanel
+          title="Pending Employers"
+          emptyLabel="No pending employers"
+          items={(dashboard?.recentEmployers ?? []).filter(
+            (e: any) => e.approval_status === "pending",
+          )}
+          renderItem={(e: any) => (
+            <div
+              key={e.id}
+              className="flex items-center justify-between rounded-2xl px-3 py-3 transition hover:bg-blue-wash/50"
+            >
+              <div className="flex items-center gap-3">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-navy font-display text-xs font-bold text-white">
+                  {(e.company_name || "?")
+                    .split(" ")
+                    .map((w: string) => w[0])
+                    .slice(0, 2)
+                    .join("")}
+                </span>
+                <div>
+                  <p className="font-medium text-navy">{e.company_name}</p>
+                  <p className="text-sm text-ink">{e.email}</p>
+                </div>
               </div>
-            )}
-          </CardContent>
-        </Card>
+              <span className="rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-700">
+                Pending
+              </span>
+            </div>
+          )}
+        />
 
-        <Card>
-          <CardContent className="p-6">
-            <h3 className="mb-4 text-lg font-semibold">Pending Requirements</h3>
-
-            {(dashboard?.pendingRequirements ?? []).length === 0 ? (
-              <p className="text-muted-foreground">No pending requirements</p>
-            ) : (
-              <div className="space-y-4">
-                {dashboard.pendingRequirements.map((r: any) => (
-                  <div key={r.id} className="flex items-center justify-between border-b pb-3">
-                    <div>
-                      <p className="font-medium">{r.role}</p>
-
-                      <p className="text-sm text-muted-foreground">{r.company_name}</p>
-                    </div>
-                  </div>
-                ))}
+        <ListPanel
+          title="Pending Requirements"
+          emptyLabel="No pending requirements"
+          items={dashboard?.pendingRequirements ?? []}
+          renderItem={(r: any) => (
+            <div
+              key={r.id}
+              className="flex items-center justify-between rounded-2xl px-3 py-3 transition hover:bg-blue-wash/50"
+            >
+              <div>
+                <p className="font-medium text-navy">{r.role}</p>
+                <p className="text-sm text-ink">{r.company_name}</p>
               </div>
-            )}
-          </CardContent>
-        </Card>
+              <span className="rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-amber-700">
+                Pending
+              </span>
+            </div>
+          )}
+        />
       </div>
     </div>
   );

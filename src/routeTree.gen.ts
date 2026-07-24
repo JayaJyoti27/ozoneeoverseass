@@ -11,9 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivacypolicyRouteImport } from './routes/privacypolicy'
 import { Route as EmployersRouteImport } from './routes/employers'
+import { Route as EmployerRouteImport } from './routes/employer'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CandidateRouteImport } from './routes/candidate'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as LoginRouteImport } from './routes/Login'
 import { Route as HomeRouteImport } from './routes/Home'
+import { Route as ForCandidatesRouteImport } from './routes/For-Candidates'
 import { Route as AdminRouteImport } from './routes/Admin'
 import { Route as EmployerRouteRouteImport } from './routes/Employer/route'
 import { Route as CandidatesRouteRouteImport } from './routes/Candidates/route'
@@ -39,6 +43,11 @@ import { Route as EmployerInterviewsRouteImport } from './routes/Employer/interv
 import { Route as EmployerDeploymentRouteImport } from './routes/Employer/deployment'
 import { Route as EmployerDashboardRouteImport } from './routes/Employer/dashboard'
 import { Route as EmployerCompanyRouteImport } from './routes/Employer/company'
+import { Route as CountryUAERouteImport } from './routes/Country/UAE'
+import { Route as CountrySaudiArabiaRouteImport } from './routes/Country/Saudi-Arabia'
+import { Route as CountryQatarRouteImport } from './routes/Country/Qatar'
+import { Route as CountryOmanRouteImport } from './routes/Country/Oman'
+import { Route as CountryKuwaitRouteImport } from './routes/Country/Kuwait'
 import { Route as CandidatesVisaRouteImport } from './routes/Candidates/visa'
 import { Route as CandidatesProfileRouteImport } from './routes/Candidates/profile'
 import { Route as CandidatesOffersRouteImport } from './routes/Candidates/offers'
@@ -82,9 +91,19 @@ const EmployersRoute = EmployersRouteImport.update({
   path: '/employers',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EmployerRoute = EmployerRouteImport.update({
+  id: '/employer',
+  path: '/employer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CandidateRoute = CandidateRouteImport.update({
+  id: '/candidate',
+  path: '/candidate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -92,9 +111,19 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/Login',
+  path: '/Login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HomeRoute = HomeRouteImport.update({
   id: '/Home',
   path: '/Home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForCandidatesRoute = ForCandidatesRouteImport.update({
+  id: '/For-Candidates',
+  path: '/For-Candidates',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminRoute = AdminRouteImport.update({
@@ -222,6 +251,31 @@ const EmployerCompanyRoute = EmployerCompanyRouteImport.update({
   id: '/company',
   path: '/company',
   getParentRoute: () => EmployerRouteRoute,
+} as any)
+const CountryUAERoute = CountryUAERouteImport.update({
+  id: '/Country/UAE',
+  path: '/Country/UAE',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CountrySaudiArabiaRoute = CountrySaudiArabiaRouteImport.update({
+  id: '/Country/Saudi-Arabia',
+  path: '/Country/Saudi-Arabia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CountryQatarRoute = CountryQatarRouteImport.update({
+  id: '/Country/Qatar',
+  path: '/Country/Qatar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CountryOmanRoute = CountryOmanRouteImport.update({
+  id: '/Country/Oman',
+  path: '/Country/Oman',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CountryKuwaitRoute = CountryKuwaitRouteImport.update({
+  id: '/Country/Kuwait',
+  path: '/Country/Kuwait',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CandidatesVisaRoute = CandidatesVisaRouteImport.update({
   id: '/visa',
@@ -393,9 +447,13 @@ export interface FileRoutesByFullPath {
   '/Candidates': typeof CandidatesRouteRouteWithChildren
   '/Employer': typeof EmployerRouteRouteWithChildren
   '/Admin': typeof AdminRouteWithChildren
+  '/For-Candidates': typeof ForCandidatesRoute
   '/Home': typeof HomeRoute
+  '/Login': typeof LoginRoute
   '/about': typeof AboutRoute
+  '/candidate': typeof CandidateRoute
   '/contact': typeof ContactRoute
+  '/employer': typeof EmployerRoute
   '/employers': typeof EmployersRoute
   '/privacypolicy': typeof PrivacypolicyRoute
   '/Admin/dashboard': typeof AdminDashboardRoute
@@ -410,6 +468,11 @@ export interface FileRoutesByFullPath {
   '/Candidates/offers': typeof CandidatesOffersRoute
   '/Candidates/profile': typeof CandidatesProfileRoute
   '/Candidates/visa': typeof CandidatesVisaRoute
+  '/Country/Kuwait': typeof CountryKuwaitRoute
+  '/Country/Oman': typeof CountryOmanRoute
+  '/Country/Qatar': typeof CountryQatarRoute
+  '/Country/Saudi-Arabia': typeof CountrySaudiArabiaRoute
+  '/Country/UAE': typeof CountryUAERoute
   '/Employer/company': typeof EmployerCompanyRoute
   '/Employer/dashboard': typeof EmployerDashboardRoute
   '/Employer/deployment': typeof EmployerDeploymentRouteWithChildren
@@ -457,9 +520,13 @@ export interface FileRoutesByTo {
   '/Candidates': typeof CandidatesRouteRouteWithChildren
   '/Employer': typeof EmployerRouteRouteWithChildren
   '/Admin': typeof AdminRouteWithChildren
+  '/For-Candidates': typeof ForCandidatesRoute
   '/Home': typeof HomeRoute
+  '/Login': typeof LoginRoute
   '/about': typeof AboutRoute
+  '/candidate': typeof CandidateRoute
   '/contact': typeof ContactRoute
+  '/employer': typeof EmployerRoute
   '/employers': typeof EmployersRoute
   '/privacypolicy': typeof PrivacypolicyRoute
   '/Admin/dashboard': typeof AdminDashboardRoute
@@ -474,6 +541,11 @@ export interface FileRoutesByTo {
   '/Candidates/offers': typeof CandidatesOffersRoute
   '/Candidates/profile': typeof CandidatesProfileRoute
   '/Candidates/visa': typeof CandidatesVisaRoute
+  '/Country/Kuwait': typeof CountryKuwaitRoute
+  '/Country/Oman': typeof CountryOmanRoute
+  '/Country/Qatar': typeof CountryQatarRoute
+  '/Country/Saudi-Arabia': typeof CountrySaudiArabiaRoute
+  '/Country/UAE': typeof CountryUAERoute
   '/Employer/company': typeof EmployerCompanyRoute
   '/Employer/dashboard': typeof EmployerDashboardRoute
   '/Employer/deployment': typeof EmployerDeploymentRouteWithChildren
@@ -522,9 +594,13 @@ export interface FileRoutesById {
   '/Candidates': typeof CandidatesRouteRouteWithChildren
   '/Employer': typeof EmployerRouteRouteWithChildren
   '/Admin': typeof AdminRouteWithChildren
+  '/For-Candidates': typeof ForCandidatesRoute
   '/Home': typeof HomeRoute
+  '/Login': typeof LoginRoute
   '/about': typeof AboutRoute
+  '/candidate': typeof CandidateRoute
   '/contact': typeof ContactRoute
+  '/employer': typeof EmployerRoute
   '/employers': typeof EmployersRoute
   '/privacypolicy': typeof PrivacypolicyRoute
   '/Admin/dashboard': typeof AdminDashboardRoute
@@ -539,6 +615,11 @@ export interface FileRoutesById {
   '/Candidates/offers': typeof CandidatesOffersRoute
   '/Candidates/profile': typeof CandidatesProfileRoute
   '/Candidates/visa': typeof CandidatesVisaRoute
+  '/Country/Kuwait': typeof CountryKuwaitRoute
+  '/Country/Oman': typeof CountryOmanRoute
+  '/Country/Qatar': typeof CountryQatarRoute
+  '/Country/Saudi-Arabia': typeof CountrySaudiArabiaRoute
+  '/Country/UAE': typeof CountryUAERoute
   '/Employer/company': typeof EmployerCompanyRoute
   '/Employer/dashboard': typeof EmployerDashboardRoute
   '/Employer/deployment': typeof EmployerDeploymentRouteWithChildren
@@ -588,9 +669,13 @@ export interface FileRouteTypes {
     | '/Candidates'
     | '/Employer'
     | '/Admin'
+    | '/For-Candidates'
     | '/Home'
+    | '/Login'
     | '/about'
+    | '/candidate'
     | '/contact'
+    | '/employer'
     | '/employers'
     | '/privacypolicy'
     | '/Admin/dashboard'
@@ -605,6 +690,11 @@ export interface FileRouteTypes {
     | '/Candidates/offers'
     | '/Candidates/profile'
     | '/Candidates/visa'
+    | '/Country/Kuwait'
+    | '/Country/Oman'
+    | '/Country/Qatar'
+    | '/Country/Saudi-Arabia'
+    | '/Country/UAE'
     | '/Employer/company'
     | '/Employer/dashboard'
     | '/Employer/deployment'
@@ -652,9 +742,13 @@ export interface FileRouteTypes {
     | '/Candidates'
     | '/Employer'
     | '/Admin'
+    | '/For-Candidates'
     | '/Home'
+    | '/Login'
     | '/about'
+    | '/candidate'
     | '/contact'
+    | '/employer'
     | '/employers'
     | '/privacypolicy'
     | '/Admin/dashboard'
@@ -669,6 +763,11 @@ export interface FileRouteTypes {
     | '/Candidates/offers'
     | '/Candidates/profile'
     | '/Candidates/visa'
+    | '/Country/Kuwait'
+    | '/Country/Oman'
+    | '/Country/Qatar'
+    | '/Country/Saudi-Arabia'
+    | '/Country/UAE'
     | '/Employer/company'
     | '/Employer/dashboard'
     | '/Employer/deployment'
@@ -716,9 +815,13 @@ export interface FileRouteTypes {
     | '/Candidates'
     | '/Employer'
     | '/Admin'
+    | '/For-Candidates'
     | '/Home'
+    | '/Login'
     | '/about'
+    | '/candidate'
     | '/contact'
+    | '/employer'
     | '/employers'
     | '/privacypolicy'
     | '/Admin/dashboard'
@@ -733,6 +836,11 @@ export interface FileRouteTypes {
     | '/Candidates/offers'
     | '/Candidates/profile'
     | '/Candidates/visa'
+    | '/Country/Kuwait'
+    | '/Country/Oman'
+    | '/Country/Qatar'
+    | '/Country/Saudi-Arabia'
+    | '/Country/UAE'
     | '/Employer/company'
     | '/Employer/dashboard'
     | '/Employer/deployment'
@@ -781,11 +889,20 @@ export interface RootRouteChildren {
   CandidatesRouteRoute: typeof CandidatesRouteRouteWithChildren
   EmployerRouteRoute: typeof EmployerRouteRouteWithChildren
   AdminRoute: typeof AdminRouteWithChildren
+  ForCandidatesRoute: typeof ForCandidatesRoute
   HomeRoute: typeof HomeRoute
+  LoginRoute: typeof LoginRoute
   AboutRoute: typeof AboutRoute
+  CandidateRoute: typeof CandidateRoute
   ContactRoute: typeof ContactRoute
+  EmployerRoute: typeof EmployerRoute
   EmployersRoute: typeof EmployersRoute
   PrivacypolicyRoute: typeof PrivacypolicyRoute
+  CountryKuwaitRoute: typeof CountryKuwaitRoute
+  CountryOmanRoute: typeof CountryOmanRoute
+  CountryQatarRoute: typeof CountryQatarRoute
+  CountrySaudiArabiaRoute: typeof CountrySaudiArabiaRoute
+  CountryUAERoute: typeof CountryUAERoute
   ServicesDoctorsRoute: typeof ServicesDoctorsRoute
   ServicesDocumentationRoute: typeof ServicesDocumentationRoute
   ServicesGroomingRoute: typeof ServicesGroomingRoute
@@ -817,11 +934,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/employer': {
+      id: '/employer'
+      path: '/employer'
+      fullPath: '/employer'
+      preLoaderRoute: typeof EmployerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/candidate': {
+      id: '/candidate'
+      path: '/candidate'
+      fullPath: '/candidate'
+      preLoaderRoute: typeof CandidateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -831,11 +962,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/Login': {
+      id: '/Login'
+      path: '/Login'
+      fullPath: '/Login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/Home': {
       id: '/Home'
       path: '/Home'
       fullPath: '/Home'
       preLoaderRoute: typeof HomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/For-Candidates': {
+      id: '/For-Candidates'
+      path: '/For-Candidates'
+      fullPath: '/For-Candidates'
+      preLoaderRoute: typeof ForCandidatesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/Admin': {
@@ -1012,6 +1157,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/Employer/company'
       preLoaderRoute: typeof EmployerCompanyRouteImport
       parentRoute: typeof EmployerRouteRoute
+    }
+    '/Country/UAE': {
+      id: '/Country/UAE'
+      path: '/Country/UAE'
+      fullPath: '/Country/UAE'
+      preLoaderRoute: typeof CountryUAERouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Country/Saudi-Arabia': {
+      id: '/Country/Saudi-Arabia'
+      path: '/Country/Saudi-Arabia'
+      fullPath: '/Country/Saudi-Arabia'
+      preLoaderRoute: typeof CountrySaudiArabiaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Country/Qatar': {
+      id: '/Country/Qatar'
+      path: '/Country/Qatar'
+      fullPath: '/Country/Qatar'
+      preLoaderRoute: typeof CountryQatarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Country/Oman': {
+      id: '/Country/Oman'
+      path: '/Country/Oman'
+      fullPath: '/Country/Oman'
+      preLoaderRoute: typeof CountryOmanRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/Country/Kuwait': {
+      id: '/Country/Kuwait'
+      path: '/Country/Kuwait'
+      fullPath: '/Country/Kuwait'
+      preLoaderRoute: typeof CountryKuwaitRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/Candidates/visa': {
       id: '/Candidates/visa'
@@ -1402,11 +1582,20 @@ const rootRouteChildren: RootRouteChildren = {
   CandidatesRouteRoute: CandidatesRouteRouteWithChildren,
   EmployerRouteRoute: EmployerRouteRouteWithChildren,
   AdminRoute: AdminRouteWithChildren,
+  ForCandidatesRoute: ForCandidatesRoute,
   HomeRoute: HomeRoute,
+  LoginRoute: LoginRoute,
   AboutRoute: AboutRoute,
+  CandidateRoute: CandidateRoute,
   ContactRoute: ContactRoute,
+  EmployerRoute: EmployerRoute,
   EmployersRoute: EmployersRoute,
   PrivacypolicyRoute: PrivacypolicyRoute,
+  CountryKuwaitRoute: CountryKuwaitRoute,
+  CountryOmanRoute: CountryOmanRoute,
+  CountryQatarRoute: CountryQatarRoute,
+  CountrySaudiArabiaRoute: CountrySaudiArabiaRoute,
+  CountryUAERoute: CountryUAERoute,
   ServicesDoctorsRoute: ServicesDoctorsRoute,
   ServicesDocumentationRoute: ServicesDocumentationRoute,
   ServicesGroomingRoute: ServicesGroomingRoute,

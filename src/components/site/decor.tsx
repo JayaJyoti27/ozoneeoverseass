@@ -78,3 +78,33 @@ export function GoldUnderline({ className = "" }: { className?: string }) {
     </svg>
   );
 }
+
+/**
+ * A full-width decorative wave divider, used at section boundaries.
+ * `tone="navy"` renders a wave filled with the navy background color
+ * (for transitioning INTO a navy section); the default renders a wave
+ * filled with the page background (for transitioning OUT of one).
+ */
+export function Waves({
+  className = "",
+  tone = "default",
+}: {
+  className?: string;
+  tone?: "default" | "navy";
+}) {
+  const fill = tone === "navy" ? "var(--navy, #0B1E3C)" : "var(--background, #FFFFFF)";
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 1440 120"
+      preserveAspectRatio="none"
+      className={`pointer-events-none absolute left-0 w-full ${className}`}
+      style={{ height: "80px" }}
+    >
+      <path
+        fill={fill}
+        d="M0,64 C240,110 480,10 720,40 C960,70 1200,110 1440,64 L1440,120 L0,120 Z"
+      />
+    </svg>
+  );
+}

@@ -1,140 +1,169 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useMemo, useState } from "react";
-import { getJobOrders, openRecruitment, closeRecruitment } from "@/lib/admin/api";
-
-import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-
+import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import {
-  Table,
-  TableHeader,
-  TableHead,
-  TableRow,
-  TableBody,
-  TableCell,
-} from "@/components/ui/table";
+  getRequirement,
+  approveRequirement,
+  rejectRequirement,
+  requestClarification,
+  convertRequirement,
+} from "@/lib/admin/api";
 
+import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { DotGrid } from "@/components/site/decor";
 
 export const Route = createFileRoute("/Admin/requirements/$id")({
-  component: JobOrdersPage,
+  component: RequirementDetails,
 });
 
-function JobOrdersPage() {
-  const navigate = useNavigate();
+const STATUS_STYLES: Record<string, string> = {
+  approved: "bg-emerald-50 text-emerald-700",
+  converted: "bg-emerald-50 text-emerald-700",
+  pending: "bg-amber-50 text-amber-700",
+  clarification: "bg-amber-50 text-amber-700",
+  rejected: "bg-red-50 text-red-700",
+};
+
+function StatusPill({ status }: { status?: string }) {
+  const key = (status || "").toLowerCase();
+  return (
+    <span
+      className={`inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
+        STATUS_STYLES[key] ?? "bg-blue-wash text-blue"
+      }`}
+    >
+      {status || "-"}
+    </span>
+  );
+}
+
+function Panel({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="rounded-[24px] border border-border bg-white p-6 shadow-[0_12px_40px_-28px_rgba(11,31,58,0.35)]">
+      <h3 className="font-display text-lg font-semibold text-navy">{title}</h3>
+      <div className="mt-4">{children}</div>
+    </div>
+  );
+}
+
+function RequirementDetails() {
+  const { id } = Route.useParams();
 
   const [loading, setLoading] = useState(true);
-  const [orders, setOrders] = useState<any[]>([]);
-  const [search, setSearch] = useState("");
+  const [requirement, setRequirement] = useState<any>();
 
   useEffect(() => {
-    loadOrders();
-  }, []);
+    load();
+  }, [id]);
 
-  async function loadOrders() {
+  async function load() {
     setLoading(true);
 
     try {
-      const data = await getJobOrders();
-      setOrders(Array.isArray(data) ? data : (data.data ?? []));
+      const data = await getRequirement(id);
+      setRequirement(data.data ?? data);
     } finally {
       setLoading(false);
     }
   }
 
-  async function open(id: string) {
-    await openRecruitment(id);
-    loadOrders();
+  async function approve() {
+    await approveRequirement(id);
+    load();
   }
 
-  async function close(id: string) {
-    await closeRecruitment(id);
-    loadOrders();
+  async function reject() {
+    await rejectRequirement(id, "Rejected by Admin");
+    load();
   }
 
-  const filtered = useMemo(() => {
-    return orders.filter((o) => JSON.stringify(o).toLowerCase().includes(search.toLowerCase()));
-  }, [orders, search]);
+  async function clarify() {
+    await requestClarification(id, "Please provide additional details.");
+    load();
+  }
 
-  if (loading) {
+  async function convert() {
+    await convertRequirement(id);
+    load();
+  }
+
+  if (loading || !requirement)
     return (
-      <div className="flex h-[70vh] items-center justify-center">
-        <Loader2 className="animate-spin" />
+      <div className="flex h-[70vh] flex-col items-center justify-center gap-3">
+        <Loader2 className="animate-spin text-blue" size={32} />
+        <p className="text-sm text-ink">Loading requirement…</p>
       </div>
     );
-  }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Job Orders</h1>
+    <div className="relative space-y-6">
+      <DotGrid className="right-0 top-0 h-20 w-20 opacity-60" />
 
-          <p className="text-muted-foreground">Recruitment management</p>
+      <div className="relative flex items-center justify-between">
+        <div>
+          <span className="text-xs font-semibold uppercase tracking-widest text-blue">
+            Requirement
+          </span>
+          <h1 className="mt-1 font-display text-3xl font-bold text-navy">{requirement.role}</h1>
+          <p className="mt-1 text-ink">{requirement.company_name}</p>
         </div>
 
-        <Input
-          className="w-80"
-          placeholder="Search..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <StatusPill status={requirement.status} />
       </div>
 
-      <Card>
-        <CardContent className="p-0">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Employer</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Country</TableHead>
-                <TableHead>Openings</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
+      <div className="relative grid gap-6 lg:grid-cols-3">
+        <Panel title="Requirement Information">
+          <div className="space-y-3">
+            <Info label="Role" value={requirement.role} />
+            <Info label="Country" value={requirement.country} />
+            <Info label="Sector" value={requirement.sector} />
+            <Info label="Headcount" value={requirement.headcount} />
+            <Info label="Timeline" value={requirement.timeline} />
+          </div>
+        </Panel>
 
-            <TableBody>
-              {filtered.map((job) => (
-                <TableRow
-                  key={job.id}
-                  className="cursor-pointer"
-                  onClick={() =>
-                    navigate({
-                      to: `/Admin/job-orders/${job.id}`,
-                    })
-                  }
-                >
-                  <TableCell>{job.company_name}</TableCell>
+        <Panel title="Details">
+          <div className="space-y-3">
+            <Info label="Submitted By" value={requirement.company_name} />
+            <Info label="Submitted On" value={requirement.created_at} />
+            <Info label="Notes" value={requirement.notes ?? "—"} />
+          </div>
+        </Panel>
 
-                  <TableCell>{job.role}</TableCell>
+        <Panel title="Actions">
+          <div className="space-y-3">
+            <Button className="w-full rounded-full bg-navy hover:bg-blue" onClick={approve}>
+              Approve
+            </Button>
+            <Button
+              variant="secondary"
+              className="w-full rounded-full bg-blue-wash text-blue hover:bg-blue-soft"
+              onClick={clarify}
+            >
+              Request Clarification
+            </Button>
+            <Button
+              variant="outline"
+              className="w-full rounded-full border-border hover:border-blue hover:text-blue"
+              onClick={convert}
+            >
+              Convert to Job Order
+            </Button>
+            <Button variant="destructive" className="w-full rounded-full" onClick={reject}>
+              Reject
+            </Button>
+          </div>
+        </Panel>
+      </div>
+    </div>
+  );
+}
 
-                  <TableCell>{job.country}</TableCell>
-
-                  <TableCell>{job.headcount}</TableCell>
-
-                  <TableCell>
-                    <Badge>{job.status}</Badge>
-                  </TableCell>
-
-                  <TableCell className="space-x-2 text-right" onClick={(e) => e.stopPropagation()}>
-                    <Button size="sm" onClick={() => open(job.id)}>
-                      Open
-                    </Button>
-
-                    <Button size="sm" variant="destructive" onClick={() => close(job.id)}>
-                      Close
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
+function Info({ label, value }: { label: string; value?: string | number }) {
+  return (
+    <div className="flex items-center justify-between rounded-2xl bg-blue-wash/40 px-4 py-3">
+      <span className="text-sm font-medium text-navy">{label}</span>
+      <span className="text-sm text-ink">{value ?? "-"}</span>
     </div>
   );
 }

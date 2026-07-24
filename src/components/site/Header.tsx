@@ -6,9 +6,9 @@ import { Menu, X, ChevronDown, MessageCircle } from "lucide-react";
 // NOTE: paths below match routeTree.gen.ts exactly (case-sensitive).
 
 const CANDIDATE_SERVICES = [
-  { label: "For Candidates", to: "/Candidates/candidate", desc: "Overview & how it works" },
-  { label: "Browse Jobs", to: "/Jobs", desc: "42+ live roles across 17 countries" },
-  { label: "My Dashboard", to: "/Candidates/dashboard", desc: "Track applications & profile" },
+  { label: "For Candidates", to: "/For-Candidates", desc: "Overview & how it works" },
+  { label: "Browse Jobs", to: "/Candidates/jobs", desc: "42+ live roles across 17 countries" },
+  { label: "My Dashboard", to: "/Login", desc: "Track applications & profile" },
   { label: "Nursing Careers", to: "/Services/Nursing-rec", desc: "ICU, OT, Staff Nurse & more" },
   {
     label: "Prometric Coaching",
@@ -31,8 +31,8 @@ const CANDIDATE_SERVICES = [
 ];
 
 const EMPLOYER_SERVICES = [
-  { label: "For Employers", to: "/Employer/employer", desc: "Overview & how we work" },
-  { label: "My Dashboard", to: "/Employer/dashboard", desc: "First shortlist in 48 hours" },
+  { label: "For Employers", to: "/employers", desc: "Overview & how we work" },
+  { label: "My Dashboard", to: "/Login", desc: "First shortlist in 48 hours" },
   {
     label: "Healthcare Recruitment",
     to: "/Services/Healthcare-rec",
@@ -54,8 +54,15 @@ const EMPLOYER_SERVICES = [
   { label: "Documentation", to: "/Services/Documentation", desc: "Fully managed, in-house" },
 ];
 
-const ADMIN_SERVICES = [
-  { label: "For Admin", to: "/Admin/dashboard", desc: "Internal admin dashboard" },
+const ADMIN_SERVICES = [{ label: "For Admin", to: "/Login", desc: "Internal admin dashboard" }];
+
+const COUNTRY_LINKS = [
+  { label: "Kuwait", to: "/Country/Kuwait" },
+  { label: "Oman", to: "/Country/Oman" },
+  { label: "Qatar", to: "/Country/Qatar" },
+  { label: "Saudi Arabia", to: "/Country/Saudi-Arabia" },
+  { label: "UAE", to: "/Country/UAE" },
+  // Terms removed — no /terms route exists yet. Add back once that page is built.
 ];
 
 const COMPANY_LINKS = [
@@ -69,7 +76,7 @@ type DropdownKey = "countries" | "candidates" | "employers" | "admin" | "company
 
 // ─── Panels ───────────────────────────────────────────────────────────────────
 
-function ServicePanel({ items }: { items: { label: string; to: string; desc: string }[] }) {
+function ServicePanel({ items }: { items: { label: string; to: string; desc?: string }[] }) {
   return (
     <div className="w-72 rounded-2xl border border-blue/15 bg-card p-2 shadow-elevated">
       {items.map((item) => (
@@ -211,13 +218,15 @@ export function Header() {
           </Link>
 
           <nav className="hidden items-center gap-0.5 lg:flex">
-            <Link
-              to="/Candidates/jobs"
-              className="rounded-full px-4 py-2 text-sm font-semibold text-navy/80 transition-colors hover:bg-lightblue hover:text-navy"
-              activeProps={{ className: "bg-lightblue text-navy" }}
+            <DropdownTrigger
+              label="Country"
+              id="countries"
+              open={open}
+              onEnter={handleEnter}
+              onLeave={handleLeave}
             >
-              Jobs
-            </Link>
+              <ServicePanel items={COUNTRY_LINKS} />
+            </DropdownTrigger>
 
             <DropdownTrigger
               label="Candidates"
@@ -282,6 +291,7 @@ export function Header() {
           </button>
         </div>
       </header>
+
       {mobileOpen && (
         <div className="fixed inset-0 z-40 flex lg:hidden">
           <div
@@ -309,13 +319,14 @@ export function Header() {
                 expanded={mobileExpanded === "countries"}
                 onToggle={() => toggleMobile("countries")}
               >
-                <p className="px-3 pt-1 pb-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                  GCC & Asia
-                </p>
-
-                <p className="px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-                  Europe & Beyond
-                </p>
+                {COUNTRY_LINKS.map((c) => (
+                  <MobileLink
+                    key={c.to + c.label}
+                    to={c.to}
+                    label={c.label}
+                    onClick={() => setMobileOpen(false)}
+                  />
+                ))}
               </MobileGroup>
 
               <MobileGroup
@@ -390,7 +401,7 @@ export function Header() {
                 Chat on WhatsApp
               </a>
               <Link
-                to="/Candidates/jobs"
+                to="/Jobs"
                 onClick={() => setMobileOpen(false)}
                 className="block rounded-full bg-navy py-2.5 text-center text-sm font-semibold text-navy-foreground"
               >

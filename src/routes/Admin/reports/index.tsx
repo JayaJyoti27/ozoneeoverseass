@@ -1,31 +1,58 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-
 import {
-  getDashboardReport,
-  getCandidateReport,
-  getEmployerReport,
-  getRecruitmentReport,
-} from "@/lib/admin/reports";
+  BarChart3,
+  Building2,
+  Users,
+  FileText,
+  BriefcaseBusiness,
+  Loader2,
+  AlertCircle,
+} from "lucide-react";
+
 import { Button } from "@/components/ui/button";
-import { downloadBlob } from "@/utils/download";
-import { exportCandidateReport } from "@/lib/admin/reports";
-import SimpleBarChart from "./SimpleBarChart";
-import StatCard from "./StatCard";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { getDashboard } from "@/lib/admin/api";
+import { DotGrid, Blob } from "@/components/site/decor";
 
 export const Route = createFileRoute("/Admin/reports/")({
   component: ReportsPage,
 });
 
+function Panel({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="rounded-[24px] border border-border bg-white p-6 shadow-[0_12px_40px_-28px_rgba(11,31,58,0.35)]">
+      <h3 className="font-display text-lg font-semibold text-navy">{title}</h3>
+      <div className="mt-4">{children}</div>
+    </div>
+  );
+}
+
+function ReportRow({
+  label,
+  value,
+  icon: Icon,
+}: {
+  label: string;
+  value: number | string;
+  icon: any;
+}) {
+  return (
+    <div className="flex items-center justify-between rounded-2xl bg-blue-wash/40 px-4 py-3">
+      <div className="flex items-center gap-3">
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-blue-wash text-blue">
+          <Icon size={16} />
+        </span>
+        <span className="text-sm font-medium text-navy">{label}</span>
+      </div>
+      <span className="font-display text-lg font-bold text-navy">{value}</span>
+    </div>
+  );
+}
+
 function ReportsPage() {
   const [dashboard, setDashboard] = useState<any>(null);
-  const [candidate, setCandidate] = useState<any>(null);
-  const [employer, setEmployer] = useState<any>(null);
-  const [recruitment, setRecruitment] = useState<any>(null);
-
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadReports();
@@ -33,210 +60,90 @@ function ReportsPage() {
 
   async function loadReports() {
     try {
-      const [d, c, e, r] = await Promise.all([
-        getDashboardReport(),
-        getCandidateReport(),
-        getEmployerReport(),
-        getRecruitmentReport(),
-      ]);
-
-      setDashboard(d);
-      setCandidate(c);
-      setEmployer(e);
-      setRecruitment(r);
+      setLoading(true);
+      setError(null);
+      const data = await getDashboard();
+      setDashboard(data);
+    } catch (err) {
+      console.error("Failed to load reports:", err);
+      setError("Couldn't load report data. Please try again.");
     } finally {
       setLoading(false);
     }
   }
 
   if (loading) {
-    return <div className="p-8">Loading reports...</div>;
+    return (
+      <div className="flex h-[70vh] flex-col items-center justify-center gap-3">
+        <Loader2 className="animate-spin text-blue" size={32} />
+        <p className="text-sm text-ink">Loading reports…</p>
+      </div>
+    );
   }
 
+  if (error) {
+    return (
+      <div className="flex h-[70vh] flex-col items-center justify-center gap-4">
+        <span className="grid h-14 w-14 place-items-center rounded-full bg-red-50 text-red-500">
+          <AlertCircle size={28} />
+        </span>
+        <p className="text-ink">{error}</p>
+        <Button onClick={loadReports} className="rounded-full bg-navy px-6 hover:bg-blue">
+          Retry
+        </Button>
+      </div>
+    );
+  }
+
+  const totals = [
+    { label: "Total Employers", value: dashboard?.stats?.employers ?? 0, icon: Building2 },
+    { label: "Total Candidates", value: dashboard?.stats?.candidates ?? 0, icon: Users },
+    { label: "Total Requirements", value: dashboard?.stats?.requirements ?? 0, icon: FileText },
+    {
+      label: "Total Job Orders",
+      value: dashboard?.stats?.jobOrders ?? 0,
+      icon: BriefcaseBusiness,
+    },
+  ];
+
+  const pendingEmployers = dashboard?.pendingEmployers?.length ?? 0;
+  const pendingRequirements = dashboard?.pendingRequirements?.length ?? 0;
+
   return (
-    <div className="space-y-6 p-6">
-      <h1 className="text-3xl font-bold">Reports</h1>
+    <div className="space-y-8">
+      {/* Hero banner — matches Dashboard */}
+      <div className="relative overflow-hidden rounded-[28px] bg-blue-wash px-8 py-8">
+        <Blob
+          className="-right-16 -top-24 h-72 w-72 opacity-60"
+          color="var(--color-blue-soft, #DCE9FB)"
+        />
+        <DotGrid className="left-8 top-6 h-20 w-24 opacity-70" />
 
-      <Tabs defaultValue="dashboard">
-        <TabsList>
-          <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+        <div className="relative">
+          <span className="inline-flex items-center gap-2 rounded-full border border-blue/20 bg-white/80 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-blue backdrop-blur">
+            <BarChart3 className="h-3.5 w-3.5" /> Reports
+          </span>
+          <h1 className="mt-3 font-display text-3xl font-bold text-navy">Reports</h1>
+          <p className="mt-1 text-ink">Platform-wide totals and pending activity</p>
+        </div>
+      </div>
 
-          <TabsTrigger value="candidate">Candidates</TabsTrigger>
-
-          <TabsTrigger value="employer">Employers</TabsTrigger>
-
-          <TabsTrigger value="recruitment">Recruitment</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="dashboard">
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            <StatCard title="Employers" value={dashboard.summary.employers} />
-
-            <StatCard title="Candidates" value={dashboard.summary.candidates} />
-
-            <StatCard title="Requirements" value={dashboard.summary.requirements} />
-
-            <StatCard title="Job Orders" value={dashboard.summary.jobOrders} />
-
-            <StatCard title="Applications" value={dashboard.summary.applications} />
-
-            <StatCard title="Interviews" value={dashboard.summary.interviews} />
-
-            <StatCard title="Medicals" value={dashboard.summary.medicals} />
-
-            <StatCard title="Visas" value={dashboard.summary.visas} />
-
-            <StatCard title="Deployments" value={dashboard.summary.deployments} />
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Panel title="Platform Totals">
+          <div className="space-y-3">
+            {totals.map((t) => (
+              <ReportRow key={t.label} label={t.label} value={t.value} icon={t.icon} />
+            ))}
           </div>
-        </TabsContent>
+        </Panel>
 
-        <TabsContent value="candidate">
-          <div className="space-y-6">
-            <div className="flex justify-end">
-              <Button
-                onClick={async () => {
-                  const blob = await exportCandidateReport();
-                  downloadBlob(blob, "candidate-report.csv");
-                }}
-              >
-                Export CSV
-              </Button>
-            </div>
-
-            {/*
-              TODO: candidate report content goes here.
-              The original file was cut off with "..." at this point, so I don't
-              know the real shape of `candidate` (e.g. candidate.summary.total,
-              candidate.skills, etc). Tell me the fields on the candidate report
-              object and I'll wire up StatCards / charts to match the other tabs.
-            */}
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-              {candidate?.summary &&
-                Object.entries(candidate.summary).map(([key, value]) => (
-                  <StatCard key={key} title={key} value={value as number} />
-                ))}
-            </div>
+        <Panel title="Pending Review">
+          <div className="space-y-3">
+            <ReportRow label="Pending Employers" value={pendingEmployers} icon={Building2} />
+            <ReportRow label="Pending Requirements" value={pendingRequirements} icon={FileText} />
           </div>
-        </TabsContent>
-
-        <TabsContent value="employer">
-          <div className="space-y-6">
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-              <StatCard title="Total Employers" value={employer.summary.total} />
-              <StatCard title="Active" value={employer.summary.active} />
-              <StatCard title="Pending Approval" value={employer.summary.pending} />
-              <StatCard title="Suspended" value={employer.summary.suspended} />
-            </div>
-
-            <CardContent>
-              <SimpleBarChart
-                data={Object.entries(employer.countries).map(([name, value]) => ({
-                  name,
-                  value: value as number,
-                }))}
-              />
-            </CardContent>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Approval Status</CardTitle>
-              </CardHeader>
-
-              <CardContent>
-                <div className="space-y-2">
-                  {Object.entries(employer.approval).map(([status, count]) => (
-                    <div key={status} className="flex items-center justify-between border-b pb-2">
-                      <span>{status}</span>
-                      <span className="font-semibold">{count as number}</span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Top Employers</CardTitle>
-              </CardHeader>
-
-              <CardContent>
-                <div className="space-y-2">
-                  {employer.topEmployers.map((item: any) => (
-                    <div
-                      key={item.employerId}
-                      className="flex items-center justify-between border-b pb-2"
-                    >
-                      <span>{item.companyName}</span>
-                      <span className="font-semibold">{item.totalJobs} Jobs</span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="recruitment">
-          <div className="space-y-6">
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
-              <StatCard title="Applications" value={recruitment.summary.applications} />
-
-              <StatCard title="Interviews" value={recruitment.summary.interviews} />
-
-              <StatCard title="Medicals" value={recruitment.summary.medicals} />
-
-              <StatCard title="Visas" value={recruitment.summary.visas} />
-
-              <StatCard title="Deployments" value={recruitment.summary.deployments} />
-            </div>
-
-            <CardContent>
-              <SimpleBarChart
-                data={Object.entries(recruitment.funnel).map(([name, value]) => ({
-                  name,
-                  value: value as number,
-                }))}
-              />
-            </CardContent>
-
-            <CardContent>
-              <SimpleBarChart
-                data={Object.entries(recruitment.medicals).map(([name, value]) => ({
-                  name,
-                  value: value as number,
-                }))}
-              />
-            </CardContent>
-
-            <CardContent>
-              <SimpleBarChart
-                data={Object.entries(recruitment.visas).map(([name, value]) => ({
-                  name,
-                  value: value as number,
-                }))}
-              />
-            </CardContent>
-
-            <CardContent>
-              <SimpleBarChart
-                data={Object.entries(recruitment.deployments).map(([name, value]) => ({
-                  name,
-                  value: value as number,
-                }))}
-              />
-            </CardContent>
-
-            <CardContent>
-              <SimpleBarChart
-                data={Object.entries(recruitment.monthly).map(([name, value]) => ({
-                  name,
-                  value: value as number,
-                }))}
-              />
-            </CardContent>
-          </div>
-        </TabsContent>
-      </Tabs>
+        </Panel>
+      </div>
     </div>
   );
 }

@@ -2,14 +2,43 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { getEmployer, approveEmployer, suspendEmployer, activateEmployer } from "@/lib/admin/api";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Loader2 } from "lucide-react";
+import { DotGrid } from "@/components/site/decor";
 
 export const Route = createFileRoute("/Admin/employers/$id")({
   component: EmployerDetails,
 });
+
+const STATUS_STYLES: Record<string, string> = {
+  active: "bg-emerald-50 text-emerald-700",
+  approved: "bg-emerald-50 text-emerald-700",
+  pending: "bg-amber-50 text-amber-700",
+  suspended: "bg-red-50 text-red-700",
+  rejected: "bg-red-50 text-red-700",
+};
+
+function StatusPill({ status }: { status?: string }) {
+  const key = (status || "").toLowerCase();
+  return (
+    <span
+      className={`inline-block rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
+        STATUS_STYLES[key] ?? "bg-blue-wash text-blue"
+      }`}
+    >
+      {status || "-"}
+    </span>
+  );
+}
+
+function Panel({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="rounded-[24px] border border-border bg-white p-6 shadow-[0_12px_40px_-28px_rgba(11,31,58,0.35)]">
+      <h3 className="font-display text-lg font-semibold text-navy">{title}</h3>
+      <div className="mt-4">{children}</div>
+    </div>
+  );
+}
 
 function EmployerDetails() {
   const { id } = Route.useParams();
@@ -49,105 +78,93 @@ function EmployerDetails() {
 
   if (loading) {
     return (
-      <div className="flex h-[70vh] items-center justify-center">
-        <Loader2 className="animate-spin" />
+      <div className="flex h-[70vh] flex-col items-center justify-center gap-3">
+        <Loader2 className="animate-spin text-blue" size={32} />
+        <p className="text-sm text-ink">Loading employer…</p>
       </div>
     );
   }
 
   if (!employer) {
-    return <p>Employer not found.</p>;
+    return <p className="text-ink">Employer not found.</p>;
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">{employer.company_name}</h1>
+    <div className="relative space-y-6">
+      <DotGrid className="right-0 top-0 h-20 w-20 opacity-60" />
 
-          <p className="text-muted-foreground">Employer Details</p>
+      <div className="relative flex items-center justify-between">
+        <div>
+          <span className="text-xs font-semibold uppercase tracking-widest text-blue">
+            Employer Details
+          </span>
+          <h1 className="mt-1 font-display text-3xl font-bold text-navy">
+            {employer.company_name}
+          </h1>
         </div>
 
-        <Badge>{employer.status}</Badge>
+        <StatusPill status={employer.status} />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Company Information</CardTitle>
-          </CardHeader>
-
-          <CardContent className="space-y-3">
+      <div className="relative grid gap-6 lg:grid-cols-2">
+        <Panel title="Company Information">
+          <div className="space-y-3">
             <Info label="Company" value={employer.company_name} />
-
             <Info label="Email" value={employer.email} />
-
             <Info label="Country" value={employer.country} />
-
             <Info label="Phone" value={employer.phone} />
-
             <Info label="Website" value={employer.website} />
-          </CardContent>
-        </Card>
+          </div>
+        </Panel>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Actions</CardTitle>
-          </CardHeader>
-
-          <CardContent className="space-y-4">
-            <Button className="w-full" onClick={approve}>
+        <Panel title="Actions">
+          <div className="space-y-3">
+            <Button className="w-full rounded-full bg-navy hover:bg-blue" onClick={approve}>
               Approve Employer
             </Button>
-
-            <Button variant="secondary" className="w-full" onClick={activate}>
+            <Button
+              variant="secondary"
+              className="w-full rounded-full bg-blue-wash text-blue hover:bg-blue-soft"
+              onClick={activate}
+            >
               Activate Employer
             </Button>
-
-            <Button variant="destructive" className="w-full" onClick={suspend}>
+            <Button variant="destructive" className="w-full rounded-full" onClick={suspend}>
               Suspend Employer
             </Button>
-          </CardContent>
-        </Card>
+          </div>
+        </Panel>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Submitted Requirements</CardTitle>
-        </CardHeader>
-
-        <CardContent>
-          {employer.requirements?.length ? (
-            <div className="space-y-3">
-              {employer.requirements.map((req: any) => (
-                <div key={req.id} className="rounded-lg border p-4">
-                  <div className="flex justify-between">
-                    <div>
-                      <h4 className="font-semibold">{req.role}</h4>
-
-                      <p className="text-sm text-muted-foreground">{req.country}</p>
-                    </div>
-
-                    <Badge>{req.status}</Badge>
-                  </div>
+      <Panel title="Submitted Requirements">
+        {employer.requirements?.length ? (
+          <div className="space-y-3">
+            {employer.requirements.map((req: any) => (
+              <div
+                key={req.id}
+                className="flex items-center justify-between rounded-2xl border border-border p-4 transition hover:border-blue"
+              >
+                <div>
+                  <h4 className="font-semibold text-navy">{req.role}</h4>
+                  <p className="text-sm text-ink">{req.country}</p>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-muted-foreground">No requirements submitted.</p>
-          )}
-        </CardContent>
-      </Card>
+                <StatusPill status={req.status} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-sm text-ink">No requirements submitted.</p>
+        )}
+      </Panel>
     </div>
   );
 }
 
 function Info({ label, value }: { label: string; value?: string }) {
   return (
-    <div className="flex justify-between border-b pb-2">
-      <span className="font-medium">{label}</span>
-
-      <span className="text-muted-foreground">{value || "-"}</span>
+    <div className="flex items-center justify-between rounded-2xl bg-blue-wash/40 px-4 py-3">
+      <span className="text-sm font-medium text-navy">{label}</span>
+      <span className="text-sm text-ink">{value || "-"}</span>
     </div>
   );
 }

@@ -4,6 +4,7 @@ export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   withCredentials: true,
 });
+console.log("VITE_API_URL is:", import.meta.env.VITE_API_URL);
 
 /*
 |--------------------------------------------------------------------------
@@ -12,10 +13,10 @@ export const api = axios.create({
 */
 
 export async function getDashboard() {
-  const { data } = await api.get("/employer/dashboard");
-  return data.data;
+  const response = await api.get("/employer/dashboard");
+  console.log("RAW DASHBOARD RESPONSE:", JSON.stringify(response.data, null, 2)); // ADD THIS
+  return response.data.data;
 }
-
 /*
 |--------------------------------------------------------------------------
 | Profile

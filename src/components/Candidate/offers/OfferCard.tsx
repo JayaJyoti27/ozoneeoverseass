@@ -4,9 +4,8 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
-import { useAcceptOffer, useRejectOffer } from "@/lib/Candidate/hooks";
-
-import type { CandidateOffer } from "@/lib/candidate/types";
+import { useAcceptOffer, useRejectOffer } from "@/lib/candidate/hooks";
+import type { CandidateOffer } from "@/lib/candidate/hooks";
 
 interface Props {
   offer: CandidateOffer;

@@ -19,8 +19,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 import { Button } from "@/components/ui/button";
-
-import { useApply, useRemoveSavedJob, useSaveJob } from "@/lib/Candidate/hooks";
+import { useApply, useRemoveSavedJob, useSaveJob } from "@/lib/candidate/hooks";
 import type { CandidateJob } from "@/lib/candidate/types";
 
 interface Props {
