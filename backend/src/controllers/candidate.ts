@@ -663,3 +663,65 @@ export async function getTimeline(req: Request, res: Response) {
     });
   }
 }
+
+/*
+|--------------------------------------------------------------------------
+| Notifications
+|--------------------------------------------------------------------------
+*/
+
+export async function getNotifications(req: Request, res: Response) {
+  try {
+    const data = await CandidateService.getCandidateNotifications({
+      candidateId: DEMO_CANDIDATE_ID,
+      page: Number(req.query.page) || 1,
+      limit: Number(req.query.limit) || 20,
+      unreadOnly: req.query.unreadOnly === "true",
+    });
+
+    res.json({
+      success: true,
+      ...data,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+}
+
+export async function markNotificationRead(req: Request, res: Response) {
+  try {
+    const data = await CandidateService.markNotificationRead(
+      DEMO_CANDIDATE_ID,
+      String(req.params.id),
+    );
+
+    res.json({
+      success: true,
+      data,
+    });
+  } catch (err: any) {
+    res.status(404).json({
+      success: false,
+      message: err.message,
+    });
+  }
+}
+
+export async function markAllNotificationsRead(req: Request, res: Response) {
+  try {
+    const data = await CandidateService.markAllNotificationsRead(DEMO_CANDIDATE_ID);
+
+    res.json({
+      success: true,
+      data,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+}

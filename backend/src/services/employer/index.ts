@@ -23,6 +23,7 @@ export * from "./profile";
 export * from "./requirement";
 
 export * from "./requirementDetails";
+export * from "./documents";
 /*
 |--------------------------------------------------------------------------
 | Interviews

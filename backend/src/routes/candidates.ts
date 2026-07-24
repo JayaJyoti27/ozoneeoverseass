@@ -57,8 +57,11 @@ import {
 
   // Timeline
   getTimeline,
+  getNotifications,
+  markNotificationRead,
+  markAllNotificationsRead,
 } from "../controllers/candidate";
-import { getNotifications, markAsRead, markAllAsRead } from "../controllers/notifications";
+
 const router = Router();
 
 /*
@@ -198,6 +201,7 @@ router.get("/deployments/:id", getDeployment);
 router.get("/timeline", getTimeline);
 
 router.get("/notifications", getNotifications);
-router.patch("/notifications/:id/read", markAsRead);
-router.patch("/notifications/read-all", markAllAsRead);
+router.patch("/notifications/:id/read", markNotificationRead);
+router.patch("/notifications/read-all", markAllNotificationsRead);
+
 export default router;

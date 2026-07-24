@@ -9,3 +9,4 @@ export * from "./medical";
 export * from "./visa";
 export * from "./deployment";
 export * from "./timeline";
+export * from "./notifications";

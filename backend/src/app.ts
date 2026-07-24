@@ -36,7 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (_req, res) => {
   res.json({ success: true, message: "Ozone Backend Running 🚀" });
 });
-
+app.listen(3001, () => console.log("running"));
 // All API routes
 app.use("/api", routes);
 

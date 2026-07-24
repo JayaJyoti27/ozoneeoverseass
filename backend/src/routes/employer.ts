@@ -16,6 +16,7 @@ import {
   getNotifications,
   markNotificationRead,
   markAllNotificationsRead,
+  getDocuments,
 } from "../controllers/employer";
 
 const router = Router();
@@ -88,4 +89,5 @@ router.patch("/notifications/:id/read", markNotificationRead);
 import { getCandidate } from "../controllers/employer";
 
 router.get("/candidates/:id", getCandidate);
+router.get("/documents", getDocuments);
 export default router;

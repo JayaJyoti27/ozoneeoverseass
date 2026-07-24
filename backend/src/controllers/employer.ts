@@ -9,6 +9,22 @@ const DEMO_EMPLOYER_ID = "3d730a29-057f-4588-9c03-0df22e724c3a";
 |--------------------------------------------------------------------------
 */
 
+export async function getDocuments(req: Request, res: Response) {
+  try {
+    const data = await EmployerService.getEmployerDocuments(DEMO_EMPLOYER_ID);
+
+    return res.json({
+      success: true,
+      data,
+    });
+  } catch (err: any) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+}
+
 export async function getDashboard(req: Request, res: Response) {
   try {
     const data = await EmployerService.getEmployerDashboard(DEMO_EMPLOYER_ID);
