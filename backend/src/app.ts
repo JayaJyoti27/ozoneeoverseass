@@ -36,8 +36,9 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/", (_req, res) => {
   res.json({ success: true, message: "Ozone Backend Running 🚀" });
 });
-app.listen(3001, () => console.log("running"));
 // All API routes
+const port = Number(process.env.PORT) || 3001;
+app.listen(port, () => console.log(`running on port ${port}`));
 app.use("/api", routes);
 
 // 404
