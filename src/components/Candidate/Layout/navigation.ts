@@ -2,16 +2,12 @@ import {
   Home,
   User,
   Briefcase,
-  Bookmark,
   ClipboardList,
   FileText,
   CalendarClock,
   BadgeCheck,
-  HeartPulse,
-  Plane,
   PlaneTakeoff,
   Bell,
-  Settings,
 } from "lucide-react";
 
 export const candidateNavigation = [
@@ -56,21 +52,7 @@ export const candidateNavigation = [
     icon: BadgeCheck,
     href: "/Candidates/offers",
   },
-  {
-    title: "Medical",
-    icon: HeartPulse,
-    href: "/Candidates/medical",
-  },
-  {
-    title: "Visa",
-    icon: Plane,
-    href: "/Candidates/visa",
-  },
-  {
-    title: "Deployment",
-    icon: PlaneTakeoff,
-    href: "/Candidates/deployment",
-  },
+
   {
     title: "Notifications",
     icon: Bell,
