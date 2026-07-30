@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface DocumentStatsData {
   total: number;
-  verified: number;
+
   pending: number;
   required: number;
 }
@@ -22,12 +22,7 @@ export default function DocumentStats({ stats, loading }: DocumentStatsProps) {
       description: "Uploaded",
       icon: FileText,
     },
-    {
-      title: "Verified",
-      value: stats?.verified ?? 0,
-      description: "Approved",
-      icon: CheckCircle2,
-    },
+
     {
       title: "Pending Review",
       value: stats?.pending ?? 0,
