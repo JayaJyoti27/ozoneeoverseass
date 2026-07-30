@@ -10,14 +10,18 @@ export const upload = multer({
   },
 
   fileFilter(req, file, cb) {
-    if (
-      file.mimetype === "application/pdf" ||
-      file.mimetype === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ||
-      file.mimetype === "application/msword"
-    ) {
+    const allowed = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "image/png",
+      "image/jpeg",
+    ];
+
+    if (allowed.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error("Only PDF and Word documents are allowed."));
+      cb(new Error("Only PDF, Word, PNG, or JPG files are allowed."));
     }
   },
 });

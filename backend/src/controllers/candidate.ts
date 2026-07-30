@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as CandidateService from "../services/candidates";
-
+import * as StorageService from "../services/storage";
 /*
 |--------------------------------------------------------------------------
 | Dashboard
@@ -299,7 +299,44 @@ export async function getDocument(req: Request, res: Response) {
 
 export async function uploadDocument(req: Request, res: Response) {
   try {
-    const data = await CandidateService.uploadCandidateDocument(req.candidateId!, req.body);
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "No file was uploaded.",
+      });
+    }
+
+    const documentType = req.body?.document_type;
+
+    if (!documentType) {
+      return res.status(400).json({
+        success: false,
+        message: "document_type is required.",
+      });
+    }
+
+    const candidateId = req.candidateId!;
+    const path = `${candidateId}/${documentType}/${Date.now()}-${req.file.originalname}`;
+
+    // This helper already existed in services/storage.ts but was never
+    // called anywhere — it uploads the buffer to Supabase Storage and
+    // returns the public URL.
+    const publicUrl = await StorageService.uploadDocument(
+      "candidate-documents",
+      path,
+      req.file.buffer,
+      req.file.mimetype,
+    );
+
+    const data = await CandidateService.uploadCandidateDocument(candidateId, {
+      document_type: documentType,
+      file_name: req.file.originalname,
+      original_file_name: req.file.originalname,
+      mime_type: req.file.mimetype,
+      file_size: req.file.size,
+      storage_path: path,
+      public_url: publicUrl,
+    });
 
     res.status(201).json({
       success: true,
@@ -312,7 +349,6 @@ export async function uploadDocument(req: Request, res: Response) {
     });
   }
 }
-
 export async function replaceDocument(req: Request, res: Response) {
   try {
     const data = await CandidateService.replaceCandidateDocument(

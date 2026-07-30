@@ -1,5 +1,5 @@
 import { Router } from "express";
-
+import { upload } from "../middleware/upload";
 import {
   // Dashboard
   getDashboard,
@@ -127,7 +127,7 @@ router.get("/documents", getDocuments);
 
 router.get("/documents/:id", getDocument);
 
-router.post("/documents", uploadDocument);
+router.post("/documents", upload.single("file"), uploadDocument);
 
 router.patch("/documents/:id", replaceDocument);
 
