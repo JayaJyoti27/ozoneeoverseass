@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { verifyAuth, requireRole } from "../middleware/verifyAuth";
 
 import {
   getDashboard,
@@ -20,6 +21,8 @@ import {
 } from "../controllers/employer";
 import { getCandidate, getCandidates } from "../controllers/employer";
 const router = Router();
+
+router.use(verifyAuth, requireRole("employer"));
 
 /*
 |--------------------------------------------------------------------------

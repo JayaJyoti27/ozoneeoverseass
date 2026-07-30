@@ -1,9 +1,7 @@
 import { supabase } from "../../config/supabase";
 import { DatabaseError, NotFoundError } from "../../utils/AppError";
 
-const DEMO_EMPLOYER_ID = "3d730a29-057f-4588-9c03-0df22e724c3a"; // match your existing employer.ts constant exactly
-
-export async function getEmployerCandidate(candidateId: string) {
+export async function getEmployerCandidate(candidateId: string, employerId: string) {
   // Scope check: candidate must have an application tied to one of this employer's job orders
   const { data: applications, error: appError } = await supabase
     .from("applications")
@@ -22,7 +20,7 @@ export async function getEmployerCandidate(candidateId: string) {
       `,
     )
     .eq("candidate_id", candidateId)
-    .eq("job.employer_id", DEMO_EMPLOYER_ID)
+    .eq("job.employer_id", employerId)
     .order("created_at", { ascending: false });
 
   if (appError) throw new DatabaseError("Unable to fetch candidate applications.", appError);
