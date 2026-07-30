@@ -28,12 +28,6 @@ export default function ProfileSidebar({ candidate }: Props) {
     <Card className="sticky top-6 rounded-2xl p-6">
       <h2 className="font-semibold">Profile Completion</h2>
 
-      <Progress className="mt-5" value={percent} />
-
-      <div className="mt-4 text-center">
-        <p className="text-4xl font-bold">{percent}%</p>
-      </div>
-
       <div className="mt-8 space-y-3 text-sm">
         {checklist.map((item) => (
           <div key={item.label} className={item.done ? "" : "text-muted-foreground"}>
