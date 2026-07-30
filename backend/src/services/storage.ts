@@ -13,7 +13,7 @@ export async function uploadDocument(
   });
 
   if (error) {
-    throw new DatabaseError("Unable to upload document.", error);
+    throw new DatabaseError(`Unable to upload document: ${error.message}`, error);
   }
 
   const {
