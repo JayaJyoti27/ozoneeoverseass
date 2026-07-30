@@ -19,6 +19,42 @@ export interface Candidate {
   passport_number?: string;
 
   profile_completion?: number;
+
+  education?: EducationEntry[];
+
+  experience?: ExperienceEntry[];
+
+  skills?: string[];
+
+  languages?: LanguageEntry[];
+}
+
+export interface EducationEntry {
+  id: string;
+  institution: string;
+  degree: string;
+  field: string;
+  country: string;
+  start_year: string;
+  end_year: string;
+  grade: string;
+}
+
+export interface ExperienceEntry {
+  id: string;
+  company: string;
+  designation: string;
+  location: string;
+  start_date: string;
+  end_date: string;
+  currently_working: boolean;
+  description: string;
+}
+
+export interface LanguageEntry {
+  id: string;
+  language: string;
+  proficiency: string;
 }
 
 /* ==========================================================

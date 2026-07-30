@@ -55,21 +55,24 @@ export async function getProfileCompletion(candidateId: string) {
   const profile = await getCandidateProfile(candidateId);
 
   const fields = [
-    profile.first_name,
-    profile.last_name,
+    profile.full_name,
     profile.email,
     profile.phone,
     profile.gender,
-    profile.date_of_birth,
+    profile.dob,
     profile.passport_number,
     profile.current_location,
     profile.nationality,
     profile.education,
     profile.experience,
     profile.skills,
+    profile.languages,
   ];
 
-  const completed = fields.filter(Boolean).length;
+  // education/experience/skills/languages are jsonb arrays — an empty
+  // array is still "truthy" in JS, so don't count them as filled unless
+  // they actually have entries.
+  const completed = fields.filter((f) => (Array.isArray(f) ? f.length > 0 : Boolean(f))).length;
 
   return {
     completion: Math.round((completed / fields.length) * 100),

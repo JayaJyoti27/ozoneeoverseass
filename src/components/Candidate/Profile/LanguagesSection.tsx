@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Languages, Plus, Trash2 } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
@@ -13,26 +13,36 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface Language {
-  id: string;
-  language: string;
-  proficiency: string;
-}
+import { useUpdateProfile } from "@/lib/candidate/hooks";
+import type { Candidate, LanguageEntry } from "@/lib/candidate/types";
 
 const PROFICIENCIES = ["Native", "Fluent", "Professional", "Intermediate", "Basic"];
 
-export default function LanguagesSection() {
+interface Props {
+  candidate: Candidate;
+}
+
+export default function LanguagesSection({ candidate }: Props) {
   const [language, setLanguage] = useState("");
-
   const [proficiency, setProficiency] = useState("Intermediate");
+  const [languages, setLanguages] = useState<LanguageEntry[]>(candidate.languages ?? []);
 
-  const [languages, setLanguages] = useState<Language[]>([]);
+  const updateProfile = useUpdateProfile();
+
+  useEffect(() => {
+    setLanguages(candidate.languages ?? []);
+  }, [candidate]);
+
+  async function persist(next: LanguageEntry[]) {
+    setLanguages(next);
+    await updateProfile.mutateAsync({ languages: next });
+  }
 
   function addLanguage() {
     if (!language.trim()) return;
 
-    setLanguages((prev) => [
-      ...prev,
+    persist([
+      ...languages,
       {
         id: crypto.randomUUID(),
         language,
@@ -45,14 +55,13 @@ export default function LanguagesSection() {
   }
 
   function remove(id: string) {
-    setLanguages((prev) => prev.filter((x) => x.id !== id));
+    persist(languages.filter((x) => x.id !== id));
   }
 
   return (
     <Card className="rounded-2xl p-6">
       <div className="mb-6 flex items-center gap-2">
         <Languages className="h-5 w-5" />
-
         <h2 className="text-xl font-semibold">Languages</h2>
       </div>
 
@@ -77,7 +86,7 @@ export default function LanguagesSection() {
           </SelectContent>
         </Select>
 
-        <Button onClick={addLanguage}>
+        <Button onClick={addLanguage} disabled={updateProfile.isPending}>
           <Plus className="mr-2 h-4 w-4" />
           Add Language
         </Button>
@@ -94,7 +103,6 @@ export default function LanguagesSection() {
           <Card key={item.id} className="flex items-center justify-between p-4">
             <div>
               <h3 className="font-semibold">{item.language}</h3>
-
               <p className="text-sm text-muted-foreground">{item.proficiency}</p>
             </div>
 

@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus, Trash2, Wrench } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+
+import { useUpdateProfile } from "@/lib/candidate/hooks";
+import type { Candidate } from "@/lib/candidate/types";
 
 const suggestedSkills = [
   "Welding",
@@ -26,31 +29,42 @@ const suggestedSkills = [
   "AutoCAD",
 ];
 
-export default function SkillsSection() {
-  const [skills, setSkills] = useState<string[]>([]);
+interface Props {
+  candidate: Candidate;
+}
+
+export default function SkillsSection({ candidate }: Props) {
+  const [skills, setSkills] = useState<string[]>(candidate.skills ?? []);
   const [input, setInput] = useState("");
+
+  const updateProfile = useUpdateProfile();
+
+  useEffect(() => {
+    setSkills(candidate.skills ?? []);
+  }, [candidate]);
+
+  async function persist(next: string[]) {
+    setSkills(next);
+    await updateProfile.mutateAsync({ skills: next });
+  }
 
   function addSkill(skill: string) {
     const value = skill.trim();
-
     if (!value) return;
-
     if (skills.includes(value)) return;
 
-    setSkills([...skills, value]);
-
+    persist([...skills, value]);
     setInput("");
   }
 
   function removeSkill(skill: string) {
-    setSkills(skills.filter((s) => s !== skill));
+    persist(skills.filter((s) => s !== skill));
   }
 
   return (
     <Card className="rounded-2xl p-6">
       <div className="mb-6 flex items-center gap-2">
         <Wrench className="h-5 w-5" />
-
         <h2 className="text-xl font-semibold">Skills</h2>
       </div>
 
@@ -62,13 +76,12 @@ export default function SkillsSection() {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
-
               addSkill(input);
             }
           }}
         />
 
-        <Button onClick={() => addSkill(input)}>
+        <Button onClick={() => addSkill(input)} disabled={updateProfile.isPending}>
           <Plus className="mr-2 h-4 w-4" />
           Add
         </Button>
@@ -79,7 +92,6 @@ export default function SkillsSection() {
           {skills.map((skill) => (
             <Badge key={skill} className="flex items-center gap-2 px-3 py-2">
               {skill}
-
               <Trash2 className="h-3 w-3 cursor-pointer" onClick={() => removeSkill(skill)} />
             </Badge>
           ))}

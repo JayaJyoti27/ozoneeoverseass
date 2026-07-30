@@ -40,13 +40,13 @@ function CandidateProfile() {
 
         <PassportInformation candidate={data.data} />
 
-        <EducationSection />
+        <EducationSection candidate={data.data} />
 
-        <ExperienceSection />
+        <ExperienceSection candidate={data.data} />
 
-        <SkillsSection />
+        <SkillsSection candidate={data.data} />
 
-        <LanguagesSection />
+        <LanguagesSection candidate={data.data} />
 
         <ResumeSection />
 

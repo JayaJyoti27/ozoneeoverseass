@@ -1,75 +1,72 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GraduationCap, Pencil, Plus, Trash2, Save, X } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
-
 import { Button } from "@/components/ui/button";
-
 import { Input } from "@/components/ui/input";
-
 import { Label } from "@/components/ui/label";
 
-interface Education {
-  id: string;
+import { useUpdateProfile } from "@/lib/candidate/hooks";
+import type { Candidate, EducationEntry } from "@/lib/candidate/types";
 
-  institution: string;
-
-  degree: string;
-
-  field: string;
-
-  country: string;
-
-  start_year: string;
-
-  end_year: string;
-
-  grade: string;
+function emptyEntry(): EducationEntry {
+  return {
+    id: `${Date.now()}-${Math.random()}`,
+    institution: "",
+    degree: "",
+    field: "",
+    country: "",
+    start_year: "",
+    end_year: "",
+    grade: "",
+  };
 }
 
-export default function EducationSection() {
+interface Props {
+  candidate: Candidate;
+}
+
+export default function EducationSection({ candidate }: Props) {
   const [editing, setEditing] = useState(false);
+  const [education, setEducation] = useState<EducationEntry[]>(
+    candidate.education?.length ? candidate.education : [emptyEntry()],
+  );
 
-  const [education, setEducation] = useState<Education[]>([
-    {
-      id: Date.now().toString(),
-      institution: "",
-      degree: "",
-      field: "",
-      country: "",
-      start_year: "",
-      end_year: "",
-      grade: "",
-    },
-  ]);
+  const updateProfile = useUpdateProfile();
 
-  function update(index: number, key: keyof Education, value: string) {
+  // Keep local state in sync with the server whenever the candidate data
+  // changes underneath us (e.g. after a successful save elsewhere).
+  useEffect(() => {
+    setEducation(candidate.education?.length ? candidate.education : [emptyEntry()]);
+  }, [candidate]);
+
+  function update(index: number, key: keyof EducationEntry, value: string) {
     const copy = [...education];
-
-    copy[index][key] = value;
-
+    copy[index] = { ...copy[index], [key]: value };
     setEducation(copy);
   }
 
   function addEducation() {
-    setEducation((prev) => [
-      ...prev,
-
-      {
-        id: `${Date.now()}-${Math.random()}`,
-        institution: "",
-        degree: "",
-        field: "",
-        country: "",
-        start_year: "",
-        end_year: "",
-        grade: "",
-      },
-    ]);
+    setEducation((prev) => [...prev, emptyEntry()]);
   }
 
   function removeEducation(id: string) {
     setEducation((prev) => prev.filter((x) => x.id !== id));
+  }
+
+  async function handleSave() {
+    // Drop fully-blank rows before saving.
+    const cleaned = education.filter(
+      (e) => e.institution.trim() || e.degree.trim() || e.field.trim(),
+    );
+    await updateProfile.mutateAsync({ education: cleaned });
+    setEducation(cleaned.length ? cleaned : [emptyEntry()]);
+    setEditing(false);
+  }
+
+  function handleCancel() {
+    setEducation(candidate.education?.length ? candidate.education : [emptyEntry()]);
+    setEditing(false);
   }
 
   return (
@@ -91,12 +88,12 @@ export default function EducationSection() {
           </Button>
         ) : (
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => setEditing(false)}>
+            <Button variant="outline" onClick={handleCancel}>
               <X className="mr-2 h-4 w-4" />
               Cancel
             </Button>
 
-            <Button>
+            <Button onClick={handleSave} disabled={updateProfile.isPending}>
               <Save className="mr-2 h-4 w-4" />
               Save
             </Button>
@@ -120,7 +117,6 @@ export default function EducationSection() {
             <div className="grid gap-5 md:grid-cols-2">
               <div>
                 <Label>Institution</Label>
-
                 <Input
                   disabled={!editing}
                   value={item.institution}
@@ -130,7 +126,6 @@ export default function EducationSection() {
 
               <div>
                 <Label>Degree</Label>
-
                 <Input
                   disabled={!editing}
                   value={item.degree}
@@ -140,7 +135,6 @@ export default function EducationSection() {
 
               <div>
                 <Label>Field of Study</Label>
-
                 <Input
                   disabled={!editing}
                   value={item.field}
@@ -150,7 +144,6 @@ export default function EducationSection() {
 
               <div>
                 <Label>Country</Label>
-
                 <Input
                   disabled={!editing}
                   value={item.country}
@@ -160,7 +153,6 @@ export default function EducationSection() {
 
               <div>
                 <Label>Start Year</Label>
-
                 <Input
                   disabled={!editing}
                   value={item.start_year}
@@ -170,7 +162,6 @@ export default function EducationSection() {
 
               <div>
                 <Label>End Year</Label>
-
                 <Input
                   disabled={!editing}
                   value={item.end_year}
@@ -180,7 +171,6 @@ export default function EducationSection() {
 
               <div>
                 <Label>Grade / CGPA</Label>
-
                 <Input
                   disabled={!editing}
                   value={item.grade}

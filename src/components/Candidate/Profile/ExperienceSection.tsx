@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Briefcase, Pencil, Plus, Trash2, Save, X } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
@@ -7,59 +7,62 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-interface Experience {
-  id: string;
-  company: string;
-  designation: string;
-  location: string;
-  start_date: string;
-  end_date: string;
-  currently_working: boolean;
-  description: string;
+import { useUpdateProfile } from "@/lib/candidate/hooks";
+import type { Candidate, ExperienceEntry } from "@/lib/candidate/types";
+
+function emptyEntry(): ExperienceEntry {
+  return {
+    id: `${Date.now()}-${Math.random()}`,
+    company: "",
+    designation: "",
+    location: "",
+    start_date: "",
+    end_date: "",
+    currently_working: false,
+    description: "",
+  };
 }
 
-export default function ExperienceSection() {
+interface Props {
+  candidate: Candidate;
+}
+
+export default function ExperienceSection({ candidate }: Props) {
   const [editing, setEditing] = useState(false);
+  const [experience, setExperience] = useState<ExperienceEntry[]>(
+    candidate.experience?.length ? candidate.experience : [emptyEntry()],
+  );
 
-  const [experience, setExperience] = useState<Experience[]>([
-    {
-      id: `${Date.now()}-${Math.random()}`,
-      company: "",
-      designation: "",
-      location: "",
-      start_date: "",
-      end_date: "",
-      currently_working: false,
-      description: "",
-    },
-  ]);
+  const updateProfile = useUpdateProfile();
 
-  function update<K extends keyof Experience>(index: number, key: K, value: Experience[K]) {
+  useEffect(() => {
+    setExperience(candidate.experience?.length ? candidate.experience : [emptyEntry()]);
+  }, [candidate]);
+
+  function update<K extends keyof ExperienceEntry>(index: number, key: K, value: ExperienceEntry[K]) {
     const copy = [...experience];
-
-    copy[index][key] = value;
-
+    copy[index] = { ...copy[index], [key]: value };
     setExperience(copy);
   }
 
   function addExperience() {
-    setExperience((prev) => [
-      ...prev,
-      {
-        id: `${Date.now()}-${Math.random()}`,
-        company: "",
-        designation: "",
-        location: "",
-        start_date: "",
-        end_date: "",
-        currently_working: false,
-        description: "",
-      },
-    ]);
+    setExperience((prev) => [...prev, emptyEntry()]);
   }
 
   function removeExperience(id: string) {
     setExperience((prev) => prev.filter((x) => x.id !== id));
+  }
+
+  async function handleSave() {
+    const cleaned = experience.filter((e) => e.company.trim() || e.designation.trim());
+    await updateProfile.mutateAsync({ experience: cleaned });
+    setExperience(cleaned.length ? cleaned : [emptyEntry()]);
+    setEditing(false);
+  }
+
+  function handleCancel() {
+    setExperience(candidate.experience?.length ? candidate.experience : [emptyEntry()]);
+    setEditing(false);
   }
 
   return (
@@ -81,12 +84,12 @@ export default function ExperienceSection() {
           </Button>
         ) : (
           <div className="flex gap-2">
-            <Button variant="outline" onClick={() => setEditing(false)}>
+            <Button variant="outline" onClick={handleCancel}>
               <X className="mr-2 h-4 w-4" />
               Cancel
             </Button>
 
-            <Button>
+            <Button onClick={handleSave} disabled={updateProfile.isPending}>
               <Save className="mr-2 h-4 w-4" />
               Save
             </Button>
@@ -158,7 +161,6 @@ export default function ExperienceSection() {
 
             <div className="mt-5">
               <Label>Job Description</Label>
-
               <Textarea
                 disabled={!editing}
                 value={item.description}
