@@ -15,8 +15,6 @@ export default function DashboardStats({ dashboard }: Props) {
       <StatCard title="Upcoming Interviews" value={dashboard.interviews} icon={CalendarDays} />
 
       <StatCard title="Offers Received" value={dashboard.offers} icon={FileCheck} />
-
-      <StatCard title="Deployment Status" value={dashboard.deploymentStatus} icon={PlaneTakeoff} />
     </div>
   );
 }

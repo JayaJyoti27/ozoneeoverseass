@@ -6,7 +6,6 @@ import RecentApplications from "@/components/Candidate/Dashboard/RecentApplicati
 import UpcomingInterview from "@/components/Candidate/Dashboard/UpcomingInterview";
 import MedicalCard from "@/components/Candidate/Dashboard/MedicalCard";
 import VisaCard from "@/components/Candidate/Dashboard/VisaCard";
-import DeploymentCard from "@/components/Candidate/Dashboard/DeploymentCard";
 import RecentActivity from "@/components/Candidate/Dashboard/RecentActivity";
 import QuickActions from "@/components/Candidate/Dashboard/QuickActions";
 import DashboardSkeleton from "@/components/Candidate/Dashboard/DashboardSkeleton";
@@ -53,8 +52,6 @@ function CandidateDashboard() {
           <MedicalCard />
 
           <VisaCard />
-
-          <DeploymentCard />
 
           <QuickActions />
         </div>
