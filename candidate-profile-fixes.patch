@@ -1,0 +1,308 @@
+From 1a9dbe0abaaf755ffb5fa9c9d3a8fa44b713f27e Mon Sep 17 00:00:00 2001
+From: Claude <claude@anthropic.com>
+Date: Thu, 30 Jul 2026 07:44:06 +0000
+Subject: [PATCH] Fix Passport section and Profile Completion sidebar not
+ saving/displaying real data
+
+- PassportInformation: passport number, country, issue date, expiry date were
+  uncontrolled inputs (defaultValue only) with no onChange, and Save had no
+  onClick. Nothing ever persisted except the file upload itself. Wired to
+  candidate.passport_number/nationality via useUpdateProfile, added
+  passport_issue_date/passport_expiry_date columns + migration since they
+  didn't exist anywhere in the schema.
+- ProfileSidebar: was reading candidate.profile_completion, a field that's
+  never attached to the /candidate/profile response (completion is a
+  separate endpoint nothing called). Percentage was permanently stuck. Now
+  uses useProfileCompletion() for the real number, and the checklist below
+  it reflects actual saved data instead of hardcoded static checkmarks.
+---
+ .../Candidate/Profile/PassportInformation.tsx | 91 +++++++++++++------
+ .../Candidate/Profile/ProfileSidebar.tsx      | 37 +++++---
+ src/lib/candidate/types.ts                    |  4 +
+ .../20260730_002_candidate_passport_dates.sql |  8 ++
+ 4 files changed, 99 insertions(+), 41 deletions(-)
+ create mode 100644 supabase/migrations/20260730_002_candidate_passport_dates.sql
+
+diff --git a/src/components/Candidate/Profile/PassportInformation.tsx b/src/components/Candidate/Profile/PassportInformation.tsx
+index 2a81844..38ce38a 100644
+--- a/src/components/Candidate/Profile/PassportInformation.tsx
++++ b/src/components/Candidate/Profile/PassportInformation.tsx
+@@ -1,41 +1,71 @@
+-import { useState } from "react";
++import { useEffect, useState } from "react";
+ import { Calendar, Download, Eye, FileText, Pencil, Save, Upload, X } from "lucide-react";
+ 
+ import { Card } from "@/components/ui/card";
+-
+ import { Button } from "@/components/ui/button";
+-
+ import { Input } from "@/components/ui/input";
+-
+ import { Label } from "@/components/ui/label";
+-
+ import { Badge } from "@/components/ui/badge";
+ 
+-import { useDocuments, useUploadDocument } from "@/lib/candidate/hooks";
++import { useDocuments, useUploadDocument, useUpdateProfile } from "@/lib/candidate/hooks";
+ import type { Candidate } from "@/lib/candidate/types";
+ 
+ interface Props {
+   candidate: Candidate;
+ }
++
++interface FormState {
++  passport_number: string;
++  nationality: string;
++  passport_issue_date: string;
++  passport_expiry_date: string;
++}
++
++function toFormState(candidate: Candidate): FormState {
++  return {
++    passport_number: candidate.passport_number ?? "",
++    nationality: candidate.nationality ?? "",
++    passport_issue_date: candidate.passport_issue_date ?? "",
++    passport_expiry_date: candidate.passport_expiry_date ?? "",
++  };
++}
++
+ export default function PassportInformation({ candidate }: Props) {
+   const { data: documents } = useDocuments();
+-
+   const upload = useUploadDocument();
++  const updateProfile = useUpdateProfile();
+ 
+   const [editing, setEditing] = useState(false);
++  const [form, setForm] = useState<FormState>(toFormState(candidate));
++
++  useEffect(() => {
++    setForm(toFormState(candidate));
++  }, [candidate]);
+ 
+   const passport = documents?.find((d) => d.document_type === "passport");
+ 
+   async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
+     if (!e.target.files?.length) return;
+ 
+-    const form = new FormData();
++    const uploadForm = new FormData();
++    uploadForm.append("file", e.target.files[0]);
++    uploadForm.append("document_type", "passport");
++
++    await upload.mutateAsync(uploadForm);
++  }
+ 
+-    form.append("file", e.target.files[0]);
++  function update(key: keyof FormState, value: string) {
++    setForm((prev) => ({ ...prev, [key]: value }));
++  }
+ 
+-    form.append("document_type", "passport");
++  async function handleSave() {
++    await updateProfile.mutateAsync(form);
++    setEditing(false);
++  }
+ 
+-    await upload.mutateAsync(form);
++  function handleCancel() {
++    setForm(toFormState(candidate));
++    setEditing(false);
+   }
+ 
+   return (
+@@ -43,7 +73,6 @@ export default function PassportInformation({ candidate }: Props) {
+       <div className="flex items-center justify-between">
+         <div>
+           <h2 className="text-xl font-semibold">Passport</h2>
+-
+           <p className="text-muted-foreground">Passport details and uploaded copy.</p>
+         </div>
+ 
+@@ -54,12 +83,12 @@ export default function PassportInformation({ candidate }: Props) {
+           </Button>
+         ) : (
+           <div className="flex gap-2">
+-            <Button variant="outline" onClick={() => setEditing(false)}>
++            <Button variant="outline" onClick={handleCancel}>
+               <X className="mr-2 h-4 w-4" />
+               Cancel
+             </Button>
+ 
+-            <Button>
++            <Button onClick={handleSave} disabled={updateProfile.isPending}>
+               <Save className="mr-2 h-4 w-4" />
+               Save
+             </Button>
+@@ -70,30 +99,41 @@ export default function PassportInformation({ candidate }: Props) {
+       <div className="mt-8 grid gap-6 md:grid-cols-2">
+         <div>
+           <Label>Passport Number</Label>
+-
+           <Input
+             disabled={!editing}
+-            defaultValue={candidate.passport_number ?? ""}
++            value={form.passport_number}
++            onChange={(e) => update("passport_number", e.target.value)}
+             placeholder="Passport Number"
+           />
+         </div>
+ 
+         <div>
+           <Label>Country</Label>
+-
+-          <Input disabled={!editing} defaultValue={candidate.nationality ?? ""} />
++          <Input
++            disabled={!editing}
++            value={form.nationality}
++            onChange={(e) => update("nationality", e.target.value)}
++          />
+         </div>
+ 
+         <div>
+           <Label>Issue Date</Label>
+-
+-          <Input type="date" disabled={!editing} />
++          <Input
++            type="date"
++            disabled={!editing}
++            value={form.passport_issue_date}
++            onChange={(e) => update("passport_issue_date", e.target.value)}
++          />
+         </div>
+ 
+         <div>
+           <Label>Expiry Date</Label>
+-
+-          <Input type="date" disabled={!editing} />
++          <Input
++            type="date"
++            disabled={!editing}
++            value={form.passport_expiry_date}
++            onChange={(e) => update("passport_expiry_date", e.target.value)}
++          />
+         </div>
+       </div>
+ 
+@@ -101,10 +141,8 @@ export default function PassportInformation({ candidate }: Props) {
+         <div className="flex items-center justify-between">
+           <div className="flex items-center gap-3">
+             <FileText className="h-6 w-6 text-primary" />
+-
+             <div>
+               <h3 className="font-medium">Passport Copy</h3>
+-
+               <p className="text-sm text-muted-foreground">Upload PDF / JPG / PNG</p>
+             </div>
+           </div>
+@@ -141,13 +179,12 @@ export default function PassportInformation({ candidate }: Props) {
+         </div>
+       </div>
+ 
+-      {passport?.expires_at && (
++      {form.passport_expiry_date && (
+         <div className="mt-6 flex items-center gap-3 rounded-xl bg-muted p-4">
+           <Calendar className="h-5 w-5 text-primary" />
+-
+           <span>
+             Passport expires on{" "}
+-            <strong>{new Date(passport.expires_at).toLocaleDateString()}</strong>
++            <strong>{new Date(form.passport_expiry_date).toLocaleDateString()}</strong>
+           </span>
+         </div>
+       )}
+diff --git a/src/components/Candidate/Profile/ProfileSidebar.tsx b/src/components/Candidate/Profile/ProfileSidebar.tsx
+index 003a68f..64321dc 100644
+--- a/src/components/Candidate/Profile/ProfileSidebar.tsx
++++ b/src/components/Candidate/Profile/ProfileSidebar.tsx
+@@ -1,36 +1,45 @@
+ import type { Candidate } from "@/lib/candidate/types";
+ 
+ import { Card } from "@/components/ui/card";
+-
+ import { Progress } from "@/components/ui/progress";
+ 
++import { useDocuments, useProfileCompletion } from "@/lib/candidate/hooks";
++
+ interface Props {
+   candidate: Candidate;
+ }
+ 
+ export default function ProfileSidebar({ candidate }: Props) {
++  const { data: completion } = useProfileCompletion();
++  const { data: documents } = useDocuments();
++
++  const percent = completion?.completion ?? 0;
++
++  const checklist = [
++    { label: "Personal Information", done: Boolean(candidate.full_name && candidate.phone) },
++    { label: "Passport", done: Boolean(candidate.passport_number) },
++    { label: "Resume", done: Boolean(documents?.some((d) => d.document_type === "resume")) },
++    { label: "Experience", done: Boolean(candidate.experience?.length) },
++    { label: "Education", done: Boolean(candidate.education?.length) },
++    { label: "Skills", done: Boolean(candidate.skills?.length) },
++  ];
++
+   return (
+     <Card className="sticky top-6 rounded-2xl p-6">
+       <h2 className="font-semibold">Profile Completion</h2>
+ 
+-      <Progress className="mt-5" value={candidate.profile_completion} />
++      <Progress className="mt-5" value={percent} />
+ 
+       <div className="mt-4 text-center">
+-        <p className="text-4xl font-bold">{candidate.profile_completion ?? 0}%</p>
++        <p className="text-4xl font-bold">{percent}%</p>
+       </div>
+ 
+       <div className="mt-8 space-y-3 text-sm">
+-        <div>✓ Personal Information</div>
+-
+-        <div>✓ Contact</div>
+-
+-        <div>✓ Passport</div>
+-
+-        <div>✓ Resume</div>
+-
+-        <div>✓ Experience</div>
+-
+-        <div>✓ Skills</div>
++        {checklist.map((item) => (
++          <div key={item.label} className={item.done ? "" : "text-muted-foreground"}>
++            {item.done ? "✓" : "○"} {item.label}
++          </div>
++        ))}
+       </div>
+     </Card>
+   );
+diff --git a/src/lib/candidate/types.ts b/src/lib/candidate/types.ts
+index 51add02..a1444ec 100644
+--- a/src/lib/candidate/types.ts
++++ b/src/lib/candidate/types.ts
+@@ -18,6 +18,10 @@ export interface Candidate {
+ 
+   passport_number?: string;
+ 
++  passport_issue_date?: string;
++
++  passport_expiry_date?: string;
++
+   profile_completion?: number;
+ 
+   education?: EducationEntry[];
+diff --git a/supabase/migrations/20260730_002_candidate_passport_dates.sql b/supabase/migrations/20260730_002_candidate_passport_dates.sql
+new file mode 100644
+index 0000000..340d355
+--- /dev/null
++++ b/supabase/migrations/20260730_002_candidate_passport_dates.sql
+@@ -0,0 +1,8 @@
++-- =====================================================
++-- Passport Information section had Issue Date / Expiry
++-- Date inputs with nowhere to save to. Add real columns.
++-- =====================================================
++
++ALTER TABLE public.candidates
++  ADD COLUMN IF NOT EXISTS passport_issue_date  date,
++  ADD COLUMN IF NOT EXISTS passport_expiry_date date;
+-- 
+2.43.0
+
