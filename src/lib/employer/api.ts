@@ -116,3 +116,7 @@ export async function getNotifications() {
 export async function markNotificationRead(id: string) {
   await api.patch(`/employer/notifications/${id}/read`);
 }
+export async function getCandidates() {
+  const { data } = await api.get("/employer/candidates");
+  return data.data;
+}

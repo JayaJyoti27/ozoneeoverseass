@@ -43,6 +43,7 @@ import { Route as EmployerInterviewsRouteImport } from './routes/Employer/interv
 import { Route as EmployerDeploymentRouteImport } from './routes/Employer/deployment'
 import { Route as EmployerDashboardRouteImport } from './routes/Employer/dashboard'
 import { Route as EmployerCompanyRouteImport } from './routes/Employer/company'
+import { Route as EmployerCandidatesRouteImport } from './routes/Employer/candidates'
 import { Route as CountryUAERouteImport } from './routes/Country/UAE'
 import { Route as CountrySaudiArabiaRouteImport } from './routes/Country/Saudi-Arabia'
 import { Route as CountryQatarRouteImport } from './routes/Country/Qatar'
@@ -252,6 +253,11 @@ const EmployerCompanyRoute = EmployerCompanyRouteImport.update({
   path: '/company',
   getParentRoute: () => EmployerRouteRoute,
 } as any)
+const EmployerCandidatesRoute = EmployerCandidatesRouteImport.update({
+  id: '/candidates',
+  path: '/candidates',
+  getParentRoute: () => EmployerRouteRoute,
+} as any)
 const CountryUAERoute = CountryUAERouteImport.update({
   id: '/Country/UAE',
   path: '/Country/UAE',
@@ -401,9 +407,9 @@ const EmployerDeploymentDeploymentIdRoute =
   } as any)
 const EmployerCandidatesCandidateIdRoute =
   EmployerCandidatesCandidateIdRouteImport.update({
-    id: '/candidates/$candidateId',
-    path: '/candidates/$candidateId',
-    getParentRoute: () => EmployerRouteRoute,
+    id: '/$candidateId',
+    path: '/$candidateId',
+    getParentRoute: () => EmployerCandidatesRoute,
   } as any)
 const CandidatesJobsIdRoute = CandidatesJobsIdRouteImport.update({
   id: '/$id',
@@ -473,6 +479,7 @@ export interface FileRoutesByFullPath {
   '/Country/Qatar': typeof CountryQatarRoute
   '/Country/Saudi-Arabia': typeof CountrySaudiArabiaRoute
   '/Country/UAE': typeof CountryUAERoute
+  '/Employer/candidates': typeof EmployerCandidatesRouteWithChildren
   '/Employer/company': typeof EmployerCompanyRoute
   '/Employer/dashboard': typeof EmployerDashboardRoute
   '/Employer/deployment': typeof EmployerDeploymentRouteWithChildren
@@ -546,6 +553,7 @@ export interface FileRoutesByTo {
   '/Country/Qatar': typeof CountryQatarRoute
   '/Country/Saudi-Arabia': typeof CountrySaudiArabiaRoute
   '/Country/UAE': typeof CountryUAERoute
+  '/Employer/candidates': typeof EmployerCandidatesRouteWithChildren
   '/Employer/company': typeof EmployerCompanyRoute
   '/Employer/dashboard': typeof EmployerDashboardRoute
   '/Employer/deployment': typeof EmployerDeploymentRouteWithChildren
@@ -620,6 +628,7 @@ export interface FileRoutesById {
   '/Country/Qatar': typeof CountryQatarRoute
   '/Country/Saudi-Arabia': typeof CountrySaudiArabiaRoute
   '/Country/UAE': typeof CountryUAERoute
+  '/Employer/candidates': typeof EmployerCandidatesRouteWithChildren
   '/Employer/company': typeof EmployerCompanyRoute
   '/Employer/dashboard': typeof EmployerDashboardRoute
   '/Employer/deployment': typeof EmployerDeploymentRouteWithChildren
@@ -695,6 +704,7 @@ export interface FileRouteTypes {
     | '/Country/Qatar'
     | '/Country/Saudi-Arabia'
     | '/Country/UAE'
+    | '/Employer/candidates'
     | '/Employer/company'
     | '/Employer/dashboard'
     | '/Employer/deployment'
@@ -768,6 +778,7 @@ export interface FileRouteTypes {
     | '/Country/Qatar'
     | '/Country/Saudi-Arabia'
     | '/Country/UAE'
+    | '/Employer/candidates'
     | '/Employer/company'
     | '/Employer/dashboard'
     | '/Employer/deployment'
@@ -841,6 +852,7 @@ export interface FileRouteTypes {
     | '/Country/Qatar'
     | '/Country/Saudi-Arabia'
     | '/Country/UAE'
+    | '/Employer/candidates'
     | '/Employer/company'
     | '/Employer/dashboard'
     | '/Employer/deployment'
@@ -1158,6 +1170,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmployerCompanyRouteImport
       parentRoute: typeof EmployerRouteRoute
     }
+    '/Employer/candidates': {
+      id: '/Employer/candidates'
+      path: '/candidates'
+      fullPath: '/Employer/candidates'
+      preLoaderRoute: typeof EmployerCandidatesRouteImport
+      parentRoute: typeof EmployerRouteRoute
+    }
     '/Country/UAE': {
       id: '/Country/UAE'
       path: '/Country/UAE'
@@ -1363,10 +1382,10 @@ declare module '@tanstack/react-router' {
     }
     '/Employer/candidates/$candidateId': {
       id: '/Employer/candidates/$candidateId'
-      path: '/candidates/$candidateId'
+      path: '/$candidateId'
       fullPath: '/Employer/candidates/$candidateId'
       preLoaderRoute: typeof EmployerCandidatesCandidateIdRouteImport
-      parentRoute: typeof EmployerRouteRoute
+      parentRoute: typeof EmployerCandidatesRoute
     }
     '/Candidates/jobs/$id': {
       id: '/Candidates/jobs/$id'
@@ -1478,6 +1497,17 @@ const CandidatesRouteRouteWithChildren = CandidatesRouteRoute._addFileChildren(
   CandidatesRouteRouteChildren,
 )
 
+interface EmployerCandidatesRouteChildren {
+  EmployerCandidatesCandidateIdRoute: typeof EmployerCandidatesCandidateIdRoute
+}
+
+const EmployerCandidatesRouteChildren: EmployerCandidatesRouteChildren = {
+  EmployerCandidatesCandidateIdRoute: EmployerCandidatesCandidateIdRoute,
+}
+
+const EmployerCandidatesRouteWithChildren =
+  EmployerCandidatesRoute._addFileChildren(EmployerCandidatesRouteChildren)
+
 interface EmployerDeploymentRouteChildren {
   EmployerDeploymentDeploymentIdRoute: typeof EmployerDeploymentDeploymentIdRoute
 }
@@ -1514,6 +1544,7 @@ const EmployerJobOrdersRouteWithChildren =
   EmployerJobOrdersRoute._addFileChildren(EmployerJobOrdersRouteChildren)
 
 interface EmployerRouteRouteChildren {
+  EmployerCandidatesRoute: typeof EmployerCandidatesRouteWithChildren
   EmployerCompanyRoute: typeof EmployerCompanyRoute
   EmployerDashboardRoute: typeof EmployerDashboardRoute
   EmployerDeploymentRoute: typeof EmployerDeploymentRouteWithChildren
@@ -1522,10 +1553,10 @@ interface EmployerRouteRouteChildren {
   EmployerNotificationsRoute: typeof EmployerNotificationsRoute
   EmployerRegisterRoute: typeof EmployerRegisterRoute
   EmployerSettingsRoute: typeof EmployerSettingsRoute
-  EmployerCandidatesCandidateIdRoute: typeof EmployerCandidatesCandidateIdRoute
 }
 
 const EmployerRouteRouteChildren: EmployerRouteRouteChildren = {
+  EmployerCandidatesRoute: EmployerCandidatesRouteWithChildren,
   EmployerCompanyRoute: EmployerCompanyRoute,
   EmployerDashboardRoute: EmployerDashboardRoute,
   EmployerDeploymentRoute: EmployerDeploymentRouteWithChildren,
@@ -1534,7 +1565,6 @@ const EmployerRouteRouteChildren: EmployerRouteRouteChildren = {
   EmployerNotificationsRoute: EmployerNotificationsRoute,
   EmployerRegisterRoute: EmployerRegisterRoute,
   EmployerSettingsRoute: EmployerSettingsRoute,
-  EmployerCandidatesCandidateIdRoute: EmployerCandidatesCandidateIdRoute,
 }
 
 const EmployerRouteRouteWithChildren = EmployerRouteRoute._addFileChildren(

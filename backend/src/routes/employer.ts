@@ -18,7 +18,7 @@ import {
   markAllNotificationsRead,
   getDocuments,
 } from "../controllers/employer";
-
+import { getCandidate, getCandidates } from "../controllers/employer";
 const router = Router();
 
 /*
@@ -86,8 +86,6 @@ router.get("/notifications", getNotifications);
 router.patch("/notifications/read-all", markAllNotificationsRead);
 
 router.patch("/notifications/:id/read", markNotificationRead);
-import { getCandidate } from "../controllers/employer";
-
+router.get("/candidates", getCandidates);
 router.get("/candidates/:id", getCandidate);
-router.get("/documents", getDocuments);
 export default router;

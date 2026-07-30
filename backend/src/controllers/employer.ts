@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as EmployerService from "../services/employer";
+import { getEmployerCandidate, getEmployerCandidates } from "../services/employer/candidate";
 
 const DEMO_EMPLOYER_ID = "3d730a29-057f-4588-9c03-0df22e724c3a";
 
@@ -330,9 +331,19 @@ export async function markAllNotificationsRead(req: Request, res: Response) {
     });
   }
 }
-import { getEmployerCandidate } from "../services/employer/candidate";
-
 export async function getCandidate(req: Request, res: Response) {
   const data = await getEmployerCandidate(String(req.params.id));
   res.json(data);
+}
+
+export async function getCandidates(req: Request, res: Response) {
+  try {
+    const data = await getEmployerCandidates(DEMO_EMPLOYER_ID);
+    return res.json({ success: true, data });
+  } catch (err: any) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
 }
