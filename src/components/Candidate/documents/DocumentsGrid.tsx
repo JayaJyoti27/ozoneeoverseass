@@ -1,25 +1,68 @@
-import DocumentCard from "./DocumentCard";
-import type { CandidateDocument } from "@/lib/candidate/types";
+import { useEffect, useState } from "react";
+import { FileText, Loader2 } from "lucide-react";
+
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+
+import { getDocuments } from "@/lib/recruitment/api";
 
 interface Props {
-  documents: CandidateDocument[];
-  isLoading?: boolean;
+  applicationId: string;
 }
 
-export default function DocumentsGrid({ documents, isLoading }: Props) {
-  if (isLoading) {
-    return <div>Loading documents...</div>;
-  }
+export default function DocumentsCard({ applicationId }: Props) {
+  const [loading, setLoading] = useState(true);
+  const [documents, setDocuments] = useState<any[]>([]);
 
-  if (!documents.length) {
-    return <div className="rounded-xl border p-10 text-center">No documents uploaded.</div>;
+  useEffect(() => {
+    load();
+  }, [applicationId]);
+
+  async function load() {
+    setLoading(true);
+
+    try {
+      const data = await getDocuments(applicationId);
+      setDocuments(data.documents ?? []);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-      {documents.map((doc) => (
-        <DocumentCard key={doc.id} document={doc} />
-      ))}
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle>Documents</CardTitle>
+      </CardHeader>
+
+      <CardContent>
+        {loading ? (
+          <div className="flex justify-center py-6">
+            <Loader2 className="animate-spin" />
+          </div>
+        ) : documents.length === 0 ? (
+          <p className="text-muted-foreground">No uploaded documents.</p>
+        ) : (
+          <div className="space-y-4">
+            {documents.map((doc) => (
+              <div key={doc.id} className="rounded-lg border p-4">
+                <div className="flex justify-between">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-4 w-4" />
+                      <span className="font-medium">{doc.document_type}</span>
+                    </div>
+
+                    <p className="mt-1 text-sm text-muted-foreground">{doc.file_name}</p>
+                  </div>
+
+                  <Badge>{doc.status}</Badge>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
