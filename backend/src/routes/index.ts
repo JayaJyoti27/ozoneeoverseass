@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import adminRoutes from "./admin";
+import authRoutes from "./auth";
 import candidateRoutes from "./candidates";
 import employerRoutes from "./employer";
 
@@ -79,5 +80,5 @@ router.use("/offers", offerRoutes);
 router.use("/notifications", notificationRoutes);
 
 router.use("/admin/reports", reportsRoutes);
-
+router.use("/auth", authRoutes);
 export default router;

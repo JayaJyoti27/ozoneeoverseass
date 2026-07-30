@@ -1,0 +1,61 @@
+import { Request, Response } from "express";
+import { supabase } from "../config/supabase";
+
+/**
+ * Called right after a candidate verifies their OTP for the first time.
+ * If they already have a profile, this just confirms it (isNewProfile: false).
+ * If not, it creates their profiles row + candidates row and tells the frontend
+ * to send them to the "Create Profile" step (isNewProfile: true).
+ */
+export async function completeCandidateSignup(req: Request, res: Response) {
+  try {
+    const userId = req.authUserId!;
+    const email = req.authUserEmail ?? "";
+
+    const { data: existingProfile, error: lookupError } = await supabase
+      .from("profiles")
+      .select("id, role, full_name")
+      .eq("id", userId)
+      .maybeSingle();
+
+    if (lookupError) throw lookupError;
+
+    if (existingProfile) {
+      return res.json({
+        success: true,
+        isNewProfile: false,
+        profile: existingProfile,
+      });
+    }
+
+    // First time we've seen this user — create their profile + candidate record.
+    const { data: newProfile, error: profileError } = await supabase
+      .from("profiles")
+      .insert({
+        id: userId,
+        role: "candidate",
+      })
+      .select()
+      .single();
+
+    if (profileError) throw profileError;
+
+    const { error: candidateError } = await supabase.from("candidates").insert({
+      id: userId,
+      email,
+    });
+
+    if (candidateError) throw candidateError;
+
+    return res.json({
+      success: true,
+      isNewProfile: true,
+      profile: newProfile,
+    });
+  } catch (err: any) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+}

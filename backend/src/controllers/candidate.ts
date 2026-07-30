@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import * as CandidateService from "../services/candidates";
 
-const DEMO_CANDIDATE_ID = "e7d9fc7d-5a85-4f51-8706-c6492dd94b4d";
-
 /*
 |--------------------------------------------------------------------------
 | Dashboard
@@ -11,7 +9,7 @@ const DEMO_CANDIDATE_ID = "e7d9fc7d-5a85-4f51-8706-c6492dd94b4d";
 
 export async function getDashboard(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getCandidateDashboard(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.getCandidateDashboard(req.candidateId!);
 
     res.json({
       success: true,
@@ -33,7 +31,7 @@ export async function getDashboard(req: Request, res: Response) {
 
 export async function getProfile(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getCandidateProfile(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.getCandidateProfile(req.candidateId!);
 
     res.json({
       success: true,
@@ -49,7 +47,7 @@ export async function getProfile(req: Request, res: Response) {
 
 export async function updateProfile(req: Request, res: Response) {
   try {
-    const data = await CandidateService.updateCandidateProfile(DEMO_CANDIDATE_ID, req.body);
+    const data = await CandidateService.updateCandidateProfile(req.candidateId!, req.body);
 
     res.json({
       success: true,
@@ -65,7 +63,7 @@ export async function updateProfile(req: Request, res: Response) {
 
 export async function getProfileCompletion(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getProfileCompletion(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.getProfileCompletion(req.candidateId!);
 
     res.json({
       success: true,
@@ -87,7 +85,7 @@ export async function getProfileCompletion(req: Request, res: Response) {
 
 export async function getJobs(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getCandidateJobs(DEMO_CANDIDATE_ID, {
+    const data = await CandidateService.getCandidateJobs(req.candidateId!, {
       page: Number(req.query.page) || 1,
       limit: Number(req.query.limit) || 20,
       country: req.query.country as string,
@@ -109,7 +107,7 @@ export async function getJobs(req: Request, res: Response) {
 
 export async function getJob(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getCandidateJob(DEMO_CANDIDATE_ID, String(req.params.id));
+    const data = await CandidateService.getCandidateJob(req.candidateId!, String(req.params.id));
 
     res.json({
       success: true,
@@ -125,7 +123,7 @@ export async function getJob(req: Request, res: Response) {
 
 export async function saveJob(req: Request, res: Response) {
   try {
-    const data = await CandidateService.saveJob(DEMO_CANDIDATE_ID, String(req.params.id));
+    const data = await CandidateService.saveJob(req.candidateId!, String(req.params.id));
 
     res.json({
       success: true,
@@ -141,7 +139,7 @@ export async function saveJob(req: Request, res: Response) {
 
 export async function removeSavedJob(req: Request, res: Response) {
   try {
-    const data = await CandidateService.removeSavedJob(DEMO_CANDIDATE_ID, String(req.params.id));
+    const data = await CandidateService.removeSavedJob(req.candidateId!, String(req.params.id));
 
     res.json({
       success: true,
@@ -163,7 +161,7 @@ export async function removeSavedJob(req: Request, res: Response) {
 
 export async function getApplications(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getCandidateApplications(DEMO_CANDIDATE_ID, {
+    const data = await CandidateService.getCandidateApplications(req.candidateId!, {
       page: Number(req.query.page) || 1,
       limit: Number(req.query.limit) || 20,
       status: req.query.status as string,
@@ -184,7 +182,7 @@ export async function getApplications(req: Request, res: Response) {
 export async function getApplication(req: Request, res: Response) {
   try {
     const data = await CandidateService.getCandidateApplication(
-      DEMO_CANDIDATE_ID,
+      req.candidateId!,
       String(req.params.id),
     );
 
@@ -202,7 +200,7 @@ export async function getApplication(req: Request, res: Response) {
 
 export async function apply(req: Request, res: Response) {
   try {
-    const data = await CandidateService.applyForJob(DEMO_CANDIDATE_ID, String(req.params.jobId));
+    const data = await CandidateService.applyForJob(req.candidateId!, String(req.params.jobId));
 
     res.status(201).json({
       success: true,
@@ -219,7 +217,7 @@ export async function apply(req: Request, res: Response) {
 export async function withdrawApplication(req: Request, res: Response) {
   try {
     const data = await CandidateService.withdrawApplication(
-      DEMO_CANDIDATE_ID,
+      req.candidateId!,
       String(req.params.id),
     );
 
@@ -238,7 +236,7 @@ export async function withdrawApplication(req: Request, res: Response) {
 export async function getApplicationTimeline(req: Request, res: Response) {
   try {
     const data = await CandidateService.getApplicationTimeline(
-      DEMO_CANDIDATE_ID,
+      req.candidateId!,
       String(req.params.id),
     );
 
@@ -261,7 +259,7 @@ export async function getApplicationTimeline(req: Request, res: Response) {
 
 export async function getDocuments(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getCandidateDocuments(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.getCandidateDocuments(req.candidateId!);
 
     res.json({
       success: true,
@@ -278,7 +276,7 @@ export async function getDocuments(req: Request, res: Response) {
 export async function getDocument(req: Request, res: Response) {
   try {
     const data = await CandidateService.getCandidateDocument(
-      DEMO_CANDIDATE_ID,
+      req.candidateId!,
       String(req.params.id),
     );
 
@@ -296,7 +294,7 @@ export async function getDocument(req: Request, res: Response) {
 
 export async function uploadDocument(req: Request, res: Response) {
   try {
-    const data = await CandidateService.uploadCandidateDocument(DEMO_CANDIDATE_ID, req.body);
+    const data = await CandidateService.uploadCandidateDocument(req.candidateId!, req.body);
 
     res.status(201).json({
       success: true,
@@ -313,7 +311,7 @@ export async function uploadDocument(req: Request, res: Response) {
 export async function replaceDocument(req: Request, res: Response) {
   try {
     const data = await CandidateService.replaceCandidateDocument(
-      DEMO_CANDIDATE_ID,
+      req.candidateId!,
       String(req.params.id),
       req.body,
     );
@@ -333,7 +331,7 @@ export async function replaceDocument(req: Request, res: Response) {
 export async function deleteDocument(req: Request, res: Response) {
   try {
     const data = await CandidateService.deleteCandidateDocument(
-      DEMO_CANDIDATE_ID,
+      req.candidateId!,
       String(req.params.id),
     );
 
@@ -356,7 +354,7 @@ export async function deleteDocument(req: Request, res: Response) {
 
 export async function getInterviews(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getCandidateInterviews(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.getCandidateInterviews(req.candidateId!);
 
     res.json({
       success: true,
@@ -373,7 +371,7 @@ export async function getInterviews(req: Request, res: Response) {
 export async function getInterview(req: Request, res: Response) {
   try {
     const data = await CandidateService.getCandidateInterview(
-      DEMO_CANDIDATE_ID,
+      req.candidateId!,
       String(req.params.id),
     );
 
@@ -391,7 +389,7 @@ export async function getInterview(req: Request, res: Response) {
 
 export async function getUpcomingInterview(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getUpcomingInterview(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.getUpcomingInterview(req.candidateId!);
 
     res.json({
       success: true,
@@ -412,7 +410,7 @@ export async function getUpcomingInterview(req: Request, res: Response) {
 
 export async function getOffers(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getCandidateOffers(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.getCandidateOffers(req.candidateId!);
 
     res.json({
       success: true,
@@ -428,7 +426,7 @@ export async function getOffers(req: Request, res: Response) {
 
 export async function getOffer(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getCandidateOffer(DEMO_CANDIDATE_ID, String(req.params.id));
+    const data = await CandidateService.getCandidateOffer(req.candidateId!, String(req.params.id));
 
     res.json({
       success: true,
@@ -444,7 +442,7 @@ export async function getOffer(req: Request, res: Response) {
 
 export async function acceptOffer(req: Request, res: Response) {
   try {
-    const data = await CandidateService.acceptOffer(DEMO_CANDIDATE_ID, String(req.params.id));
+    const data = await CandidateService.acceptOffer(req.candidateId!, String(req.params.id));
 
     res.json({
       success: true,
@@ -461,7 +459,7 @@ export async function acceptOffer(req: Request, res: Response) {
 export async function rejectOffer(req: Request, res: Response) {
   try {
     const data = await CandidateService.rejectOffer(
-      DEMO_CANDIDATE_ID,
+      req.candidateId!,
       String(req.params.id),
       req.body.reason,
     );
@@ -485,7 +483,7 @@ export async function rejectOffer(req: Request, res: Response) {
 
 export async function getMedicals(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getCandidateMedicals(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.getCandidateMedicals(req.candidateId!);
 
     res.json({
       success: true,
@@ -502,7 +500,7 @@ export async function getMedicals(req: Request, res: Response) {
 export async function getMedical(req: Request, res: Response) {
   try {
     const data = await CandidateService.getCandidateMedical(
-      DEMO_CANDIDATE_ID,
+      req.candidateId!,
       String(req.params.id),
     );
 
@@ -520,7 +518,7 @@ export async function getMedical(req: Request, res: Response) {
 
 export async function getMedicalStatus(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getMedicalStatus(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.getMedicalStatus(req.candidateId!);
 
     res.json({
       success: true,
@@ -541,7 +539,7 @@ export async function getMedicalStatus(req: Request, res: Response) {
 
 export async function getVisas(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getCandidateVisas(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.getCandidateVisas(req.candidateId!);
 
     res.json({
       success: true,
@@ -557,7 +555,7 @@ export async function getVisas(req: Request, res: Response) {
 
 export async function getVisa(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getCandidateVisa(DEMO_CANDIDATE_ID, String(req.params.id));
+    const data = await CandidateService.getCandidateVisa(req.candidateId!, String(req.params.id));
 
     res.json({
       success: true,
@@ -573,7 +571,7 @@ export async function getVisa(req: Request, res: Response) {
 
 export async function getVisaStatus(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getVisaStatus(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.getVisaStatus(req.candidateId!);
 
     res.json({
       success: true,
@@ -594,7 +592,7 @@ export async function getVisaStatus(req: Request, res: Response) {
 
 export async function getDeployments(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getCandidateDeployments(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.getCandidateDeployments(req.candidateId!);
 
     res.json({
       success: true,
@@ -611,7 +609,7 @@ export async function getDeployments(req: Request, res: Response) {
 export async function getDeployment(req: Request, res: Response) {
   try {
     const data = await CandidateService.getCandidateDeployment(
-      DEMO_CANDIDATE_ID,
+      req.candidateId!,
       String(req.params.id),
     );
 
@@ -629,7 +627,7 @@ export async function getDeployment(req: Request, res: Response) {
 
 export async function getDeploymentStatus(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getDeploymentStatus(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.getDeploymentStatus(req.candidateId!);
 
     res.json({
       success: true,
@@ -650,7 +648,7 @@ export async function getDeploymentStatus(req: Request, res: Response) {
 
 export async function getTimeline(req: Request, res: Response) {
   try {
-    const data = await CandidateService.getCandidateTimeline(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.getCandidateTimeline(req.candidateId!);
 
     res.json({
       success: true,
@@ -673,7 +671,7 @@ export async function getTimeline(req: Request, res: Response) {
 export async function getNotifications(req: Request, res: Response) {
   try {
     const data = await CandidateService.getCandidateNotifications({
-      candidateId: DEMO_CANDIDATE_ID,
+      candidateId: req.candidateId!,
       page: Number(req.query.page) || 1,
       limit: Number(req.query.limit) || 20,
       unreadOnly: req.query.unreadOnly === "true",
@@ -694,7 +692,7 @@ export async function getNotifications(req: Request, res: Response) {
 export async function markNotificationRead(req: Request, res: Response) {
   try {
     const data = await CandidateService.markNotificationRead(
-      DEMO_CANDIDATE_ID,
+      req.candidateId!,
       String(req.params.id),
     );
 
@@ -712,7 +710,7 @@ export async function markNotificationRead(req: Request, res: Response) {
 
 export async function markAllNotificationsRead(req: Request, res: Response) {
   try {
-    const data = await CandidateService.markAllNotificationsRead(DEMO_CANDIDATE_ID);
+    const data = await CandidateService.markAllNotificationsRead(req.candidateId!);
 
     res.json({
       success: true,
