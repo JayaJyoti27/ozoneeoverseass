@@ -18,6 +18,10 @@ export interface Candidate {
 
   passport_number?: string;
 
+  passport_issue_date?: string;
+
+  passport_expiry_date?: string;
+
   profile_completion?: number;
 
   education?: EducationEntry[];
