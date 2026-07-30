@@ -360,3 +360,39 @@ export interface CandidateNotification {
 
   created_at: string;
 }
+export interface Candidate {
+  id: string;
+  full_name: string;
+  email: string;
+  phone?: string;
+
+  avatar_url?: string;
+
+  nationality?: string;
+
+  gender?: string;
+
+  dob?: string;
+
+  passport_number?: string;
+
+  passport_issue_date?: string;
+
+  passport_expiry_date?: string;
+
+  preferred_country?: string;
+
+  expected_salary?: number;
+
+  salary_currency?: string;
+
+  profile_completion?: number;
+
+  education?: EducationEntry[];
+
+  experience?: ExperienceEntry[];
+
+  skills?: string[];
+
+  languages?: LanguageEntry[];
+}

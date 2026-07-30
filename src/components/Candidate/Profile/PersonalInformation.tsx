@@ -34,6 +34,8 @@ const schema = z.object({
   gender: z.string().optional(),
 
   dob: z.string().optional(),
+  preferred_country: z.string().optional(),
+  expected_salary: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -56,6 +58,8 @@ export default function PersonalInformation({ candidate }: Props) {
       nationality: "",
       gender: "",
       dob: "",
+      preferred_country: "",
+      expected_salary: "",
     },
   });
 
@@ -72,6 +76,8 @@ export default function PersonalInformation({ candidate }: Props) {
       gender: candidate.gender ?? "",
 
       dob: candidate.dob ?? "",
+      preferred_country: candidate.preferred_country ?? "",
+      expected_salary: candidate.expected_salary?.toString() ?? "",
     });
   }, [candidate]);
 
@@ -79,6 +85,7 @@ export default function PersonalInformation({ candidate }: Props) {
     await updateProfile.mutateAsync({
       ...values,
       dob: values.dob || null,
+      expected_salary: values.expected_salary ? Number(values.expected_salary) : null,
     });
 
     setEditing(false);
@@ -205,6 +212,31 @@ export default function PersonalInformation({ candidate }: Props) {
 
                 <FormControl>
                   <Input type="date" {...field} disabled={!editing} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="preferred_country"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Preferred Country</FormLabel>
+                <FormControl>
+                  <Input {...field} disabled={!editing} placeholder="e.g. UAE, Saudi Arabia" />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="expected_salary"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Preferred Salary (USD/month)</FormLabel>
+                <FormControl>
+                  <Input {...field} type="number" disabled={!editing} placeholder="e.g. 1500" />
                 </FormControl>
               </FormItem>
             )}
