@@ -42,7 +42,7 @@ build/
 # Environment
 .env
 .env.*
-!.env.example
+!.env.example.template
 
 # Logs
 logs/
@@ -81,4 +81,3 @@ uploads/
 # Temporary
 tmp/
 temp/
-!.env.production
