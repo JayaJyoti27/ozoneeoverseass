@@ -28,7 +28,7 @@ function CandidateDocumentsPage() {
 
     return {
       total: docs.length,
-      verified: docs.filter((d) => d.status === "approved").length,
+
       pending: docs.filter((d) => d.status === "pending" || d.status === "under_review").length,
       required: missingRequired.length,
     };
