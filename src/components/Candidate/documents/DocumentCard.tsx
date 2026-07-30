@@ -1,127 +1,68 @@
-import { useRef } from "react";
+import { useEffect, useState } from "react";
+import { FileText, Loader2 } from "lucide-react";
 
-import { CalendarDays, Download, Eye, FileText, RefreshCw, Trash2 } from "lucide-react";
-import { useDeleteDocument, useReplaceDocument } from "@/lib/candidate/hooks";
-
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 
-import { useUploadDocument } from "@/lib/candidate/hooks";
-
-import type { CandidateDocument } from "@/lib/candidate/types";
+import { getDocuments } from "@/lib/recruitment/api";
 
 interface Props {
-  document: CandidateDocument;
+  applicationId: string;
 }
 
-export default function DocumentCard({ document }: Props) {
-  const inputRef = useRef<HTMLInputElement>(null);
+export default function DocumentsCard({ applicationId }: Props) {
+  const [loading, setLoading] = useState(true);
+  const [documents, setDocuments] = useState<any[]>([]);
 
-  const upload = useUploadDocument();
+  useEffect(() => {
+    load();
+  }, [applicationId]);
 
-  const remove = useDeleteDocument();
+  async function load() {
+    setLoading(true);
 
-  function badge(status: string) {
-    switch (status.toLowerCase()) {
-      case "verified":
-        return "default";
-
-      case "pending":
-        return "secondary";
-
-      case "rejected":
-        return "destructive";
-
-      default:
-        return "outline";
+    try {
+      const data = await getDocuments(applicationId);
+      setDocuments(data.documents ?? []);
+    } finally {
+      setLoading(false);
     }
-  }
-  const replaceDoc = useReplaceDocument();
-  async function replace(file: File) {
-    const form = new FormData();
-
-    form.append("file", file);
-
-    form.append("document_type", document.document_type);
-
-    await replaceDoc.mutateAsync({ id: document.id, formData: form });
   }
 
   return (
-    <Card className="rounded-2xl p-6">
-      <input
-        hidden
-        ref={inputRef}
-        type="file"
-        accept=".pdf,.png,.jpg,.jpeg,.doc,.docx"
-        onChange={(e) => {
-          if (!e.target.files?.length) return;
+    <Card>
+      <CardHeader>
+        <CardTitle>Documents</CardTitle>
+      </CardHeader>
 
-          replace(e.target.files[0]);
-        }}
-      />
-
-      <div className="flex justify-between">
-        <div className="flex gap-3">
-          <div className="rounded-xl bg-primary/10 p-4">
-            <FileText className="h-8 w-8 text-primary" />
+      <CardContent>
+        {loading ? (
+          <div className="flex justify-center py-6">
+            <Loader2 className="animate-spin" />
           </div>
+        ) : documents.length === 0 ? (
+          <p className="text-muted-foreground">No uploaded documents.</p>
+        ) : (
+          <div className="space-y-4">
+            {documents.map((doc) => (
+              <div key={doc.id} className="rounded-lg border p-4">
+                <div className="flex justify-between">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <FileText className="h-4 w-4" />
+                      <span className="font-medium">{doc.document_type}</span>
+                    </div>
 
-          <div>
-            <h2 className="font-semibold">{document.file_name}</h2>
+                    <p className="mt-1 text-sm text-muted-foreground">{doc.file_name}</p>
+                  </div>
 
-            <p className="text-sm text-muted-foreground">{document.document_type}</p>
-          </div>
-        </div>
-
-        <Badge variant={badge(document.status)}>{document.status}</Badge>
-      </div>
-
-      <div className="mt-5 space-y-2 text-sm">
-        <div className="flex justify-between">
-          <span>Uploaded</span>
-
-          <span>{new Date(document.created_at).toLocaleDateString()}</span>
-        </div>
-
-        {document.file_size && (
-          <div className="flex justify-between">
-            <span>Size</span>
-
-            <span>
-              {(document.file_size / 1024 / 1024).toFixed(2)}
-              MB
-            </span>
+                  <Badge>{doc.status}</Badge>
+                </div>
+              </div>
+            ))}
           </div>
         )}
-      </div>
-
-      <div className="mt-6 grid grid-cols-2 gap-2">
-        <Button variant="outline" asChild>
-          <a href={document.public_url} target="_blank">
-            <Eye className="mr-2 h-4 w-4" />
-            View
-          </a>
-        </Button>
-
-        <Button variant="outline" asChild>
-          <a href={document.public_url} download>
-            <Download className="mr-2 h-4 w-4" />
-            Download
-          </a>
-        </Button>
-
-        <Button variant="outline" onClick={() => inputRef.current?.click()}>
-          <RefreshCw className="mr-2 h-4 w-4" />
-          Replace
-        </Button>
-
-        <Button variant="destructive" onClick={() => remove.mutate(document.id)}>
-          <Trash2 className="mr-2 h-4 w-4" />
-          Delete
-        </Button>
-      </div>
+      </CardContent>
     </Card>
   );
 }
