@@ -23,11 +23,11 @@ function EmployerLoginPage() {
     setSubmitting(true);
     try {
       const profile = await loginWithPassword(email, password);
-      if (profile.role !== "employer") {
-        setError("This account is not registered as an employer.");
+      if (profile.role !== "candidate") {
+        setError("This account is not registered as an candidate.");
         return;
       }
-      navigate({ to: "/employer" });
+      navigate({ to: "/For-Candidates" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed");
     } finally {
