@@ -72,28 +72,19 @@ export async function logout() {
 }
 
 /**
- * Sends a 6-digit OTP code to the given email for candidate signup/login.
+ * Sends a magic sign-in link to the given email for candidate signup/login.
  * `shouldCreateUser: true` means this also works for brand-new candidates —
- * Supabase creates the auth user on first verify, no separate "sign up" step needed.
- * NOTE: in Supabase Dashboard → Authentication → Email Templates → Magic Link,
- * the template must use {{ .Token }} (not {{ .ConfirmationURL }}) for this to arrive as a code.
+ * Supabase creates the auth user the first time they click the link, no
+ * separate "sign up" step needed. `emailRedirectTo` brings them straight
+ * back to the candidate login page, which then finishes the login.
  */
-export async function sendCandidateOtp(email: string) {
+export async function sendCandidateLoginLink(email: string) {
   const { error } = await supabase.auth.signInWithOtp({
     email,
-    options: { shouldCreateUser: true },
+    options: {
+      shouldCreateUser: true,
+      emailRedirectTo: `${window.location.origin}/candidate`,
+    },
   });
   if (error) throw new Error(error.message);
-}
-
-/** Verifies the 6-digit code and returns the resulting Supabase session. */
-export async function verifyCandidateOtp(email: string, token: string) {
-  const { data, error } = await supabase.auth.verifyOtp({
-    email,
-    token,
-    type: "email",
-  });
-  if (error) throw new Error(error.message);
-  if (!data.session) throw new Error("Verification failed — no session returned.");
-  return data.session;
 }

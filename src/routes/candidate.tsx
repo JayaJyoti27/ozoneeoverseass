@@ -1,18 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, FormEvent, useEffect } from "react";
-import { ShieldCheck, ArrowRight, Mail, ArrowLeft } from "lucide-react";
+import { useState, FormEvent, useEffect, useRef } from "react";
+import { ShieldCheck, ArrowRight, Mail, ArrowLeft, MailCheck, Loader2 } from "lucide-react";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/footer";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "@/components/ui/input-otp";
-import {
-  sendCandidateOtp,
-  verifyCandidateOtp,
-  getCurrentProfile,
-} from "@/lib/supabase";
+import { sendCandidateLoginLink, getCurrentProfile, supabase } from "@/lib/supabase";
 import { completeCandidateSignup } from "@/lib/candidate/api";
 
 export const Route = createFileRoute("/candidate")({
@@ -41,24 +32,51 @@ const DotGrid = ({ className = "" }: { className?: string }) => (
   <div className={`dot-grid ${className}`} aria-hidden />
 );
 
-type Step = "email" | "otp";
+type Step = "email" | "sent" | "finishing";
 
 function CandidateAuthPage() {
   const navigate = useNavigate();
   const [step, setStep] = useState<Step>("email");
   const [email, setEmail] = useState("");
-  const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [resendCooldown, setResendCooldown] = useState(0);
+  const finishing = useRef(false);
 
-  // Already logged in as a candidate — bounce straight to the dashboard.
+  /** Runs once a real Supabase session exists — either because the person was
+   * already logged in, or because they just clicked the link in their email
+   * and got redirected back here with a session attached. */
+  async function finishLogin() {
+    if (finishing.current) return;
+    finishing.current = true;
+    setStep("finishing");
+    try {
+      const { isNewProfile } = await completeCandidateSignup();
+      navigate({
+        to: isNewProfile ? "/Candidates/profile" : "/Candidates/dashboard",
+      });
+    } catch (err) {
+      finishing.current = false;
+      setStep("email");
+      setError(
+        err instanceof Error ? err.message : "Something went wrong finishing sign in.",
+      );
+    }
+  }
+
+  // Already logged in (either from before, or just landed back from the email link).
   useEffect(() => {
     getCurrentProfile().then((profile) => {
-      if (profile?.role === "candidate") {
-        navigate({ to: "/Candidates/dashboard" });
-      }
+      if (profile?.role === "candidate") finishLogin();
     });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") finishLogin();
+    });
+
+    return () => subscription.unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -68,16 +86,16 @@ function CandidateAuthPage() {
     return () => clearTimeout(t);
   }, [resendCooldown]);
 
-  async function handleSendOtp(e: FormEvent) {
+  async function handleSendLink(e: FormEvent) {
     e.preventDefault();
     setError(null);
     setSubmitting(true);
     try {
-      await sendCandidateOtp(email.trim());
-      setStep("otp");
+      await sendCandidateLoginLink(email.trim());
+      setStep("sent");
       setResendCooldown(30);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Couldn't send the code. Try again.");
+      setError(err instanceof Error ? err.message : "Couldn't send the link. Try again.");
     } finally {
       setSubmitting(false);
     }
@@ -88,33 +106,24 @@ function CandidateAuthPage() {
     setError(null);
     setSubmitting(true);
     try {
-      await sendCandidateOtp(email.trim());
+      await sendCandidateLoginLink(email.trim());
       setResendCooldown(30);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Couldn't resend the code.");
+      setError(err instanceof Error ? err.message : "Couldn't resend the link.");
     } finally {
       setSubmitting(false);
     }
   }
 
-  async function handleVerifyOtp(e: FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setSubmitting(true);
-    try {
-      await verifyCandidateOtp(email.trim(), code.trim());
-
-      // First time we've seen this candidate? Create their profile row.
-      const { isNewProfile } = await completeCandidateSignup();
-
-      navigate({
-        to: isNewProfile ? "/Candidates/profile" : "/Candidates/dashboard",
-      });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "That code didn't work. Try again.");
-    } finally {
-      setSubmitting(false);
-    }
+  if (step === "finishing") {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-3 text-center">
+          <Loader2 className="h-6 w-6 animate-spin text-blue" />
+          <p className="text-sm text-ink">Signing you in...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -144,20 +153,20 @@ function CandidateAuthPage() {
                 </>
               ) : (
                 <>
-                  Enter your <span className="text-blue">code</span>
+                  Check your <span className="text-blue">email</span>
                 </>
               )}
             </h1>
             <p className="mt-3 text-sm text-ink">
               {step === "email"
                 ? "New here or returning — just enter your email to get started."
-                : `We sent a 6-digit code to ${email}.`}
+                : `We sent a sign-in link to ${email}. Open it on this device to continue.`}
             </p>
           </div>
 
           {step === "email" ? (
             <form
-              onSubmit={handleSendOtp}
+              onSubmit={handleSendLink}
               className="mt-8 rounded-[28px] border border-border bg-white p-8 shadow-[0_20px_60px_-30px_rgba(11,31,58,0.3)]"
             >
               <div className="mb-5">
@@ -189,64 +198,46 @@ function CandidateAuthPage() {
                 disabled={submitting || !email.trim()}
                 className="flex w-full items-center justify-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue disabled:opacity-60"
               >
-                {submitting ? "Sending code..." : "Send Code"}
+                {submitting ? "Sending link..." : "Send Sign-In Link"}
                 {!submitting && <ArrowRight className="h-4 w-4" />}
               </button>
             </form>
           ) : (
-            <form
-              onSubmit={handleVerifyOtp}
-              className="mt-8 rounded-[28px] border border-border bg-white p-8 shadow-[0_20px_60px_-30px_rgba(11,31,58,0.3)]"
-            >
-              <button
-                type="button"
-                onClick={() => {
-                  setStep("email");
-                  setCode("");
-                  setError(null);
-                }}
-                className="mb-5 flex items-center gap-1.5 text-xs font-semibold text-ink hover:text-navy"
-              >
-                <ArrowLeft className="h-3.5 w-3.5" /> Use a different email
-              </button>
-
-              <div className="mb-5 flex justify-center">
-                <InputOTP maxLength={6} value={code} onChange={setCode}>
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
-                  </InputOTPGroup>
-                </InputOTP>
+            <div className="mt-8 rounded-[28px] border border-border bg-white p-8 text-center shadow-[0_20px_60px_-30px_rgba(11,31,58,0.3)]">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-wash">
+                <MailCheck className="h-6 w-6 text-blue" />
               </div>
 
+              <p className="text-sm text-ink">
+                Didn't get it? Check spam, or resend below.
+              </p>
+
               {error && (
-                <p className="mb-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
+                <p className="mt-4 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
                   {error}
                 </p>
               )}
 
               <button
-                type="submit"
-                disabled={submitting || code.trim().length < 6}
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue disabled:opacity-60"
+                type="button"
+                onClick={handleResend}
+                disabled={resendCooldown > 0 || submitting}
+                className="mt-5 w-full rounded-full bg-navy px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue disabled:opacity-60"
               >
-                {submitting ? "Verifying..." : "Verify & Continue"}
-                {!submitting && <ArrowRight className="h-4 w-4" />}
+                {resendCooldown > 0 ? `Resend link in ${resendCooldown}s` : "Resend Link"}
               </button>
 
               <button
                 type="button"
-                onClick={handleResend}
-                disabled={resendCooldown > 0 || submitting}
-                className="mt-4 w-full text-center text-xs font-semibold text-blue disabled:text-ink/40"
+                onClick={() => {
+                  setStep("email");
+                  setError(null);
+                }}
+                className="mt-4 flex w-full items-center justify-center gap-1.5 text-xs font-semibold text-ink hover:text-navy"
               >
-                {resendCooldown > 0 ? `Resend code in ${resendCooldown}s` : "Resend code"}
+                <ArrowLeft className="h-3.5 w-3.5" /> Use a different email
               </button>
-            </form>
+            </div>
           )}
 
           <p className="mt-6 text-center text-xs text-ink">
