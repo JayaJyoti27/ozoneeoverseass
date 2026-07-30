@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-import { Download, Eye, FileText, RefreshCw, Upload } from "lucide-react";
+import { FileText, RefreshCw, Upload } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -88,20 +88,6 @@ export default function ResumeSection() {
           </div>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <Button variant="outline" asChild>
-              <a href={resume.public_url} target="_blank">
-                <Eye className="mr-2 h-4 w-4" />
-                Preview
-              </a>
-            </Button>
-
-            <Button variant="outline" asChild>
-              <a href={resume.public_url} download>
-                <Download className="mr-2 h-4 w-4" />
-                Download
-              </a>
-            </Button>
-
             <Button onClick={() => inputRef.current?.click()}>
               <RefreshCw className="mr-2 h-4 w-4" />
               Replace Resume

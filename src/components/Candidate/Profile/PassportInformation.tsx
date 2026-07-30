@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Calendar, Download, Eye, FileText, Pencil, Save, Upload, X } from "lucide-react";
+import { Calendar, FileText, Pencil, Save, Upload, X } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -162,24 +162,6 @@ export default function PassportInformation({ candidate }: Props) {
               <input hidden type="file" accept=".pdf,.png,.jpg,.jpeg" onChange={handleUpload} />
             </label>
           </Button>
-
-          {passport?.public_url && (
-            <>
-              <Button variant="outline" asChild>
-                <a href={passport.public_url} target="_blank">
-                  <Eye className="mr-2 h-4 w-4" />
-                  Preview
-                </a>
-              </Button>
-
-              <Button variant="outline" asChild>
-                <a href={passport.public_url} download>
-                  <Download className="mr-2 h-4 w-4" />
-                  Download
-                </a>
-              </Button>
-            </>
-          )}
         </div>
       </div>
 
