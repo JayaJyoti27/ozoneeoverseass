@@ -159,3 +159,70 @@ export async function removeSavedJob(candidateId: string, jobId: string) {
     success: true,
   };
 }
+/*
+|--------------------------------------------------------------------------
+| Recommended Jobs
+|--------------------------------------------------------------------------
+*/
+
+export async function getRecommendedJobs(candidateId: string, limit = 6) {
+  const { data: candidate } = await supabase
+    .from("candidates")
+    .select("specialty, preferred_country, current_country, target_countries")
+    .eq("id", candidateId)
+    .single();
+
+  let query = supabase.from("jobs").select("*").eq("status", "active");
+
+  const countryMatches = [candidate?.preferred_country, candidate?.current_country].filter(Boolean);
+
+  const orConditions: string[] = [];
+
+  if (candidate?.specialty) {
+    orConditions.push(`category.eq.${candidate.specialty}`);
+  }
+
+  for (const country of countryMatches) {
+    orConditions.push(`country.eq.${country}`);
+  }
+
+  if (candidate?.target_countries?.length) {
+    orConditions.push(`country.in.(${candidate.target_countries.join(",")})`);
+  }
+
+  // If we have nothing to match on, just fall back to the newest active jobs
+  // rather than returning nothing.
+  if (orConditions.length) {
+    query = query.or(orConditions.join(","));
+  }
+
+  query = query.order("created_at", { ascending: false }).limit(limit);
+
+  const { data, error } = await query;
+
+  if (error) {
+    throw new DatabaseError("Unable to fetch recommended jobs.", error);
+  }
+
+  const jobIds = data?.map((job) => job.id) ?? [];
+
+  const { data: applications } = await supabase
+    .from("applications")
+    .select("job_id")
+    .eq("candidate_id", candidateId)
+    .in("job_id", jobIds);
+
+  const { data: savedJobs } = await supabase
+    .from("saved_jobs")
+    .select("job_id")
+    .eq("candidate_id", candidateId)
+    .in("job_id", jobIds);
+
+  return (data ?? [])
+    .filter((job) => !applications?.some((a) => a.job_id === job.id))
+    .map((job) => ({
+      ...job,
+      applied: false,
+      saved: savedJobs?.some((s) => s.job_id === job.id) ?? false,
+    }));
+}

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { supabase } from "@/lib/supabase";
+import type { CandidateDocument, CandidateJob } from "./types";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -20,8 +21,6 @@ api.interceptors.request.use(async (config) => {
 
   return config;
 });
-
-import type { CandidateDocument } from "./types";
 
 /* =========================================================
    SIGNUP / AUTH
@@ -59,11 +58,6 @@ export const updateProfile = async (payload: any) => {
 /* =========================================================
    JOBS
 ========================================================= */
-
-export const getJobs = async (params?: any) => {
-  const { data } = await api.get("/candidate/jobs", { params });
-  return data;
-};
 
 export const getJob = async (jobId: string) => {
   const { data } = await api.get(`/candidate/jobs/${jobId}`);
@@ -236,5 +230,14 @@ export const replaceDocument = async (id: string, formData: FormData) => {
   });
 
   return data;
+};
+export const getJobs = async (params?: any) => {
+  const { data } = await api.get("/candidate/jobs", { params });
+  return data.jobs; // was returning the whole response body — fixed
+};
+
+export const getRecommendedJobs = async (): Promise<CandidateJob[]> => {
+  const { data } = await api.get("/candidate/jobs/recommended");
+  return data.jobs;
 };
 export default api;

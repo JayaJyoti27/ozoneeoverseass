@@ -14,7 +14,7 @@ import {
   getJob,
   saveJob,
   removeSavedJob,
-
+  getRecommendedJobs,
   // Applications
   getApplications,
   getApplication,
@@ -92,7 +92,7 @@ router.get("/profile/completion", getProfileCompletion);
 | Jobs
 |--------------------------------------------------------------------------
 */
-
+router.get("/jobs/recommended", getRecommendedJobs);
 router.get("/jobs", getJobs);
 
 router.get("/jobs/:id", getJob);

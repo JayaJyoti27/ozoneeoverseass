@@ -52,7 +52,12 @@ export function useProfile() {
     queryFn: api.getProfile,
   });
 }
-
+export function useRecommendedJobs() {
+  return useQuery({
+    queryKey: ["candidate", "jobs", "recommended"],
+    queryFn: api.getRecommendedJobs,
+  });
+}
 export function useUpdateProfile() {
   const qc = useQueryClient();
 

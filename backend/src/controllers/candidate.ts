@@ -764,3 +764,18 @@ export async function markAllNotificationsRead(req: Request, res: Response) {
     });
   }
 }
+export async function getRecommendedJobs(req: Request, res: Response) {
+  try {
+    const jobs = await CandidateService.getRecommendedJobs(req.candidateId!, 6);
+
+    res.json({
+      success: true,
+      jobs,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+}
