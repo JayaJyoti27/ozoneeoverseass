@@ -63,12 +63,11 @@ export async function uploadCandidateDocument(candidateId: string, payload: any)
     .single();
 
   if (error) {
-    throw new DatabaseError("Unable to upload document.", error);
+    throw new DatabaseError(`Unable to upload document: ${error.message}`, error);
   }
 
   return data;
 }
-
 /*
 |--------------------------------------------------------------------------
 | Replace Document
