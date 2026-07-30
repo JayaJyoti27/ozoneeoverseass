@@ -1,12 +1,13 @@
 import { useRef } from "react";
 
 import { CalendarDays, Download, Eye, FileText, RefreshCw, Trash2 } from "lucide-react";
+import { useDeleteDocument, useReplaceDocument } from "@/lib/candidate/hooks";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
-import { useDeleteDocument, useUploadDocument } from "@/lib/candidate/hooks";
+import { useUploadDocument } from "@/lib/candidate/hooks";
 
 import type { CandidateDocument } from "@/lib/candidate/types";
 
@@ -36,7 +37,7 @@ export default function DocumentCard({ document }: Props) {
         return "outline";
     }
   }
-
+  const replaceDoc = useReplaceDocument();
   async function replace(file: File) {
     const form = new FormData();
 
@@ -44,7 +45,7 @@ export default function DocumentCard({ document }: Props) {
 
     form.append("document_type", document.document_type);
 
-    await upload.mutateAsync(form);
+    await replaceDoc.mutateAsync({ id: document.id, formData: form });
   }
 
   return (
