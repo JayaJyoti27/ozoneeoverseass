@@ -57,7 +57,7 @@ export function useUpdateProfile() {
   const qc = useQueryClient();
 
   return useMutation({
-    mutationFn: (payload: Partial<Candidate>) => api.updateProfile(payload),
+    mutationFn: (payload: Partial<Record<keyof Candidate, unknown>>) => api.updateProfile(payload),
 
     onSuccess: () => {
       qc.invalidateQueries({

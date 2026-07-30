@@ -54,9 +54,14 @@ export async function updateProfile(req: Request, res: Response) {
       data,
     });
   } catch (err: any) {
+    const detail =
+      err?.details && typeof err.details === "object" && "message" in err.details
+        ? (err.details as { message?: string }).message
+        : undefined;
+
     res.status(400).json({
       success: false,
-      message: err.message,
+      message: detail ? `${err.message} (${detail})` : err.message,
     });
   }
 }

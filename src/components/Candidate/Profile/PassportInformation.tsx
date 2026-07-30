@@ -59,7 +59,11 @@ export default function PassportInformation({ candidate }: Props) {
   }
 
   async function handleSave() {
-    await updateProfile.mutateAsync(form);
+    await updateProfile.mutateAsync({
+      ...form,
+      passport_issue_date: form.passport_issue_date || null,
+      passport_expiry_date: form.passport_expiry_date || null,
+    });
     setEditing(false);
   }
 

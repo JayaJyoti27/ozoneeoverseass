@@ -27,11 +27,23 @@ export async function getCandidateProfile(candidateId: string) {
 |--------------------------------------------------------------------------
 */
 
+const DATE_FIELDS = ["dob", "passport_issue_date", "passport_expiry_date"];
+
 export async function updateCandidateProfile(candidateId: string, payload: any) {
+  // Postgres `date` columns reject an empty string — form fields that are
+  // left blank send "" rather than omitting the key, so normalize those
+  // to null before they hit the DB.
+  const sanitized = { ...payload };
+  for (const field of DATE_FIELDS) {
+    if (sanitized[field] === "") {
+      sanitized[field] = null;
+    }
+  }
+
   const { data, error } = await supabase
     .from("candidates")
     .update({
-      ...payload,
+      ...sanitized,
       updated_at: new Date().toISOString(),
     })
     .eq("id", candidateId)

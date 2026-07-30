@@ -76,7 +76,10 @@ export default function PersonalInformation({ candidate }: Props) {
   }, [candidate]);
 
   async function onSubmit(values: FormValues) {
-    await updateProfile.mutateAsync(values);
+    await updateProfile.mutateAsync({
+      ...values,
+      dob: values.dob || null,
+    });
 
     setEditing(false);
   }
