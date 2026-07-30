@@ -15,6 +15,7 @@ export interface Profile {
   id: string;
   role: UserRole;
   full_name: string | null;
+  email: string;
 }
 
 const ROLE_HOME: Record<UserRole, string> = {
@@ -45,7 +46,7 @@ export async function loginWithPassword(email: string, password: string): Promis
     throw new Error("This account has no role assigned yet.");
   }
 
-  return profile as Profile;
+  return { ...profile, email: data.user.email ?? "" } as Profile;
 }
 
 /** Returns the current logged-in user's profile, or null if not logged in. */
@@ -61,9 +62,29 @@ export async function getCurrentProfile(): Promise<Profile | null> {
     .eq("id", session.user.id)
     .single();
 
-  return (profile as Profile) ?? null;
+  if (!profile) return null;
+
+  return { ...profile, email: session.user.email ?? "" } as Profile;
 }
 
 export async function logout() {
   await supabase.auth.signOut();
+}
+
+/**
+ * Sends a magic sign-in link to the given email for candidate signup/login.
+ * `shouldCreateUser: true` means this also works for brand-new candidates —
+ * Supabase creates the auth user the first time they click the link, no
+ * separate "sign up" step needed. `emailRedirectTo` brings them straight
+ * back to the candidate login page, which then finishes the login.
+ */
+export async function sendCandidateLoginLink(email: string) {
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      shouldCreateUser: true,
+      emailRedirectTo: `${window.location.origin}/candidate`,
+    },
+  });
+  if (error) throw new Error(error.message);
 }

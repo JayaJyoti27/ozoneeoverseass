@@ -1,8 +1,9 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState, useNavigate } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, LogOut, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { logout } from "@/lib/supabase";
 
 export interface SidebarItem {
   title: string;
@@ -24,8 +25,14 @@ export default function AppSidebar({ items, title, user }: Props) {
   const pathname = useRouterState({
     select: (s) => s.location.pathname,
   });
+  const navigate = useNavigate();
 
   const [collapsed, setCollapsed] = useState(false);
+
+  async function handleLogout() {
+    await logout();
+    navigate({ to: "/candidate" });
+  }
 
   return (
     <aside
@@ -144,6 +151,7 @@ export default function AppSidebar({ items, title, user }: Props) {
 
         <Button
           variant="ghost"
+          onClick={handleLogout}
           className={cn(
             "mt-4 w-full text-ink hover:bg-blue-wash hover:text-navy",
             collapsed ? "justify-center px-0" : "justify-start",

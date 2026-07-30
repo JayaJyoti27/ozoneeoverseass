@@ -7,8 +7,8 @@ import { Menu, X, ChevronDown, MessageCircle } from "lucide-react";
 
 const CANDIDATE_SERVICES = [
   { label: "For Candidates", to: "/For-Candidates", desc: "Overview & how it works" },
-  { label: "Browse Jobs", to: "/Login", desc: "42+ live roles across 17 countries" },
-  { label: "My Dashboard", to: "/Login", desc: "Track applications & profile" },
+  { label: "Browse Jobs", to: "/candidate", desc: "42+ live roles across 17 countries" },
+  { label: "My Dashboard", to: "/candidate", desc: "Track applications & profile" },
   { label: "Nursing Careers", to: "/Services/Nursing-rec", desc: "ICU, OT, Staff Nurse & more" },
   {
     label: "Prometric Coaching",

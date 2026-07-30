@@ -61,8 +61,11 @@ import {
   markNotificationRead,
   markAllNotificationsRead,
 } from "../controllers/candidate";
+import { verifyAuth, requireRole } from "../middleware/verifyAuth";
 
 const router = Router();
+
+router.use(verifyAuth, requireRole("candidate"));
 
 /*
 |--------------------------------------------------------------------------
