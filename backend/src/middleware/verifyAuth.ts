@@ -71,6 +71,18 @@ export async function verifyAuth(req: Request, res: Response, next: NextFunction
 }
 
 /** Use after verifyAuth to lock a route group to a specific role. */
+export function requireRole(role: "admin" | "employer" | "candidate") {
+  return (req: Request, res: Response, next: NextFunction) => {
+    if (req.userRole !== role) {
+      return res.status(403).json({
+        success: false,
+        message: `This endpoint requires a ${role} account.`,
+      });
+    }
+    return next();
+  };
+}
+
 /**
  * Lighter check than verifyAuth: confirms the Supabase session is real, but does NOT
  * require a profiles row to exist yet. Use this only for the signup-completion endpoint —

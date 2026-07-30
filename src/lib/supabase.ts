@@ -15,6 +15,7 @@ export interface Profile {
   id: string;
   role: UserRole;
   full_name: string | null;
+  email: string;
 }
 
 const ROLE_HOME: Record<UserRole, string> = {
@@ -45,7 +46,7 @@ export async function loginWithPassword(email: string, password: string): Promis
     throw new Error("This account has no role assigned yet.");
   }
 
-  return profile as Profile;
+  return { ...profile, email: data.user.email ?? "" } as Profile;
 }
 
 /** Returns the current logged-in user's profile, or null if not logged in. */
@@ -61,9 +62,38 @@ export async function getCurrentProfile(): Promise<Profile | null> {
     .eq("id", session.user.id)
     .single();
 
-  return (profile as Profile) ?? null;
+  if (!profile) return null;
+
+  return { ...profile, email: session.user.email ?? "" } as Profile;
 }
 
 export async function logout() {
   await supabase.auth.signOut();
+}
+
+/**
+ * Sends a 6-digit OTP code to the given email for candidate signup/login.
+ * `shouldCreateUser: true` means this also works for brand-new candidates —
+ * Supabase creates the auth user on first verify, no separate "sign up" step needed.
+ * NOTE: in Supabase Dashboard → Authentication → Email Templates → Magic Link,
+ * the template must use {{ .Token }} (not {{ .ConfirmationURL }}) for this to arrive as a code.
+ */
+export async function sendCandidateOtp(email: string) {
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: { shouldCreateUser: true },
+  });
+  if (error) throw new Error(error.message);
+}
+
+/** Verifies the 6-digit code and returns the resulting Supabase session. */
+export async function verifyCandidateOtp(email: string, token: string) {
+  const { data, error } = await supabase.auth.verifyOtp({
+    email,
+    token,
+    type: "email",
+  });
+  if (error) throw new Error(error.message);
+  if (!data.session) throw new Error("Verification failed — no session returned.");
+  return data.session;
 }

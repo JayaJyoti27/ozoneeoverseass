@@ -248,7 +248,7 @@ function Hero() {
             ethical practices, and end-to-end support from registration to post-arrival.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <BtnSolid href="/Login">
+            <BtnSolid href="/candidate">
               Browse Open Roles <ArrowRight className="h-4 w-4" />
             </BtnSolid>
             <BtnSolidBlue href="#apply">
@@ -609,7 +609,7 @@ function Journey() {
                 No fee, no format, no chase — coordinator assigned within 24 hours.
               </div>
             </div>
-            <BtnSolid href="/Login">
+            <BtnSolid href="/candidate">
               Apply Free <ArrowRight className="h-4 w-4" />
             </BtnSolid>
           </div>

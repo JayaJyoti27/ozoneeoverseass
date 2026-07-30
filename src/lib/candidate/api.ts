@@ -24,6 +24,22 @@ api.interceptors.request.use(async (config) => {
 import type { CandidateDocument } from "./types";
 
 /* =========================================================
+   SIGNUP / AUTH
+========================================================= */
+
+export interface CompleteCandidateSignupResponse {
+  success: boolean;
+  isNewProfile: boolean;
+  profile: { id: string; role: string; full_name: string | null };
+}
+
+/** Call right after OTP verification — creates the profile+candidate row on first login. */
+export const completeCandidateSignup = async (): Promise<CompleteCandidateSignupResponse> => {
+  const { data } = await api.post("/auth/complete-candidate-signup");
+  return data;
+};
+
+/* =========================================================
    PROFILE
 ========================================================= */
 export const getDashboard = async () => {
