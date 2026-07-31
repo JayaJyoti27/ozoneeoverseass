@@ -81,3 +81,4 @@ uploads/
 # Temporary
 tmp/
 temp/
+!.env.production
